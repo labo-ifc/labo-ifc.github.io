@@ -1,5 +1,5 @@
-// Interactive parts of chapters 1–5: reciprocal functions, the chessboard,
-// the exponential function, worked examples and the logarithm converter.
+// Interactive parts of the chapters: reciprocal functions, the chessboard, the exponential
+// function, worked examples, the logarithm converter, the slope of a^x at 0 and semi-log plots.
 /* global Plotly */
 
 import { fr, pow, value, fracTex, fracText } from "../shared/fraction.js";
@@ -215,9 +215,11 @@ function initExamples() {
     panel.className = "example-panel";
     panel.hidden = true;
     panel.innerHTML = `<div class="example-head"><p class="kicker">Exemple résolu</p><h4></h4>
-      <button type="button" class="ghost link" aria-label="Fermer l'exemple">✕</button></div><ol class="steps"></ol>`;
+      <button type="button" class="ghost link" aria-label="Fermer l'exemple">✕</button></div>
+      <p class="example-text" hidden></p><ol class="steps"></ol>`;
     const title = panel.querySelector("h4");
     const list = panel.querySelector(".steps");
+    const text = panel.querySelector(".example-text");
     let current = null;
 
     // Insert the panel after the last card on the active card's row, so it spans the grid right below it.
@@ -243,7 +245,10 @@ function initExamples() {
       card.classList.add("active");
       title.textContent = card.querySelector("h3").textContent;
       list.replaceChildren();
-      for (const s of TYPES[btn.dataset.example].gen(seeded(11)).steps) appendStep(list, s);
+      const ex = TYPES[btn.dataset.example].gen(seeded(11));
+      text.hidden = !ex.text;
+      if (ex.text) renderMixed(text, ex.text);
+      for (const s of ex.steps) appendStep(list, s);
       panel.hidden = false;
       place();
       panel.scrollIntoView({ block: "nearest", behavior: "smooth" });
@@ -292,6 +297,122 @@ function renderLog() {
   renderTex(out, `\\log_{${numTex(a)}} ${numTex(x)} ${rel} ${yTex} \\quad\\Longleftrightarrow\\quad ${numTex(a)}^{${yTex}} ${rel} ${numTex(x)}`, true);
 }
 
+// ───────────── 6. Le nombre e : pente de a^x en 0 ─────────────
+
+function renderSlope() {
+  const a = Number($("e-a").value);
+  const isE = Math.abs(a - Math.E) < 0.0015;
+  $("e-a-out").textContent = isE ? "e" : fmt(a, 3);
+  for (const chip of $("e-presets").children) chip.classList.toggle("active", Math.abs(Number(chip.dataset.v) - a) < 0.0015);
+  const k = Math.log(a);
+  const c = themeColors();
+  const xs = linspace(-2, 2, 300);
+  Plotly.react("plot-e", [
+    { x: xs, y: xs.map((x) => a ** x), mode: "lines", line: { color: c.curve, width: 2.5 }, hovertemplate: "a^%{x:.2f} = %{y:.3f}<extra></extra>" },
+    { x: [-2, 2], y: [1 - 2 * k, 1 + 2 * k], mode: "lines", line: { color: c.fit, width: 2, dash: "dash" }, hoverinfo: "skip" },
+    { x: [-2, 2], y: [-1, 3], mode: "lines", line: { color: c.muted, width: 1, dash: "dot" }, hoverinfo: "skip" },
+    { x: [0], y: [1], mode: "markers", marker: { color: c.curve, size: 9 }, hoverinfo: "skip" },
+  ], layout(c, {
+    xaxis: axis(c, { range: [-2, 2] }),
+    yaxis: axis(c, { range: [-1, 4] }),
+    annotations: [{ x: 1.4, y: 2.4, showarrow: false, text: "pente 1", font: { color: c.muted } }],
+  }), PLOT_CONFIG);
+  renderMixed($("e-slope"), isE
+    ? "Pente de la tangente en 0 : $k = 1$. La tangente est la droite $y = x + 1$ : c'est la base $e \\approx 2{,}718$."
+    : `Pente de la tangente en 0 : $k \\approx ${numTex(k, 3)}$ ($= \\ln ${numTex(a, 3)}$). ${k < 1 ? "Moins que 1 : augmente la base." : "Plus que 1 : diminue la base."}`);
+}
+
+// ───────────── 7. Graphique semi-logarithmique ─────────────
+
+const SL_CURVES = {
+  2: { label: "2ˣ", f: (x) => 2 ** x, color: "curve" },
+  e: { label: "eˣ", f: Math.exp, color: "fit" },
+  10: { label: "10ˣ", f: (x) => 10 ** x, color: "period" },
+  half: { label: "(1/2)ˣ", f: (x) => 0.5 ** x, color: "bounds" },
+};
+
+function renderSemiLog() {
+  const log = $("sl-log").checked;
+  const m = 10 ** Number($("sl-m").value);
+  const a = Number($("sl-a").value);
+  $("sl-m-out").textContent = fmt(m, m < 1 ? 2 : 1);
+  $("sl-a-out").textContent = fmt(a, 2);
+  const c = themeColors();
+  const xs = linspace(-3, 5, 300);
+  const traces = [];
+  for (const box of $("sl-curves").querySelectorAll("input")) {
+    if (!box.checked) continue;
+    const curve = box.value === "custom" ? { label: "m·aˣ", f: (x) => m * a ** x, color: "accent" } : SL_CURVES[box.value];
+    traces.push({ x: xs, y: xs.map(curve.f), mode: "lines", name: curve.label, line: { color: c[curve.color], width: 2.5 },
+      hovertemplate: `${curve.label} : %{y:.3g}<extra></extra>` });
+  }
+  Plotly.react("plot-sl", traces, layout(c, {
+    showlegend: true,
+    legend: { orientation: "h", y: 1.02, yanchor: "bottom", x: 0 },
+    margin: { l: 56, r: 16, t: 36, b: 44 },
+    xaxis: axis(c, { range: [-3, 5] }),
+    yaxis: log
+      ? axis(c, { type: "log", range: [-3, 5], dtick: 1, exponentformat: "power" })
+      : axis(c, { range: [-5, 60] }),
+    uirevision: String(log),
+  }), PLOT_CONFIG);
+  const slope = Math.log10(a);
+  renderMixed($("sl-note"), log
+    ? `En échelle log, $m \\cdot a^x$ est une droite de pente $\\log a \\approx ${numTex(slope, 3)}$ (${Math.abs(slope) < 0.005 ? "horizontale : $a = 1$" : slope > 0 ? "montante : $a > 1$" : "descendante : $a < 1$"}) qui coupe l'axe vertical en $m \\approx ${numTex(m, 2)}$.`
+    : "En échelle linéaire, les exponentielles s'envolent hors du graphique et les petites valeurs se confondent avec l'axe. Coche l'axe logarithmique.");
+}
+
+// Reading quiz: a point placed on a gridline d·10^e of a semi-log plot.
+const QUIZ_TICKS = [0, 1, 2, 3, 4].flatMap((e) => [1, 2, 3, 4, 5, 6, 7, 8, 9].map((d) => d * 10 ** e)).concat(1e5);
+const quiz = { value: 0, t: 0, m: 1, a: 1, tries: 0 };
+
+function newQuiz() {
+  const r = Math.random;
+  quiz.t = 1 + Math.floor(r() * 6);
+  quiz.value = (2 + Math.floor(r() * 8)) * 10 ** Math.floor(r() * 4);
+  quiz.m = [1, 2, 5, 10, 20, 50][Math.floor(r() * 6)];
+  if (Math.abs(Math.log10(quiz.value / quiz.m)) < 0.2) return newQuiz();
+  quiz.a = (quiz.value / quiz.m) ** (1 / quiz.t);
+  $("slq-answer").value = "";
+  $("slq-feedback").textContent = "";
+  $("slq-feedback").className = "feedback";
+  renderMixed($("slq-question"), `La droite représente $f(t) = m \\cdot a^t$. Que vaut $f(${quiz.t})$ (le point marqué) ?`);
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const c = themeColors();
+  const ts = linspace(0, 7, 100);
+  const f = (t) => quiz.m * quiz.a ** t;
+  Plotly.react("plot-slq", [
+    { x: ts, y: ts.map(f), mode: "lines", line: { color: c.curve, width: 2.5 }, hoverinfo: "skip" },
+    { x: [quiz.t], y: [quiz.value], mode: "markers", marker: { color: c.accent, size: 11 }, hoverinfo: "skip" },
+  ], layout(c, {
+    // Hover disabled: the value has to be read on the axis.
+    hovermode: false,
+    xaxis: axis(c, { range: [0, 7], dtick: 1, title: { text: "t" } }),
+    // A gridline at every d·10^e, labels only on the powers of 10.
+    yaxis: axis(c, { type: "log", range: [-0.3, 4.3], tickmode: "array", tickvals: QUIZ_TICKS, ticktext: QUIZ_TICKS.map((v) => (Number.isInteger(Math.log10(v)) ? nf(0).format(v) : "")) }),
+  }), { ...PLOT_CONFIG, staticPlot: true });
+}
+
+function checkQuiz(event) {
+  event.preventDefault();
+  const v = Number($("slq-answer").value.replace(/\s/g, "").replace(",", "."));
+  const el = $("slq-feedback");
+  if (!$("slq-answer").value.trim() || !Number.isFinite(v)) {
+    el.className = "feedback warn";
+    el.textContent = "Écris un nombre, par exemple 300.";
+    return;
+  }
+  const ok = Math.abs(v - quiz.value) <= 0.04 * quiz.value;
+  el.className = `feedback ${ok ? "ok" : "bad"}`;
+  const below = 10 ** Math.floor(Math.log10(quiz.value));
+  renderMixed(el, ok
+    ? `C'est juste : $f(${quiz.t}) = ${numTex(quiz.value, 0)}$.`
+    : `Pas tout à fait. Repère d'abord la puissance de 10 juste en dessous du point ($${numTex(below, 0)}$), puis compte les graduations : chacune ajoute $${numTex(below, 0)}$.`);
+}
+
 // ───────────── wiring ─────────────
 
 export function initLessons() {
@@ -321,8 +442,21 @@ export function initLessons() {
   initExamples();
   for (const id of ["log-a", "log-x"]) $(id).addEventListener("input", renderLog);
 
+  $("e-a").addEventListener("input", renderSlope);
+  for (const chip of $("e-presets").children) {
+    chip.addEventListener("click", () => {
+      $("e-a").value = chip.dataset.v;
+      renderSlope();
+    });
+  }
+  for (const id of ["sl-log", "sl-m", "sl-a"]) $(id).addEventListener("input", renderSemiLog);
+  $("sl-curves").addEventListener("change", renderSemiLog);
+  $("slq-form").addEventListener("submit", checkQuiz);
+  $("slq-new").addEventListener("click", newQuiz);
+  newQuiz();
+
   renderAll();
-  return { renderPlots: () => { renderReciprocal(); renderExp(); } };
+  return { renderPlots: () => { renderReciprocal(); renderExp(); renderSlope(); renderSemiLog(); renderQuiz(); } };
 }
 
 function renderAll() {
@@ -330,4 +464,6 @@ function renderAll() {
   renderChess();
   renderExp();
   renderLog();
+  renderSlope();
+  renderSemiLog();
 }

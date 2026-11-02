@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { calculate, parse, toTex, formatResult } from "../shared/calc.js";
+import { calculate, parse, evaluate, toTex, formatResult } from "../shared/calc.js";
 
 const value = (text, ans) => {
   const r = calculate(text, ans);
@@ -91,7 +91,7 @@ test("errors are explained in French", () => {
   error("()", /vides/);
   error("* 3", /mal formée/);
   error("ln -2", /parenthèse/);
-  error("x + 1", /« x »/);
+  error("x + 1", /x n'a pas de valeur/);
   error("10^400", /trop grand/);
 });
 
@@ -117,4 +117,11 @@ test("result formatting", () => {
   assert.equal(formatResult(2 ** 64).tex, "1{,}844674407 \\times 10^{19}");
   assert.equal(formatResult(2 ** 64).scientific, true);
   assert.equal(formatResult(1e-9).text, "1e-9");
+});
+
+test("x is a variable when evaluate gets a value, sin/cos/tan are known", () => {
+  const node = parse("2x e^(x^2) + sin(x)");
+  assert.ok(Math.abs(evaluate(node, 0, 1) - (2 * Math.E + Math.sin(1))) < 1e-12);
+  assert.ok(Math.abs(calculate("cos(0) + tan(0)").value - 1) < 1e-12);
+  assert.equal(toTex(parse("2x")), "2 x");
 });

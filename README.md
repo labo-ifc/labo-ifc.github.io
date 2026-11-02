@@ -6,7 +6,7 @@ Site : https://labo-maths.github.io
 | Outil | Dossier |
 |---|---|
 | Fonctions sinusoïdales : `y = A·sin(ωx − φ) + D`, curseurs, saisie libre, ajustement automatique | [`sinusoides/`](sinusoides/) |
-| Exponentielles et logarithmes : fonctions réciproques, `aˣ`, logarithmes, équations exponentielles et logarithmiques, pense-bête imprimable, générateur d'exercices avec indices, résolution pas à pas et calculatrice | [`exp-log/`](exp-log/) |
+| Exponentielles et logarithmes : fonctions réciproques, `aˣ`, logarithmes, équations exponentielles et logarithmiques (avec exposants, troisième degré, changement de base), le nombre e et les dérivées, graphiques semi-log, problèmes de croissance et d'intérêts, pense-bête imprimable, générateur d'exercices avec indices, résolution pas à pas et calculatrice | [`exp-log/`](exp-log/) |
 
 ## Services
 
@@ -68,16 +68,18 @@ shared/
   fraction.js       fractions exactes (calcul et affichage TeX)
   tex.js            rendu KaTeX (formules statiques, texte mêlé de $…$)
   plot.js           couleurs du thème et mise en page Plotly communes
-  calc.js           calculatrice : saisie → arbre → valeur, TeX et erreurs en français (sans DOM, pas d'eval)
+  calc.js           calculatrice : saisie → arbre → valeur (variable x, sin/cos/tan), TeX et erreurs en français (sans DOM, pas d'eval)
   calculator.js/.css  widget calculatrice (écran de taille fixe, aperçu TeX, clavier, historique, Rép)
 sinusoides/
   index.html, style.css, app.js
   model.js          évaluation et ajustement d'une sinusoïde
 exp-log/
   index.html, style.css, app.js
-  lessons.js        laboratoires interactifs du cours (réciproques, échiquier, aˣ, logarithmes) et exemples résolus
+  lessons.js        laboratoires interactifs du cours (réciproques, échiquier, aˣ, logarithmes, tangente de aˣ, semi-log,
+                    quiz de lecture semi-log) et exemples résolus
                     (panneau pleine largeur sous la rangée de la méthode, un seul ouvert à la fois)
-  exercises.js      générateur d'exercices (sans DOM) : énoncé, indices, étapes, solutions
+  exercises.js      générateur d'exercices (sans DOM) : énoncé, indices, étapes, solutions, lecture et correction
+                    des réponses (valeurs, expressions avec ln/e, dérivées vérifiées numériquement)
   trainer.js        carte d'exercice : indices, « Étape suivante », vérification de la réponse
 tests/
   *.test.js         tests Node

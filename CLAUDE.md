@@ -21,6 +21,11 @@ Site statique d'outils de maths interactifs (cours de secondaire, en français).
 - Exemples résolus : générés par `TYPES[type].gen(seeded(11))` (même exemple à chaque fois), affichés dans un **panneau pleine largeur** sous la rangée de la carte (`initExamples` dans `lessons.js`), étapes en grille calcul à gauche / commentaire à droite. Préférer ce type de présentation aux menus `<details>` dans des colonnes étroites, jugés trop chargés.
 - Tableaux de valeurs pilotés par un curseur : classe `.fixed-table` (colonnes égales, hauteur fixe) pour que seules les valeurs changent, jamais la taille des cases.
 - Nouveau type d'exercice : l'ajouter à `TYPES` dans `exercises.js` (énoncé, indices, étapes `{ tex, note }`, solutions, `residual`) ; les tests Node le vérifient automatiquement.
+  - `kind: "expr"` (dérivées) : la réponse est une expression en x, comparée numériquement à `derivative` sur `points` ; toute forme équivalente est acceptée.
+  - `text` : énoncé en mots (problèmes) affiché à la place de l'équation ; `digits` : arrondi demandé (2 par défaut).
+  - Réponses lues par `parseAnswer` via `shared/calc.js` : valeur exacte (`ln(5)/2`, `e^3`…) ou arrondie, tolérance 0,6·10^-digits.
+- Niveaux du générateur : 1–4 historiques, 5 « Troisième degré », 6 « Dérivées », 7 « Problèmes ».
+- Chapitres : … 6 Équations log, 7 e et dérivées, 8 Semi-log, 9 Problèmes, 10 Pense-bête, 11 Exercices (contenu tiré du cours PDF, gardé en local, jamais versionné).
 
 ## Vérification
 

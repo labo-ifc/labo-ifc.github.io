@@ -28,6 +28,9 @@
         <li><a href="#equations" title="Équations exponentielles">Équations exp.</a></li>
         <li><a href="#logarithmes" title="Logarithmes">Logarithmes</a></li>
         <li><a href="#equations-log" title="Équations logarithmiques">Équations log</a></li>
+        <li><a href="#derivees" title="Le nombre e et les dérivées">e et dérivées</a></li>
+        <li><a href="#semi-log" title="Graphique semi-logarithmique">Semi-log</a></li>
+        <li><a href="#problemes" title="Problèmes">Problèmes</a></li>
         <li><a href="#pense-bete" title="Pense-bête">Pense-bête</a></li>
         <li><a href="#exercices" title="Exercices">Exercices</a></li>
       </ol>
@@ -175,6 +178,38 @@
               <button type="button" class="ghost" data-train="logSolve">S'entraîner</button>
             </div>
           </article>
+          <article class="method">
+            <h3>5. Isoler puis <span data-tex="\ln"></span></h3>
+            <p>Avec un nombre devant ou à côté de l'exponentielle (<span data-tex="3 \cdot e^{2x+1} - 5 = 7"></span>) : enlever le terme constant, diviser, puis appliquer <span data-tex="\ln"></span> : <span data-tex="\ln e^y = y"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="expIsolate" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="expIsolate">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>6. Exposant au carré</h3>
+            <p><span data-tex="2^{x^2 - 1} = 8"></span> : même base, puis égaler les exposants. On obtient une équation du <strong>second degré</strong> en <span data-tex="x"></span>, résolue avec <span data-tex="\Delta"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="expSquare" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="expSquare">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>7. Second degré en <span data-tex="e^x"></span></h3>
+            <p><span data-tex="2e^{2x} - 5e^x - 3 = 0"></span> : poser <span data-tex="Y = e^x"></span> (avec <span data-tex="Y > 0"></span>), résoudre avec <span data-tex="\Delta"></span>, rejeter les <span data-tex="Y \leq 0"></span>, puis <span data-tex="x = \ln Y"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="expQuadE" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="expQuadE">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>8. Troisième degré (Horner)</h3>
+            <p><span data-tex="e^{3x} - 2e^{2x} - e^x + 2 = 0"></span> : poser <span data-tex="Y = e^x"></span>, trouver une racine parmi les diviseurs du terme indépendant, diviser par Horner, puis <span data-tex="\Delta"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="expCubic" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="expCubic">S'entraîner</button>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -276,12 +311,193 @@
               <button type="button" class="ghost" data-train="logQuadratic">S'entraîner</button>
             </div>
           </article>
+          <article class="method">
+            <h3>4. Argument au carré</h3>
+            <p><span data-tex="\log x^2 = 2"></span> : C.E. <span data-tex="x^2 > 0"></span>, soit <span data-tex="x \neq 0"></span>. Puis <span data-tex="x^2 = 100"></span> : <strong>deux</strong> solutions <span data-tex="\pm 10"></span>. Écrire <span data-tex="\log x^2 = 2 \log x"></span> ferait perdre la solution négative.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="logSquareArg" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="logSquareArg">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>5. <span data-tex="\log^2 x"></span> et <span data-tex="\log x^2"></span></h3>
+            <p><span data-tex="3 \ln^2 x - \ln x^2 = 1"></span> : après les C.E., <span data-tex="\ln x^2 = 2 \ln x"></span>, puis poser <span data-tex="Y = \ln x"></span>. Ne pas confondre <span data-tex="\ln^2 x = (\ln x)^2"></span> et <span data-tex="\ln x^2"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="logMixed" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="logMixed">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>6. Bases différentes</h3>
+            <p><span data-tex="\log_3(2x - 3) = 0{,}5 + \log_9(6 - x)"></span> : ramener tout en base 3 avec <span data-tex="\log_9 A = \frac{\log_3 A}{\log_3 9} = \frac{1}{2} \log_3 A"></span>, multiplier par 2, regrouper et enlever les logarithmes.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="logBaseChange" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="logBaseChange">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>7. Troisième degré</h3>
+            <p><span data-tex="\ln^3 x - 4 \ln^2 x + \ln x + 6 = 0"></span> : C.E., poser <span data-tex="Y = \ln x"></span>, Horner (ou mise en évidence de <span data-tex="Y"></span> sans terme indépendant), puis <span data-tex="x = e^Y"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="logCubic" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="logCubic">S'entraîner</button>
+            </div>
+          </article>
         </div>
       </section>
 
       <!-- 7 ─────────────────────────────────────────────── -->
-      <section id="pense-bete" class="panel chapter">
+      <section id="derivees" class="panel chapter">
         <p class="kicker">Chapitre 7</p>
+        <h2>Le nombre <span data-tex="e"></span> et les dérivées</h2>
+        <p>Toutes les exponentielles <span data-tex="a^x"></span> passent par <span data-tex="(0 \,;\, 1)"></span>, mais pas avec la même pente.
+          Il existe une seule base pour laquelle la tangente en ce point a une pente <strong>exactement égale à 1</strong> : c'est le nombre
+          <span data-tex="e \approx 2{,}718"></span>. Fais varier la base pour la trouver.</p>
+
+        <div class="lab">
+          <div class="lab-controls">
+            <div class="slider">
+              <label for="e-a">Base <span data-tex="a"></span></label>
+              <output id="e-a-out" for="e-a"></output>
+              <input type="range" id="e-a" min="1.5" max="4" step="0.001" value="2">
+            </div>
+            <div class="chips" id="e-presets">
+              <button type="button" data-v="2">2</button>
+              <button type="button" data-v="2.718281828459045">e</button>
+              <button type="button" data-v="3">3</button>
+            </div>
+            <p class="lab-note" id="e-slope"></p>
+          </div>
+          <div id="plot-e" class="plot" aria-label="Graphique de a puissance x et de sa tangente en 0"></div>
+        </div>
+
+        <p>La pente de <span data-tex="a^x"></span> en 0 vaut <span data-tex="\ln a"></span> ; elle vaut 1 pour <span data-tex="a = e"></span>.
+          On peut aussi obtenir <span data-tex="e"></span> comme limite :</p>
+        <div class="table-wrap"><table class="value-table">
+          <tr><th data-tex="h"></th><td data-tex="1"></td><td data-tex="0{,}1"></td><td data-tex="0{,}01"></td><td data-tex="0{,}001"></td><td data-tex="0{,}0001"></td><td data-tex="0{,}00001"></td></tr>
+          <tr><th data-tex="(1 + h)^{1/h}"></th><td data-tex="2"></td><td data-tex="2{,}5937"></td><td data-tex="2{,}7048"></td><td data-tex="2{,}7169"></td><td data-tex="2{,}7181"></td><td data-tex="2{,}71827"></td></tr>
+        </table></div>
+        <p class="formula-box" data-tex="e = \lim_{h \to 0} (1 + h)^{1/h} \qquad (e^x)' = e^x \qquad \ln x = \log_e x" data-display></p>
+
+        <h3>Dérivées</h3>
+        <div class="rules">
+          <p data-tex="(e^x)' = e^x \qquad (a^x)' = a^x \cdot \ln a \qquad (\ln x)' = \frac{1}{x} \qquad (\log_a x)' = \frac{1}{x \cdot \ln a}" data-display></p>
+          <p data-tex="(e^u)' = u' \cdot e^u \qquad (a^u)' = u' \cdot a^u \cdot \ln a \qquad (\ln u)' = \frac{u'}{u} \qquad (\log_a u)' = \frac{u'}{u \cdot \ln a}" data-display></p>
+        </div>
+
+        <div class="methods">
+          <article class="method">
+            <h3>1. Dériver une exponentielle</h3>
+            <p>Repérer l'exposant <span data-tex="u"></span>, le dériver, et multiplier : <span data-tex="(e^{x^2})' = 2x \cdot e^{x^2}"></span>. Pour une autre base, ajouter le facteur <span data-tex="\ln a"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="derivExp" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="derivExp">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>2. Dériver un logarithme</h3>
+            <p>Dérivée de l'argument divisée par l'argument : <span data-tex="(\ln(x^2 + 1))' = \frac{2x}{x^2 + 1}"></span>. Pour <span data-tex="\log_a"></span>, diviser encore par <span data-tex="\ln a"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="derivLog" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="derivLog">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+        <p class="lab-note after-methods">Dans les exercices, tape la dérivée comme sur la calculatrice : <code>2x e^(x^2)</code>, <code>3/(3x+1)</code>, <code>2^x ln(2)</code>. Toute forme équivalente est acceptée.</p>
+      </section>
+
+      <!-- 8 ─────────────────────────────────────────────── -->
+      <section id="semi-log" class="panel chapter">
+        <p class="kicker">Chapitre 8</p>
+        <h2>Graphique semi-logarithmique</h2>
+        <p>Une exponentielle grandit si vite qu'on ne voit plus rien sur un graphique ordinaire. Sur un graphique
+          <strong>semi-logarithmique</strong>, l'axe vertical est gradué en puissances de 10 : chaque graduation principale
+          <strong>multiplie</strong> par 10 au lieu d'ajouter une quantité fixe. Une exponentielle y devient une <strong>droite</strong>.</p>
+
+        <div class="lab">
+          <div class="lab-controls">
+            <label class="check"><input type="checkbox" id="sl-log" checked> Axe vertical logarithmique</label>
+            <div class="sl-curves" id="sl-curves">
+              <label class="check"><input type="checkbox" value="2" checked> <span data-tex="2^x"></span></label>
+              <label class="check"><input type="checkbox" value="e"> <span data-tex="e^x"></span></label>
+              <label class="check"><input type="checkbox" value="10" checked> <span data-tex="10^x"></span></label>
+              <label class="check"><input type="checkbox" value="half"> <span data-tex="\left(\frac{1}{2}\right)^x"></span></label>
+              <label class="check"><input type="checkbox" value="custom" checked> <span data-tex="m \cdot a^x"></span></label>
+            </div>
+            <div class="slider">
+              <label for="sl-m"><span data-tex="m"></span> (départ)</label>
+              <output id="sl-m-out" for="sl-m"></output>
+              <input type="range" id="sl-m" min="-1" max="2" step="0.01" value="0.7">
+            </div>
+            <div class="slider">
+              <label for="sl-a"><span data-tex="a"></span> (facteur)</label>
+              <output id="sl-a-out" for="sl-a"></output>
+              <input type="range" id="sl-a" min="0.2" max="5" step="0.01" value="1.5">
+            </div>
+            <p class="lab-note" id="sl-note"></p>
+          </div>
+          <div id="plot-sl" class="plot" aria-label="Graphique d'exponentielles en échelle linéaire ou logarithmique"></div>
+        </div>
+
+        <p>Pourquoi une droite ? En prenant le logarithme :</p>
+        <p class="formula-box" data-tex="f(x) = m \cdot a^x \;\Longrightarrow\; \log f(x) = \log m + x \cdot \log a" data-display></p>
+        <p>C'est une fonction du premier degré en <span data-tex="x"></span> : pente <span data-tex="\log a"></span>, ordonnée à l'origine <span data-tex="\log m"></span>.
+          Croissante si <span data-tex="a > 1"></span>, décroissante si <span data-tex="0 < a < 1"></span>.</p>
+
+        <h3>Lire un graphique semi-log</h3>
+        <p>Entre deux puissances de 10, les graduations valent 2, 3, 4… fois la puissance de 10 du bas : elles se resserrent vers le haut.
+          Lis la valeur du point marqué.</p>
+        <div class="lab sl-quiz">
+          <div class="lab-controls">
+            <p id="slq-question"></p>
+            <form id="slq-form" class="answer-row">
+              <input id="slq-answer" class="text-input" type="text" inputmode="decimal" autocomplete="off" aria-label="Valeur lue" placeholder="ex. 300">
+              <button type="submit" class="primary">Vérifier</button>
+              <button type="button" class="ghost" id="slq-new">Autre point</button>
+            </form>
+            <p class="feedback" id="slq-feedback" aria-live="polite"></p>
+          </div>
+          <div id="plot-slq" class="plot" aria-label="Graphique semi-logarithmique à lire"></div>
+        </div>
+      </section>
+
+      <!-- 9 ─────────────────────────────────────────────── -->
+      <section id="problemes" class="panel chapter">
+        <p class="kicker">Chapitre 9</p>
+        <h2>Problèmes</h2>
+        <p>Une grandeur qui est <strong>multipliée par un même facteur</strong> à intervalles réguliers suit un modèle exponentiel.</p>
+        <p class="formula-box" data-tex="f(t) = m \cdot a^{t} \qquad m = \text{valeur de départ} \qquad a = \text{facteur par période}" data-display></p>
+        <ul class="model-list">
+          <li>Hausse de <span data-tex="5\,\%"></span> : <span data-tex="a = 1{,}05"></span> ; baisse de <span data-tex="6\,\%"></span> : <span data-tex="a = 0{,}94"></span>.</li>
+          <li>Doublement toutes les <span data-tex="T"></span> heures : <span data-tex="f(t) = m \cdot 2^{t/T}"></span> ; demi-vie <span data-tex="T"></span> : <span data-tex="f(t) = m \cdot (\tfrac{1}{2})^{t/T}"></span>.</li>
+          <li>Intérêts simples : <span data-tex="C(t) = C_0 (1 + i\,t)"></span> ; intérêts composés : <span data-tex="C(t) = C_0 (1 + i)^t"></span> (les intérêts rapportent à leur tour).</li>
+        </ul>
+
+        <div class="methods">
+          <article class="method">
+            <h3>1. Croissance et décroissance</h3>
+            <p>Trouver <span data-tex="m"></span> et <span data-tex="a"></span> dans l'énoncé, écrire <span data-tex="f(t)"></span>, puis calculer une valeur
+              ou chercher un temps : isoler <span data-tex="a^t"></span> et appliquer <span data-tex="\log"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="growth" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="growth">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>2. Intérêts</h3>
+            <p>Capital après <span data-tex="n"></span> ans, temps pour atteindre un montant ou doubler (<span data-tex="(1 + i)^t = 2"></span>), taux
+              (<span data-tex="1 + i = \sqrt[n]{C_n / C_0}"></span>).</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="interest" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="interest">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 10 ─────────────────────────────────────────────── -->
+      <section id="pense-bete" class="panel chapter">
+        <p class="kicker">Chapitre 10</p>
         <div class="cheat-head">
           <h2>Pense-bête</h2>
           <button type="button" class="ghost" id="cheat-print">Imprimer</button>
@@ -352,6 +568,7 @@
               <li>Pas de base commune ? Appliquer <span data-tex="\log"></span> ou <span data-tex="\ln"></span> aux deux membres :
                 <span data-tex="a^x = c \Leftrightarrow x = \frac{\log c}{\log a}"></span>.</li>
               <li>Exposants <span data-tex="2x"></span> et <span data-tex="x"></span> : poser <span data-tex="Y = a^x"></span> (voir le tableau).</li>
+              <li>Exposant <span data-tex="x^2"></span> : égaler les exposants donne un second degré, avec souvent deux solutions.</li>
             </ol>
           </article>
 
@@ -363,6 +580,7 @@
               <li>Regrouper avec les règles : un seul logarithme de chaque côté.</li>
               <li>Enlever les logarithmes : <span data-tex="\log_a A = \log_a B \Leftrightarrow A = B"></span>.</li>
               <li><strong>Développer</strong>, tout ramener à 0, résoudre (premier degré, <span data-tex="\Delta"></span>, Horner).</li>
+              <li><span data-tex="\log x^2"></span> : C.E. <span data-tex="x \neq 0"></span> et deux solutions <span data-tex="\pm"></span> ; ne pas le remplacer par <span data-tex="2 \log x"></span> avant d'avoir résolu.</li>
               <li>Vérifier chaque solution dans les C.E. et <strong>rejeter</strong> celles hors du domaine.</li>
             </ol>
           </article>
@@ -434,14 +652,25 @@
               <li>Intérêts composés : <span data-tex="C(t) = C_0 (1 + i)^t"></span></li>
               <li>Baisse de 6 % : <span data-tex="a = 0{,}94"></span> ; hausse de 6 % : <span data-tex="a = 1{,}06"></span></li>
               <li>Chercher un temps : isoler <span data-tex="a^t"></span>, puis appliquer <span data-tex="\log"></span></li>
+              <li>Doublement en <span data-tex="T"></span> : <span data-tex="m \cdot 2^{t/T}"></span> ; demi-vie <span data-tex="T"></span> : <span data-tex="m \cdot \left(\frac{1}{2}\right)^{t/T}"></span></li>
+            </ul>
+          </article>
+
+          <article class="cheat-card">
+            <h3>Graphique semi-log</h3>
+            <ul>
+              <li>Axe vertical en puissances de 10 : chaque graduation principale multiplie par 10</li>
+              <li><span data-tex="f(x) = m \cdot a^x"></span> devient une <strong>droite</strong> : <span data-tex="\log f = \log m + x \log a"></span></li>
+              <li>Pente <span data-tex="\log a"></span>, ordonnée à l'origine <span data-tex="\log m"></span></li>
+              <li>Pas de 0 ni de valeurs négatives sur l'axe vertical</li>
             </ul>
           </article>
         </div>
       </section>
 
-      <!-- 8 ─────────────────────────────────────────────── -->
+      <!-- 11 ─────────────────────────────────────────────── -->
       <section id="exercices" class="panel chapter">
-        <p class="kicker">Chapitre 8</p>
+        <p class="kicker">Chapitre 11</p>
         <h2>Exercices</h2>
         <div class="trainer-bar">
           <label class="row">Type

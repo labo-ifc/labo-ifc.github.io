@@ -3,15 +3,17 @@
 //
 // Syntax: + − × ÷ ^ ² ³, parentheses (missing ")" are closed at the end),
 // implicit products (2π, 3(1+2), 2√3), decimal comma or point,
-// functions √ ∛ ln log exp (log_a(x) for base a), constants π, e and Rép (last result).
+// functions √ ∛ ln log exp sin cos tan (log_a(x) for base a), constants π, e and Rép (last result),
+// and the variable x when `evaluate` gets a value for it (derivatives typed as answers).
 
 export class CalcError extends Error {}
 
 const NAMES = [
   ["racine", "sqrt"], ["sqrt", "sqrt"], ["cbrt", "cbrt"], ["exp", "exp"], ["ln", "ln"], ["log", "log"],
-  ["pi", "pi"], ["ans", "ans"], ["rép", "ans"], ["rep", "ans"], ["e", "e"],
+  ["sin", "sin"], ["cos", "cos"], ["tan", "tan"],
+  ["pi", "pi"], ["ans", "ans"], ["rép", "ans"], ["rep", "ans"], ["e", "e"], ["x", "x"],
 ];
-const FUNCTIONS = new Set(["sqrt", "cbrt", "exp", "ln", "log"]);
+const FUNCTIONS = new Set(["sqrt", "cbrt", "exp", "ln", "log", "sin", "cos", "tan"]);
 const SYMBOLS = {
   "+": "+", "-": "-", "−": "-", "–": "-", "*": "*", "×": "*", "·": "*", "/": "/", "÷": "/", ":": "/",
   "^": "^", "(": "(", ")": ")", "²": "²", "³": "³", "_": "_", "π": "pi", "√": "sqrt", "∛": "cbrt",
@@ -136,9 +138,9 @@ export function parse(text) {
   return tree;
 }
 
-/** Syntax tree → number. `ans` is the previous result (undefined if none). Throws CalcError. */
-export function evaluate(node, ans) {
-  const ev = (n) => evaluate(n, ans);
+/** Syntax tree → number. `ans` is the previous result (undefined if none), `x` the variable's value. Throws CalcError. */
+export function evaluate(node, ans, x) {
+  const ev = (n) => evaluate(n, ans, x);
   switch (node.type) {
     case "num": return node.value;
     case "paren": return ev(node.arg);
@@ -146,20 +148,27 @@ export function evaluate(node, ans) {
     case "const":
       if (node.name === "pi") return Math.PI;
       if (node.name === "e") return Math.E;
+      if (node.name === "x") {
+        if (x === undefined) throw new CalcError("x n'a pas de valeur : la calculatrice calcule avec des nombres");
+        return x;
+      }
       if (ans === undefined) throw new CalcError("Rép est vide : fais d'abord un calcul");
       return ans;
     case "fn": {
-      const x = ev(node.arg);
+      const v = ev(node.arg);
       switch (node.name) {
         case "sqrt":
-          if (x < 0) throw new CalcError("Pas de racine carrée réelle d'un nombre négatif");
-          return Math.sqrt(x);
-        case "cbrt": return Math.cbrt(x);
-        case "exp": return finite(Math.exp(x));
+          if (v < 0) throw new CalcError("Pas de racine carrée réelle d'un nombre négatif");
+          return Math.sqrt(v);
+        case "cbrt": return Math.cbrt(v);
+        case "exp": return finite(Math.exp(v));
+        case "sin": return Math.sin(v);
+        case "cos": return Math.cos(v);
+        case "tan": return finite(Math.tan(v));
         case "ln":
         case "log":
-          if (x <= 0) throw new CalcError(`${node.name} n'existe que pour un nombre strictement positif`);
-          return node.name === "ln" ? Math.log(x) : Math.log10(x);
+          if (v <= 0) throw new CalcError(`${node.name} n'existe que pour un nombre strictement positif`);
+          return node.name === "ln" ? Math.log(v) : Math.log10(v);
       }
       break;
     }
@@ -201,7 +210,7 @@ const unwrap = (n) => (n.type === "paren" ? n.arg : n);
 export function toTex(node) {
   switch (node.type) {
     case "num": return texNum(node.value);
-    case "const": return { pi: "\\pi", e: "e", ans: "\\text{Rép}" }[node.name];
+    case "const": return { pi: "\\pi", e: "e", x: "x", ans: "\\text{Rép}" }[node.name];
     case "paren": return `\\left(${toTex(node.arg)}\\right)`;
     case "neg": return `-${toTex(node.arg)}`;
     case "fn": {

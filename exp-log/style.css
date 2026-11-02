@@ -123,6 +123,14 @@
 }
 .lab-controls { display: flex; flex-direction: column; gap: 12px; }
 .plot { width: 100%; height: 380px; background: var(--bg); border-radius: 8px; }
+.lab-note { margin: 0; color: var(--muted); }
+.lab-note strong { color: var(--accent); }
+.sl-curves { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.sl-quiz .answer-row { flex-wrap: wrap; }
+.sl-quiz .answer-row .text-input { flex: 1 1 100%; min-width: 0; }
+.after-methods { margin-top: 16px; }
+.model-list { display: flex; flex-direction: column; gap: 8px; padding-left: 1.2em; }
+.example-text { margin: 10px 0 0; max-width: 70ch; }
 
 .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .row select, .row input {
@@ -260,6 +268,7 @@ kbd { font-family: var(--mono); font-size: 0.85em; padding: 1px 5px; border: 1px
 #calc-toggle[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
 .prompt { color: var(--muted); margin: 0; }
 .statement { font-size: 1.35rem; margin: 4px 0 16px; overflow-x: auto; max-width: none; }
+.statement.text { font-size: 1.05rem; line-height: 1.6; max-width: 70ch; }
 .answer .field-label { font-size: 0.9em; }
 .answer-row { display: flex; gap: 8px; }
 #ex-answer { flex: 1; min-width: 0; max-width: 22em; }

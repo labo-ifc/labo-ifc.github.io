@@ -70,9 +70,9 @@ function initExerciseCalculator() {
   const answer = document.getElementById("ex-answer");
   initCalculator(panel, {
     // Replaces the answer, or adds a second solution after a ";".
-    // Exercises that ask for an approximation get the value rounded to 2 decimals.
+    // Exercises that ask for an approximation get the value rounded (2 decimals, or `digits`).
     onUse(text) {
-      if (trainer.exercise.approx) text = Number(text.replace(",", ".")).toFixed(2).replace(".", ",");
+      if (trainer.exercise.approx) text = Number(text.replace(",", ".")).toFixed(trainer.exercise.digits ?? 2).replace(".", ",");
       answer.value = /;\s*$/.test(answer.value) ? `${answer.value.trimEnd()} ${text}` : text;
       answer.focus({ preventScroll: true });
     },

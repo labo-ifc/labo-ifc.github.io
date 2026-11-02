@@ -39,7 +39,7 @@ document.getElementById("f").addEventListener("load", () => {
     ok($("chessboard").children.length === 64, "chessboard has 64 cells");
     ok($("exp-table").rows.length === 2 && $("exp-table").rows[0].cells.length === 8, "value table 2×8");
     ok($("ex-statement").querySelector(".katex"), "first exercise rendered");
-    ok($("ex-choice").options.length === 16, "16 exercise choices (" + $("ex-choice").options.length + ")");
+    ok($("ex-choice").options.length === 33, "33 exercise choices (" + $("ex-choice").options.length + ")");
   });
 
   step("every exercise type", () => {
@@ -55,7 +55,7 @@ document.getElementById("f").addEventListener("load", () => {
         if (hints < 2 || steps < 3 || katexErrors($("exercise")) || !$("ex-all").hidden) bad.push(opt.value + " h" + hints + " s" + steps + " kerr" + katexErrors($("exercise")));
       }
     }
-    ok(bad.length === 0, "all 16 choices × 4: hints, full steps, no TeX error" + (bad.length ? " → " + bad.join(", ") : ""));
+    ok(bad.length === 0, "all 33 choices × 4: hints, full steps, no TeX error" + (bad.length ? " → " + bad.join(", ") : ""));
   });
 
   step("answer flow", () => {
@@ -190,6 +190,46 @@ document.getElementById("f").addEventListener("load", () => {
     ok(btn.closest(".methods").querySelector(".example-panel").hidden, "second click closes the example");
   });
 
+  step("derivative answers", () => {
+    $("ex-choice").value = "derivExp"; fire($("ex-choice"), "change");
+    const input = $("ex-answer"), form = $("ex-form");
+    input.value = "2x e^("; form.requestSubmit();
+    ok($("ex-feedback").classList.contains("warn"), "unreadable derivative → warning: " + $("ex-feedback").textContent.slice(0, 60));
+    input.value = "x + 1"; form.requestSubmit();
+    ok($("ex-feedback").classList.contains("bad") && $("ex-feedback").querySelector(".katex"), "wrong derivative → shows what was read");
+    $("ex-step").click(); $("ex-step").click(); $("ex-step").click();
+    ok(/f'\(x\)/.test($("ex-steps").textContent) || $("ex-steps").children.length === 3, "derivative steps shown");
+  });
+
+  step("problems", () => {
+    $("ex-choice").value = "level:7"; fire($("ex-choice"), "change");
+    ok($("ex-statement").classList.contains("text") && /€|bactéries|virus|isotope|arbre|surface/.test($("ex-statement").textContent), "problem statement in words: " + $("ex-statement").textContent.slice(0, 60));
+    ok(/arrondis/.test($("ex-prompt").textContent), "rounding asked: " + $("ex-prompt").textContent);
+  });
+
+  step("e, semi-log and problem chapters", () => {
+    for (const id of ["derivees", "semi-log", "problemes", "equations"]) {
+      $(id).hidden = false;
+      ok(katexErrors($(id)) === 0, "no TeX error in #" + id);
+    }
+    ok($("plot-e").querySelector(".main-svg"), "slope plot drawn");
+    $("e-presets").children[1].click();
+    ok(/k = 1|k=1/.test($("e-slope").textContent.replace(/\s/g, " ")) || /y = x \+ 1|y=x\+1/.test($("e-slope").textContent), "a = e → slope 1: " + $("e-slope").textContent.slice(0, 50));
+    ok($("plot-sl").querySelector(".main-svg") && $("plot-sl").layout.yaxis.type === "log", "semi-log plot on a log axis");
+    $("sl-log").checked = false; fire($("sl-log"), "input");
+    ok($("plot-sl").layout.yaxis.type !== "log", "linear axis when unchecked");
+    $("sl-log").checked = true; fire($("sl-log"), "input");
+    const n = $("plot-sl").data.length;
+    $("sl-curves").querySelector('input[value="e"]').click();
+    ok($("plot-sl").data.length === n + 1, "ticking e^x adds a curve");
+    const point = $("plot-slq").data[1];
+    $("slq-answer").value = String(point.y[0]); $("slq-form").requestSubmit();
+    ok($("slq-feedback").classList.contains("ok"), "reading quiz accepts the right value");
+    $("slq-answer").value = String(point.y[0] * 3); $("slq-form").requestSubmit();
+    ok($("slq-feedback").classList.contains("bad"), "reading quiz rejects a wrong value");
+    for (const id of ["derivees", "semi-log", "problemes", "equations"]) $(id).hidden = true;
+  });
+
   step("log converter", () => {
     const set = (a, x) => { $("log-a").value = a; $("log-x").value = x; fire($("log-x"), "input"); };
     set("2", "8"); ok(/3/.test($("log-result").textContent) && !$("log-result").classList.contains("warn"), "log₂ 8 = 3");
@@ -201,7 +241,7 @@ document.getElementById("f").addEventListener("load", () => {
 
   step("logarithms, log equations and pense-bête", () => {
     for (const id of ["logarithmes", "equations-log", "pense-bete"]) ok(katexErrors($(id)) === 0, "no TeX error in #" + id);
-    ok($("pense-bete").querySelectorAll(".cheat-card").length >= 8, "pense-bête cards");
+    ok($("pense-bete").querySelectorAll(".cheat-card").length >= 10, "pense-bête cards");
     ok(d.querySelector('[data-train="logEqRules"]') && d.querySelector('[data-train="logQuadratic"]'), "train buttons for the new log equations");
   });
 

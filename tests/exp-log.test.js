@@ -4,6 +4,7 @@ import { TYPES, LEVELS, generate, parseAnswer, checkAnswer, seeded, linTex } fro
 import { fr, add, mul, div, pow, fracTex, fracText } from "../shared/fraction.js";
 
 const RUNS = 300;
+const MULTI = ["quadratic", "logQuadratic", "expSquare", "expQuadE", "logSquareArg", "logMixed", "expCubic", "logCubic"];
 
 /** Every TeX string must have balanced braces; every hint/note an even number of $. */
 function assertWellFormed(ex, label) {
@@ -33,13 +34,25 @@ for (const [id, { gen }] of Object.entries(TYPES)) {
       assert.ok(ex.hints.length >= 2, `${label}: hints`);
       assert.ok(ex.steps.length >= 3, `${label}: steps`);
       assertWellFormed(ex, label);
+      if (ex.kind === "expr") {
+        assert.ok(ex.points.length >= 3, `${label}: points`);
+        for (const x of ex.points) {
+          const h = 1e-5, slope = (ex.f(x + h) - ex.f(x - h)) / (2 * h);
+          assert.ok(Math.abs(slope - ex.derivative(x)) <= 1e-4 * Math.max(1, Math.abs(slope)), `${label}: f'(${x})`);
+        }
+        assert.ok(checkAnswer(ex, ex.answer).ok, `${label}: own answer ${ex.answer} rejected`);
+        assert.ok(!checkAnswer(ex, "2x").ok, `${label}: wrong answer accepted`);
+        continue;
+      }
       for (const x of ex.solutions) {
         const [lhs, rhs] = ex.residual(x);
         const scale = Math.max(1, Math.abs(lhs), Math.abs(rhs));
         assert.ok(Math.abs(lhs - rhs) <= 1e-9 * scale, `${label}: x = ${x} gives ${lhs} ≠ ${rhs}`);
       }
-      if (!["quadratic", "logQuadratic"].includes(id)) assert.equal(ex.solutions.length, 1, label);
-      assert.ok(checkAnswer(ex, ex.solutions.join(" ; ")).ok, `${label}: own answer rejected`);
+      if (!MULTI.includes(id)) assert.equal(ex.solutions.length, 1, label);
+      const own = ex.solutions.length ? ex.solutions.map((v) => (ex.approx ? v.toFixed(ex.digits ?? 2) : v)).join(" ; ") : "∅";
+      assert.ok(checkAnswer(ex, own).ok, `${label}: own answer ${own} rejected`);
+      if (ex.text) assert.equal((ex.text.match(/\$/g) ?? []).length % 2, 0, `${label}: unpaired $ in ${ex.text}`);
     }
   });
 }
@@ -65,6 +78,8 @@ test("generate filters by type and by level", () => {
   }
   assert.equal(generate("logEval", rng).prompt, "Calcule");
   assert.equal(generate("direct", rng).prompt, "Résous l'équation");
+  assert.equal(generate("derivLog", rng).prompt, "Dérive");
+  assert.ok(generate("level:7", rng).text);
 });
 
 test("parseAnswer reads the usual ways of writing a solution", () => {
@@ -81,6 +96,12 @@ test("parseAnswer reads the usual ways of writing a solution", () => {
   assert.equal(parseAnswer(""), null);
   assert.equal(parseAnswer("deux"), null);
   assert.equal(parseAnswer("1/0"), null);
+  assert.deepEqual(parseAnswer("x = ln 1"), [0]);
+  assert.ok(Math.abs(parseAnswer("e/2")[0] - Math.E / 2) < 1e-12);
+  assert.deepEqual(parseAnswer("±3"), [-3, 3]);
+  assert.deepEqual(parseAnswer("1 250,50 €"), [1250.5]);
+  assert.deepEqual(parseAnswer("3,5 %"), [3.5]);
+  assert.equal(parseAnswer("x + 1"), null);
 });
 
 test("checkAnswer compares solution sets, in any order", () => {
@@ -94,6 +115,22 @@ test("checkAnswer compares solution sets, in any order", () => {
   assert.ok(checkAnswer(approx, "2,32").ok);
   assert.ok(!checkAnswer(approx, "2,3").ok);
   assert.ok(checkAnswer({ solutions: [], approx: false }, "impossible").ok);
+  const exact = { solutions: [Math.log(3)], approx: true };
+  assert.ok(checkAnswer(exact, "ln 3").ok);
+  assert.ok(checkAnswer(exact, "1,10").ok);
+  const count = { solutions: [1234.4], approx: true, digits: 0 };
+  assert.ok(checkAnswer(count, "1234").ok);
+  assert.ok(!checkAnswer(count, "1236").ok);
+});
+
+test("checkAnswer accepts any equivalent form of a derivative", () => {
+  const ex = { kind: "expr", points: [-1.3, 0.4, 2.2], derivative: (x) => 2 * x * Math.exp(x * x) };
+  assert.ok(checkAnswer(ex, "2x e^(x^2)").ok);
+  assert.ok(checkAnswer(ex, "f'(x) = e^(x²) * 2 * x").ok);
+  assert.ok(checkAnswer(ex, "2x exp(x^2)").ok);
+  assert.ok(!checkAnswer(ex, "e^(x^2)").ok);
+  assert.equal(checkAnswer(ex, "2x e^(").values, null);
+  assert.ok(checkAnswer(ex, "2xe^(x^2)").tex.includes("e"));
 });
 
 test("fractions stay reduced with a positive denominator", () => {
