@@ -80,7 +80,7 @@ exp-log/
                     (panneau pleine largeur sous la rangée de la méthode, un seul ouvert à la fois)
   exercises.js      générateur d'exercices (sans DOM) : énoncé, indices, étapes, solutions, lecture et correction
                     des réponses (valeurs, expressions avec ln/e, dérivées vérifiées numériquement)
-  trainer.js        carte d'exercice : indices, « Étape suivante », vérification de la réponse
+  trainer.js        carte d'exercice : indices, « Étape suivante », vérification de la réponse, barre collante
 tests/
   *.test.js         tests Node
   exp-log.browser.html  vérification de l'interface dans le navigateur

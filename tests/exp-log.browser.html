@@ -76,6 +76,37 @@ document.getElementById("f").addEventListener("load", () => {
     ok($("ex-feedback").textContent === "" && $("ex-steps").children.length === 0, "new exercise resets the card");
   });
 
+  step("sticky dock", () => {
+    const section = $("exercices"), wasHidden = section.hidden;
+    section.hidden = false;
+    $("ex-choice").value = "quadratic"; fire($("ex-choice"), "change");
+    ok($("ex-dock").hidden, "dock hidden while the card buttons are on screen");
+    ok($("dock-statement").querySelector(".katex"), "dock recalls the statement");
+    $("dock-step").click();
+    ok($("ex-steps").children.length === 1 && $("dock-step").textContent === $("ex-step").textContent, "dock step button adds a step and mirrors the label");
+    $("dock-hint").click();
+    ok($("ex-hints").children.length === 1 && $("dock-hint").textContent === $("ex-hint").textContent, "dock hint button adds a hint");
+    $("dock-answer").value = "abc"; fire($("dock-answer"), "input");
+    ok($("ex-answer").value === "abc", "dock answer copied to the card");
+    $("dock-form").requestSubmit();
+    ok($("ex-feedback").classList.contains("warn") && $("dock-feedback").classList.contains("warn"), "dock answer checked, feedback in both places");
+    $("dock-all").click();
+    ok($("dock-all").hidden && $("dock-step").disabled, "dock 'Tout afficher' reveals everything");
+    for (let i = 0; i < 40; i++) d.querySelector("#ex-steps").append(d.createElement("li")); // long enough to scroll
+    const helpers = d.querySelector("#exercise .helpers");
+    w.scrollTo(0, helpers.getBoundingClientRect().bottom + w.scrollY + 50);
+    w.dispatchEvent(new w.Event("scroll"));
+    ok(!$("ex-dock").hidden, "dock shown once the card buttons scroll off");
+    const dock = d.querySelector(".ex-dock-anchor").getBoundingClientRect(), bar = d.querySelector(".chapters").getBoundingClientRect(); // anchor: the dock itself slides in
+    ok(Math.abs(dock.top - bar.bottom) < 2, "dock sits under the chapter bar (" + Math.round(dock.top) + " / " + Math.round(bar.bottom) + ")");
+    w.scrollTo(0, 0); w.dispatchEvent(new w.Event("scroll"));
+    ok($("ex-dock").hidden, "dock hidden again at the top");
+    $("ex-new").click();
+    ok($("dock-answer").value === "" && $("dock-feedback").textContent === "", "new exercise resets the dock");
+    section.hidden = wasHidden;
+    w.dispatchEvent(new w.Event("scroll"));
+  });
+
   step("calculator", () => {
     const calc = $("calc"), input = calc.querySelector(".calc-input"), result = calc.querySelector(".calc-result");
     const key = (label) => [...calc.querySelectorAll(".calc-keys button")].find((b) => b.textContent === label);

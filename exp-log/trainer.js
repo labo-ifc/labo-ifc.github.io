@@ -61,6 +61,11 @@ export function initTrainer() {
     $("ex-step").disabled = done;
     $("ex-all").hidden = done;
     $("ex-new").classList.toggle("pulse", done || state.solved);
+    // The sticky dock mirrors the card buttons.
+    for (const name of ["hint", "step", "all"]) {
+      const from = $(`ex-${name}`), to = $(`dock-${name}`);
+      Object.assign(to, { textContent: from.textContent, disabled: from.disabled, hidden: from.hidden });
+    }
   }
 
   function updateScore() {
@@ -68,9 +73,10 @@ export function initTrainer() {
   }
 
   function feedback(kind, text) {
-    const el = $("ex-feedback");
-    el.className = `feedback ${kind}`;
-    renderMixed(el, text);
+    for (const el of [$("ex-feedback"), $("dock-feedback")]) {
+      el.className = `feedback ${kind}`;
+      renderMixed(el, text);
+    }
   }
 
   function newExercise({ focus = true } = {}) {
@@ -81,10 +87,11 @@ export function initTrainer() {
     $("ex-statement").classList.toggle("text", Boolean(ex.text));
     if (ex.text) renderMixed($("ex-statement"), ex.text);
     else renderTex($("ex-statement"), ex.statement, true);
-    $("ex-answer").value = "";
+    if (ex.text) renderMixed($("dock-statement"), ex.text);
+    else renderTex($("dock-statement"), ex.statement);
     $("ex-answer").placeholder = placeholder(ex);
-    $("ex-feedback").textContent = "";
-    $("ex-feedback").className = "feedback";
+    for (const id of ["ex-answer", "dock-answer"]) $(id).value = "";
+    for (const id of ["ex-feedback", "dock-feedback"]) Object.assign($(id), { textContent: "", className: "feedback" });
     $("ex-hints").replaceChildren();
     $("ex-steps").replaceChildren();
     updateButtons();
@@ -133,6 +140,7 @@ export function initTrainer() {
     const li = document.createElement("li");
     renderMixed(li, ex.hints[state.hints++]);
     $("ex-hints").append(li);
+    li.scrollIntoView({ block: "nearest", behavior: "smooth" });
     updateButtons();
   }
 
@@ -149,13 +157,46 @@ export function initTrainer() {
     updateButtons();
   }
 
+  // Sticky dock: shown once the card buttons have scrolled off the top,
+  // while the card is still on screen.
+  const root = document.documentElement;
+  const chapterBar = document.querySelector(".chapters");
+  function placeDock() {
+    const top = chapterBar.offsetHeight;
+    const helpers = document.querySelector("#exercise .helpers").getBoundingClientRect();
+    const card = $("exercise").getBoundingClientRect();
+    const show = helpers.bottom < top && card.bottom > top + 120;
+    $("ex-dock").hidden = !show;
+    $("exercices").classList.toggle("docked", show);
+  }
+  new ResizeObserver(() => {
+    root.style.setProperty("--chapters-h", `${chapterBar.offsetHeight}px`);
+    root.style.setProperty("--dock-h", `${$("ex-dock").offsetHeight}px`);
+    placeDock();
+  }).observe(chapterBar);
+  new ResizeObserver(() => {
+    if (!$("ex-dock").hidden) root.style.setProperty("--dock-h", `${$("ex-dock").offsetHeight}px`);
+  }).observe($("ex-dock"));
+  addEventListener("scroll", placeDock, { passive: true });
+  addEventListener("resize", placeDock);
+  addEventListener("hashchange", placeDock);
+
+  // Both answer fields hold the same text.
+  for (const [a, b] of [["ex-answer", "dock-answer"], ["dock-answer", "ex-answer"]]) {
+    $(a).addEventListener("input", () => { $(b).value = $(a).value; });
+  }
+
   fillChoices($("ex-choice"));
   $("ex-choice").addEventListener("change", () => newExercise());
   $("ex-new").addEventListener("click", () => newExercise());
   $("ex-form").addEventListener("submit", check);
+  $("dock-form").addEventListener("submit", check);
   $("ex-hint").addEventListener("click", showHint);
   $("ex-step").addEventListener("click", showStep);
   $("ex-all").addEventListener("click", showAll);
+  $("dock-hint").addEventListener("click", showHint);
+  $("dock-step").addEventListener("click", showStep);
+  $("dock-all").addEventListener("click", showAll);
   newExercise({ focus: false });
 
   return {

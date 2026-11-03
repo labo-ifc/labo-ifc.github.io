@@ -292,6 +292,28 @@ kbd { font-family: var(--mono); font-size: 0.85em; padding: 1px 5px; border: 1px
 .step-note { margin: 0; color: var(--muted); font-size: 0.92em; line-height: 1.7; }
 @keyframes appear { from { opacity: 0; transform: translateY(-4px); } }
 @media (prefers-reduced-motion: reduce) { .steps li { animation: none; } }
+.hints li, .steps li { scroll-margin-top: calc(var(--chapters-h, 0px) + var(--dock-h, 0px) + 16px); }
+
+/* Sticky dock: statement, answer and helpers stay at hand while reading the steps */
+.ex-dock-anchor { position: sticky; top: var(--chapters-h, 0px); height: 0; z-index: 1; }
+.ex-dock {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 8px 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.12);
+  animation: appear 0.2s ease-out;
+}
+.ex-dock[hidden] { display: none; }
+.dock-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.dock-statement { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.dock-form { display: flex; gap: 8px; flex: 0 1 22em; min-width: 0; }
+#dock-answer { flex: 1; min-width: 0; }
+.ex-dock .feedback { flex: 1; min-width: 0; margin: 0; min-height: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 0.9em; }
+@media (prefers-reduced-motion: reduce) { .ex-dock { animation: none; } }
 
 @media (max-width: 900px) {
   .chapter { padding: 20px 16px; }
@@ -311,6 +333,16 @@ kbd { font-family: var(--mono); font-size: 0.85em; padding: 1px 5px; border: 1px
   .example-panel { padding: 14px 14px 16px; }
   .example-panel .steps li { grid-template-columns: 1.8em minmax(0, 1fr); column-gap: 10px; }
   .example-panel .step-note { grid-column: 2; }
+  /* On phones the dock sits at the bottom of the screen, under the thumb */
+  .ex-dock-anchor { position: static; }
+  .ex-dock { position: fixed; top: auto; bottom: 0; border-radius: 10px 10px 0 0; border-bottom: 0; padding: 8px 16px; }
+  .dock-statement { display: none; }
+  .dock-form { flex: 1; }
+  .ex-dock .dock-row:last-child { overflow-x: auto; }
+  .ex-dock .dock-row:last-child button { flex: 0 0 auto; }
+  .ex-dock .feedback { display: none; }
+  .chapter.docked { padding-bottom: calc(var(--dock-h, 0px) + 20px); }
+  .hints li, .steps li { scroll-margin: 16px 0 calc(var(--dock-h, 0px) + 16px); }
 }
 
 /* Printing shows only the chapter on screen, in black on white (the pense-bête fits on one or two pages). */
@@ -321,7 +353,7 @@ kbd { font-family: var(--mono); font-size: 0.85em; padding: 1px 5px; border: 1px
     color-scheme: light;
   }
   body { font-size: 11px; }
-  .topbar, .chapters, .pager, .chapter button { display: none !important; }
+  .topbar, .chapters, .pager, .chapter button, .ex-dock { display: none !important; }
   .course { padding: 0; max-width: none; }
   .chapter { padding: 0; border: 0; box-shadow: none; }
   .cheat { grid-template-columns: 1fr 1fr; gap: 8px; }

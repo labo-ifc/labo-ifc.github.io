@@ -700,6 +700,23 @@
               <button type="button" id="ex-step" class="ghost">Étape suivante</button>
               <button type="button" id="ex-all" class="ghost link">Tout afficher</button>
             </div>
+            <div class="ex-dock-anchor">
+              <div id="ex-dock" class="ex-dock" hidden aria-label="Commandes de l'exercice">
+                <div class="dock-row">
+                  <span id="dock-statement" class="dock-statement"></span>
+                  <form id="dock-form" class="dock-form" autocomplete="off">
+                    <input id="dock-answer" class="text-input" type="text" spellcheck="false" placeholder="Ta réponse" aria-label="Ta réponse">
+                    <button type="submit" class="primary">Vérifier</button>
+                  </form>
+                </div>
+                <div class="dock-row">
+                  <button type="button" id="dock-hint" class="ghost">Indice</button>
+                  <button type="button" id="dock-step" class="ghost">Étape suivante</button>
+                  <button type="button" id="dock-all" class="ghost link">Tout afficher</button>
+                  <p id="dock-feedback" class="feedback" aria-hidden="true"></p>
+                </div>
+              </div>
+            </div>
             <ol id="ex-hints" class="hints"></ol>
             <ol id="ex-steps" class="steps"></ol>
           </div>

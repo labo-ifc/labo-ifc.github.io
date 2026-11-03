@@ -74,6 +74,7 @@ function initExerciseCalculator() {
     onUse(text) {
       if (trainer.exercise.approx) text = Number(text.replace(",", ".")).toFixed(trainer.exercise.digits ?? 2).replace(".", ",");
       answer.value = /;\s*$/.test(answer.value) ? `${answer.value.trimEnd()} ${text}` : text;
+      answer.dispatchEvent(new Event("input")); // copied to the sticky dock
       answer.focus({ preventScroll: true });
     },
   });
