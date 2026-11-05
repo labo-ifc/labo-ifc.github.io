@@ -31,7 +31,7 @@ for (const [id, { gen }] of Object.entries(TYPES)) {
       const ex = { prompt: "", approx: false, ...gen(seeded(seed)) };
       const label = `${id} #${seed} (${ex.statement})`;
       assert.equal(ex.type, id);
-      assert.ok(ex.hints.length >= 2, `${label}: hints`);
+      assert.ok(ex.hints.length === 3, `${label}: hints`);
       assert.ok(ex.steps.length >= 3, `${label}: steps`);
       assertWellFormed(ex, label);
       if (ex.kind === "expr") {

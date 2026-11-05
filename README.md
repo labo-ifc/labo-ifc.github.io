@@ -51,6 +51,10 @@ La partie mathématique n'a aucune dépendance et se teste avec Node ≥ 20 :
 node --test
 ```
 
+Pour les exercices de `exp-log/`, `tests/exp-log.steps.test.js` vérifie numériquement chaque étape de
+2000 corrigés par type (chaque égalité aux solutions, Δ, Horner, ensemble final, aucune racine oubliée)
+ainsi que les trois indices, qui ne doivent jamais donner la réponse.
+
 L'interface de `exp-log/` se vérifie dans le navigateur : avec le serveur local lancé,
 ouvrir http://localhost:8000/tests/exp-log.browser.html (toutes les lignes doivent être vertes).
 
@@ -83,6 +87,7 @@ exp-log/
   trainer.js        carte d'exercice : indices, « Étape suivante », vérification de la réponse, barre collante
 tests/
   *.test.js         tests Node
+  tex-eval.js       évaluateur numérique du TeX des corrigés (utilisé par exp-log.steps.test.js)
   exp-log.browser.html  vérification de l'interface dans le navigateur
 ```
 

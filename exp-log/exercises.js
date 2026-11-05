@@ -67,6 +67,7 @@ function genDirect(rng) {
   const nudge =
     k < 0 ? "Un nombre entre 0 et 1 s'écrit avec un exposant négatif : $a^{-n} = \\frac{1}{a^n}$."
     : k === 0 ? "Que vaut n'importe quel nombre non nul élevé à la puissance 0 ?"
+    : k === 1 ? "Le membre de droite est la base elle-même : à quelle puissance est-elle élevée ?"
     : `Multiplie $${a}$ par lui-même jusqu'à obtenir $${rhsTex}$ : combien de facteurs faut-il ?`;
   return {
     type: "direct",
@@ -358,7 +359,7 @@ function genQuadratic(rng) {
 
 const logTex = (a) => (a === 10 ? "\\log" : a === "e" ? "\\ln" : `\\log_{${a}}`);
 /** log² x is written \log^2 x (base 10) or \log_2^2 x. */
-const logPowTex = (a, n) => (n === 1 ? logTex(a) : a === 10 ? `\\log^{${n}}` : `\\log_{${a}}^{${n}}`);
+const logPowTex = (a, n) => (n === 1 ? logTex(a) : a === 10 ? `\\log^{${n}}` : a === "e" ? `\\ln^{${n}}` : `\\log_{${a}}^{${n}}`);
 
 /** x^2 + Bx + C, terms with a zero coefficient left out. */
 const quadTex = (B, C, v = "x") => `${v}^2${B ? monoTex(B, v) : ""}${C ? monoTex(C, "") : ""}`;
@@ -454,7 +455,9 @@ function genLogEq(rng) {
     statement: `${logTex(a)}(${lin}) = ${k}`,
     hints: [
       `Commence par la condition d'existence : $${lin} > 0$.`,
-      `Par définition, $\\log_a A = k \\Leftrightarrow A = a^k$ : ici $${lin} = ${a}^{${k}}$.`,
+      lin === "x"
+        ? "Par définition, $\\log_a A = k \\Leftrightarrow A = a^k$ : réécris l'équation sans logarithme."
+        : `Par définition, $\\log_a A = k \\Leftrightarrow A = a^k$ : ici $${lin} = ${a}^{${k}}$.`,
       "Résous l'équation du premier degré, puis vérifie la condition d'existence.",
     ],
     steps,
@@ -723,7 +726,7 @@ function genExpIsolate(rng) {
     type: "expIsolate",
     statement,
     hints: [
-      `Isole d'abord $e^{${e}}$ : ${c ? `enlève $${c}$, puis ` : ""}divise par $${m}$.`,
+      `Isole d'abord $e^{${e}}$ : ${c ? `${c > 0 ? "soustrais" : "ajoute"} $${Math.abs(c)}$, puis ` : ""}divise par $${m}$.`,
       "Applique $\\ln$ aux deux membres : $\\ln e^y = y$.",
       "Il reste une équation du premier degré. Donne la valeur exacte (avec $\\ln$) ou arrondie au centième.",
     ],
@@ -886,7 +889,7 @@ function genLogSquareArg(rng) {
     hints: [
       `C.E. : $${arg} > 0$. Un carré n'est jamais négatif : il suffit qu'il ne soit pas nul.`,
       `Par définition, $${arg} = ${a}^{${k}}$.`,
-      `Un carré égal à $${m * m}$ : il y a deux possibilités, $${m}$ et $-${m}$.`,
+      `Un carré égal à $${m * m}$ : il y a deux possibilités, une positive et une négative.`,
     ],
     steps,
     solutions: [s1, s2],
@@ -1245,6 +1248,17 @@ const nice = (v) => {
   return Math.round(v / e) * e;
 };
 
+const gcd = (p, q) => (q ? gcd(q, p % q) : p);
+
+/** N / m written exactly: a decimal when it has at most 6 decimals, otherwise the reduced fraction. */
+function ratioTex(N, m, asArg = false) {
+  const r = N / m;
+  if (Number(r.toFixed(6)) === r) return nTex(r, 6);
+  const g = Number.isInteger(N) && Number.isInteger(m) ? gcd(N, m) : 1;
+  const tex = `\\frac{${nTex(N / g, 6)}}{${nTex(m / g, 6)}}`;
+  return asArg ? `\\left(${tex}\\right)` : tex;
+}
+
 // Growth by a factor per period: f(t) = m · factor^(t/T).
 const GROWTH = [
   { m: [500, 1000, 2000, 4000, 8000], factor: 2, T: [3, 4, 5, 6, 8], unit: "heures", what: "bactéries", count: true,
@@ -1303,13 +1317,12 @@ function genGrowth(rng) {
   // Time to reach a target value.
   const tStar = (T > 1 ? T : 5) * (1.3 + 2.4 * rng());
   const N = nice(model(tStar));
-  const ratio = N / m;
-  const t = (T * Math.log(ratio)) / Math.log(f);
+  const t = (T * Math.log(N / m)) / Math.log(f);
   steps.push(
     step(`${nTex(m)} \\cdot ${factorTex(f)}^{${expoT(T)}} = ${nTex(N)}`, "On cherche $t$ tel que $f(t)$ atteigne la valeur demandée."),
-    step(`${factorTex(f)}^{${expoT(T)}} = ${nTex(ratio, 6)}`, `On divise par $${nTex(m)}$ : l'exponentielle est isolée.`),
-    step(`${expoT(T)} \\cdot \\log ${factorTex(f)} = \\log ${nTex(ratio, 6)}`, "On applique $\\log$ aux deux membres : $\\log a^y = y \\log a$."),
-    step(`t = \\frac{${T === 1 ? "" : `${T} \\cdot `}\\log ${nTex(ratio, 6)}}{\\log ${factorTex(f)}} \\approx ${nTex(t, 2)}`, `On isole $t$. Réponse : environ $${nTex(t, 2)}$ ${sc.unit}.`),
+    step(`${factorTex(f)}^{${expoT(T)}} = ${ratioTex(N, m)}`, `On divise par $${nTex(m)}$ : l'exponentielle est isolée.`),
+    step(`${expoT(T)} \\cdot \\log ${factorTex(f)} = \\log ${ratioTex(N, m, true)}`, "On applique $\\log$ aux deux membres : $\\log a^y = y \\log a$."),
+    step(`t = \\frac{${T === 1 ? "" : `${T} \\cdot `}\\log ${ratioTex(N, m, true)}}{\\log ${factorTex(f)}} \\approx ${nTex(t, 2)}`, `On isole $t$. Réponse : environ $${nTex(t, 2)}$ ${sc.unit}.`),
   );
   return {
     type: "growth",
@@ -1390,8 +1403,7 @@ function genInterest(rng) {
     };
   }
   const target = kind === "double" ? 2 * C0 : nice(model(pick(rng, [6, 9, 11, 14])));
-  const ratio = target / C0;
-  const t = Math.log(ratio) / Math.log(a);
+  const t = Math.log(target / C0) / Math.log(a);
   return {
     ...base,
     text: kind === "double"
@@ -1402,9 +1414,9 @@ function genInterest(rng) {
     steps: [
       first,
       step(`${nTex(C0)} \\cdot ${aTex}^{t} = ${nTex(target)}`, kind === "double" ? "Doubler, c'est atteindre $2 C_0$." : "On cherche $t$ tel que $C(t)$ atteigne le montant demandé."),
-      step(`${aTex}^{t} = ${nTex(ratio, 6)}`, `On divise par $${nTex(C0)}$.`),
-      step(`t \\cdot \\log ${aTex} = \\log ${nTex(ratio, 6)}`, "On applique $\\log$ aux deux membres."),
-      step(`t = \\frac{\\log ${nTex(ratio, 6)}}{\\log ${aTex}} \\approx ${nTex(t)}`, `Environ $${nTex(t)}$ ans, soit $${Math.floor(t)}$ ans et $${Math.min(11, Math.round((t - Math.floor(t)) * 12))}$ mois.`),
+      step(`${aTex}^{t} = ${ratioTex(target, C0)}`, `On divise par $${nTex(C0)}$.`),
+      step(`t \\cdot \\log ${aTex} = \\log ${ratioTex(target, C0, true)}`, "On applique $\\log$ aux deux membres."),
+      step(`t = \\frac{\\log ${ratioTex(target, C0, true)}}{\\log ${aTex}} \\approx ${nTex(t)}`, `Environ $${nTex(t)}$ ans, soit $${Math.floor(Math.round(t * 12) / 12)}$ ans et $${Math.round(t * 12) % 12}$ mois.`),
     ],
     solutions: [t],
     residual: (x) => [model(x), target],

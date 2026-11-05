@@ -123,6 +123,10 @@
 }
 .lab-controls { display: flex; flex-direction: column; gap: 12px; }
 .plot { width: 100%; height: 380px; background: var(--bg); border-radius: 8px; }
+/* Ch. 3: the value table sits right under the slider and plot, both visible while sliding */
+#plot-exp { height: 320px; }
+.lab:has(+ .exp-table-wrap) { margin-bottom: 0; }
+.exp-table-wrap { margin-bottom: 24px; }
 .lab-note { margin: 0; color: var(--muted); }
 .lab-note strong { color: var(--accent); }
 .sl-curves { display: flex; flex-wrap: wrap; gap: 6px 16px; }

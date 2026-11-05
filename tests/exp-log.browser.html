@@ -38,6 +38,7 @@ document.getElementById("f").addEventListener("load", () => {
     ok($("plot-exp").querySelector(".main-svg"), "exponential plot drawn");
     ok($("chessboard").children.length === 64, "chessboard has 64 cells");
     ok($("exp-table").rows.length === 2 && $("exp-table").rows[0].cells.length === 8, "value table 2×8");
+    ok($("exp-table").closest(".table-wrap").previousElementSibling?.classList.contains("lab"), "value table right under the slider and plot");
     ok($("ex-statement").querySelector(".katex"), "first exercise rendered");
     ok($("ex-choice").options.length === 33, "33 exercise choices (" + $("ex-choice").options.length + ")");
   });

@@ -20,8 +20,11 @@ Site statique d'outils de maths interactifs (cours de secondaire, en français).
 - Méthodes : cartes `.method` dans une grille `.methods`, avec un `.method-actions` (« Voir un exemple » `data-example="<type>"`, « S'entraîner » `data-train="<choix>"`).
 - Exemples résolus : générés par `TYPES[type].gen(seeded(11))` (même exemple à chaque fois), affichés dans un **panneau pleine largeur** sous la rangée de la carte (`initExamples` dans `lessons.js`), étapes en grille calcul à gauche / commentaire à droite. Préférer ce type de présentation aux menus `<details>` dans des colonnes étroites, jugés trop chargés.
 - Exercices : barre collante `#ex-dock` (rappel de l'énoncé, réponse, Indice / Étape suivante / Tout afficher), affichée quand les boutons de la carte sortent de l'écran par le haut ; sous la barre des chapitres sur ordinateur, en bas de l'écran sur téléphone. Elle reflète la carte via `updateButtons` / `feedback` dans `trainer.js` : tout nouveau bouton d'aide doit y être ajouté aussi.
+- Chapitre 3 : le tableau `#exp-table` suit directement le bloc curseur + graphique (graphique réduit à 320px) pour voir les valeurs en déplaçant le curseur.
 - Tableaux de valeurs pilotés par un curseur : classe `.fixed-table` (colonnes égales, hauteur fixe) pour que seules les valeurs changent, jamais la taille des cases.
 - Nouveau type d'exercice : l'ajouter à `TYPES` dans `exercises.js` (énoncé, indices, étapes `{ tex, note }`, solutions, `residual`) ; les tests Node le vérifient automatiquement.
+  - **Exactement 3 indices**, aucun ne donne la réponse (ni `S = `, ni `$x = <solution>$`).
+  - `tests/exp-log.steps.test.js` doit passer : chaque égalité d'étape est évaluée aux solutions par `tests/tex-eval.js` (`=` exact, `\approx` à l'arrondi affiché). Jamais de valeur arrondie après un `=` (écrire la fraction exacte) ; une notation TeX nouvelle doit être ajoutée à l'évaluateur.
   - `kind: "expr"` (dérivées) : la réponse est une expression en x, comparée numériquement à `derivative` sur `points` ; toute forme équivalente est acceptée.
   - `text` : énoncé en mots (problèmes) affiché à la place de l'équation ; `digits` : arrondi demandé (2 par défaut).
   - Réponses lues par `parseAnswer` via `shared/calc.js` : valeur exacte (`ln(5)/2`, `e^3`…) ou arrondie, tolérance 0,6·10^-digits.
