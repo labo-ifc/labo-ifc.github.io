@@ -30,7 +30,7 @@ Site statique d'outils de maths interactifs (cours de secondaire, en français).
 
 ## sinusoides
 
-- Cercle trigonométrique (case « Cercle trigonométrique », décochée au chargement) : rayon 1, centre (0 ; 0), superposé au graphique ; quand il est visible, l'axe des y est verrouillé à la même échelle que x (`scaleanchor`) pour qu'il reste rond. Couleur : variable `--circle`.
+- Cercle trigonométrique (case « Cercle trigonométrique », décochée au chargement) : rayon 1, centre (0 ; 0), superposé au graphique ; quand il est visible, le cadrage s'adapte (`circleView`) : y couvre le cercle et la courbe (min(−1 ; D−A) à max(1 ; D+A) + marge), x en découle à unités égales (`scaleanchor`) pour qu'il reste rond, recalculé au redimensionnement ; le curseur Position x et la lecture restent dans cette fenêtre. Couleur : variable `--circle`.
 - Point du cercle à l'angle θ = ωx − φ (`circlePoint` dans `model.js`) pour la position `state.x0` (flottant, le pas du curseur bloquerait l'animation) ; lecture ▶ : θ avance de π/2 par seconde, désactivée si `prefers-reduced-motion`.
 - En saisie libre, le cercle utilise l'ajustement (mis en cache par expression) et `#circle-note` explique pourquoi il manque (pas d'expression, expression invalide, ajustement impossible ou R² < 0,99).
 

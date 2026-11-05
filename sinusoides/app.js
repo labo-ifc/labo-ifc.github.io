@@ -91,7 +91,31 @@ function circleStatus({ params, fit }) {
         "la courbe n'est pas de la forme A·sin(ωx − φ) + D, elle ne se lit donc pas sur le cercle." };
     }
   }
-  return { params, point: circlePoint(params, state.x0) };
+  const view = circleView(params);
+  // Keep the point on screen: the position slider is limited to the window.
+  state.x0 = Math.min(Math.max(state.x0, view.x[0]), view.x[1]);
+  const key = view.x.concat(view.y).map((v) => v.toFixed(2)).join(",");
+  if (key !== state.circleKey) {
+    state.circleKey = key;
+    state.view = [...view.x];
+    Object.assign($("x0"), { min: view.x[0], max: view.x[1] });
+    $("x0").value = state.x0;
+  }
+  return { params, view, key, point: circlePoint(params, state.x0) };
+}
+
+/**
+ * Window used while the circle is shown: y spans the circle and the curve
+ * (with a margin), x follows so that units are equal and the circle is round.
+ */
+function circleView({ A, D }) {
+  const lo = Math.min(-1, D - A), hi = Math.max(1, D + A);
+  const m = 0.12 * (hi - lo);
+  const y = [lo - m, hi + m];
+  const fl = $("plot")._fullLayout;
+  const ratio = fl?.xaxis?._length && fl?.yaxis?._length ? fl.xaxis._length / fl.yaxis._length : 1.6;
+  const half = Math.min(((y[1] - y[0]) / 2) * ratio, X_RANGE[1]);
+  return { x: [-half, half], y };
 }
 
 /** Shapes, labels and traces of the unit circle, the angle θ and the matching point of the curve. */
@@ -182,21 +206,22 @@ function renderPlot({ ys, params, fit }, circle) {
   const showCircle = Boolean(circle?.point);
   if (showCircle) circleLayers(circle, c, shapes, annotations, traces);
 
-  const xaxis = axis(c, { range: X_RANGE, title: { text: $("axis").value === "radians" ? "x (rad)" : "x" } });
+  const xaxis = axis(c, { range: showCircle ? circle.view.x : X_RANGE, title: { text: $("axis").value === "radians" ? "x (rad)" : "x" } });
   if ($("axis").value === "radians") {
     const { values, labels } = piTicks(...state.view);
     Object.assign(xaxis, { tickmode: "array", tickvals: values, ticktext: labels });
   }
-  // Equal units with the circle: Plotly widens the y range around 0 to match x.
+  // Equal units with the circle (scaleanchor corrects any rounding of the window).
   const yaxis = axis(c, {
     title: { text: "y" },
-    ...(showCircle ? { range: [-1, 1], scaleanchor: "x", scaleratio: 1 }
+    ...(showCircle ? { range: circle.view.y, scaleanchor: "x", scaleratio: 1 }
       : state.mode === "sliders" ? { range: Y_RANGE_SLIDERS } : { autorange: true }),
   });
 
   Plotly.react("plot", traces, layout(c, {
     xaxis, yaxis, shapes, annotations,
-    uirevision: `${state.mode}-${showCircle}`, // keep the user's zoom across updates, reset it when switching mode
+    // Keep the user's zoom across updates; reset it when the mode or the circle window changes.
+    uirevision: `${state.mode}-${showCircle ? circle.key : ""}`,
   }), PLOT_CONFIG);
 }
 
@@ -263,7 +288,10 @@ function update() {
   $("x0-out").textContent = fmt(state.x0);
   const result = compute();
   const circle = circleStatus(result);
-  if (!circle?.point) stopPlaying();
+  if (!circle?.point) {
+    stopPlaying();
+    if (state.circleKey) { state.circleKey = null; state.view = [...X_RANGE]; }
+  }
   $("circle-note").textContent = circle?.reason ?? "";
   $("circle-play").disabled = reducedMotion.matches || !circle?.point;
   renderPlot(result, circle);
@@ -279,7 +307,8 @@ function tick(now) {
   const dt = Math.min((now - last) / 1000, 0.1);
   last = now;
   let x = state.x0 + (dt * Math.PI) / (2 * omega);
-  if (x > X_RANGE[1]) x = X_RANGE[0];
+  const [lo, hi] = [Number($("x0").min), Number($("x0").max)];
+  if (x > hi) x = lo;
   state.x0 = x;
   $("x0").value = x;
   update();
@@ -310,6 +339,7 @@ function setExpression(text) {
 
 function setMode(mode) {
   state.mode = mode;
+  state.circleKey = null;
   state.view = [...X_RANGE];
   for (const btn of document.querySelectorAll(".tabs button")) {
     btn.setAttribute("aria-selected", String(btn.dataset.mode === mode));
@@ -358,7 +388,10 @@ for (const chip of document.querySelectorAll("[data-expr]")) {
 
 $("show-circle").addEventListener("change", () => {
   $("circle-controls").hidden = !$("show-circle").checked;
+  state.circleKey = null;
+  if (!$("show-circle").checked) state.view = [...X_RANGE];
 });
+
 $("x0").addEventListener("input", () => {
   stopPlaying();
   state.x0 = Number($("x0").value);
@@ -383,6 +416,8 @@ update();
 
 // Re-label π ticks when the user zooms or pans.
 $("plot").on("plotly_relayout", (e) => {
+  // Responsive resize: the circle window depends on the plot's aspect ratio.
+  if (e.autosize && $("show-circle").checked) { state.circleKey = null; scheduleUpdate(); return; }
   if (e["xaxis.autorange"]) state.view = [...X_RANGE];
   else if ("xaxis.range[0]" in e) state.view = [e["xaxis.range[0]"], e["xaxis.range[1]"]];
   else if (Array.isArray(e["xaxis.range"])) state.view = [...e["xaxis.range"]];
