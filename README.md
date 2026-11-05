@@ -5,7 +5,7 @@ Site : https://labo-maths.github.io
 
 | Outil | Dossier |
 |---|---|
-| Fonctions sinusoïdales : `y = A·sin(ωx − φ) + D`, curseurs, saisie libre, ajustement automatique | [`sinusoides/`](sinusoides/) |
+| Fonctions sinusoïdales : `y = A·sin(ωx − φ) + D`, curseurs, saisie libre, ajustement automatique, cercle trigonométrique animé | [`sinusoides/`](sinusoides/) |
 | Exponentielles et logarithmes : fonctions réciproques, `aˣ`, logarithmes, équations exponentielles et logarithmiques (avec exposants, troisième degré, changement de base), le nombre e et les dérivées, graphiques semi-log, problèmes de croissance et d'intérêts, pense-bête imprimable, générateur d'exercices avec indices, résolution pas à pas et calculatrice | [`exp-log/`](exp-log/) |
 
 ## Services
@@ -72,7 +72,7 @@ shared/
   calculator.js/.css  widget calculatrice (écran de taille fixe, aperçu TeX, clavier, historique, Rép)
 sinusoides/
   index.html, style.css, app.js
-  model.js          évaluation et ajustement d'une sinusoïde
+  model.js          évaluation et ajustement d'une sinusoïde, point du cercle trigonométrique (θ = ωx − φ)
 exp-log/
   index.html, style.css, app.js
   lessons.js        laboratoires interactifs du cours (réciproques, échiquier, aˣ, logarithmes, tangente de aˣ, semi-log,

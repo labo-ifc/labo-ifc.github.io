@@ -75,6 +75,16 @@
         <label class="check"><input type="checkbox" id="show-midline" checked> Ligne médiane <span data-tex="y = D"></span></label>
         <label class="check"><input type="checkbox" id="show-bounds" checked> Bornes <span data-tex="D \pm A"></span></label>
         <label class="check"><input type="checkbox" id="show-period" checked> Pic et période <span data-tex="T"></span></label>
+        <label class="check"><input type="checkbox" id="show-circle"> Cercle trigonométrique</label>
+        <div id="circle-controls" class="circle-controls" hidden>
+          <div class="slider">
+            <label for="x0">Position <span data-tex="x"></span></label>
+            <output for="x0" id="x0-out"></output>
+            <input type="range" id="x0" min="-10" max="10" step="0.01" value="0">
+          </div>
+          <button id="circle-play" class="ghost" type="button" aria-pressed="false">▶ Lecture</button>
+          <p id="circle-note" class="note warn" role="status"></p>
+        </div>
       </fieldset>
     </aside>
 
@@ -87,6 +97,7 @@
         <h2 id="results-title">Formule</h2>
         <p id="formula" class="formula"></p>
         <p id="formula-cos" class="formula secondary"></p>
+        <p id="circle-calc" class="formula secondary circle-calc"></p>
         <dl id="values" class="values"></dl>
         <p id="fit-note" class="note" role="status"></p>
       </div>

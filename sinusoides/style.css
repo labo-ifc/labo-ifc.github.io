@@ -48,3 +48,8 @@
   .layout { grid-template-columns: 1fr; padding: 12px 16px; }
   #plot { height: 55vh; }
 }
+
+/* Unit circle */
+.circle-controls { padding: 8px 0 0 26px; }
+.circle-controls .slider { margin-bottom: 8px; }
+.circle-calc:empty { display: none; }

@@ -78,3 +78,17 @@ test("piTicks stays readable at every zoom level", () => {
   }
   assert.deepEqual(piTicks(-4, 4).labels, ["−π", "−π/2", "0", "π/2", "π"]);
 });
+
+test("circlePoint reduces θ = ωx − φ to [0, 2π) and matches the curve", async () => {
+  const { circlePoint } = await import("../sinusoides/model.js");
+  const p = { A: 2.5, omega: 3, phi: -1.2, D: 0.7 };
+  for (const x of [-9.3, -1, 0, 0.4, 7.77]) {
+    const c = circlePoint(p, x);
+    assert.ok(c.theta >= 0 && c.theta < 2 * Math.PI);
+    close(Math.cos(c.theta), c.cos, 1e-9);
+    close(Math.sin(c.theta), c.sin, 1e-9);
+    close(c.cos ** 2 + c.sin ** 2, 1, 1e-12);
+    close(c.y, evaluateSinusoid(p, [x])[0], 1e-9);
+  }
+  close(circlePoint({ A: 1, omega: 1, phi: 0, D: 0 }, -Math.PI / 2).theta, 3 * Math.PI / 2);
+});

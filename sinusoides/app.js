@@ -2,7 +2,7 @@
 // math.js, KaTeX and Plotly are loaded as globals by index.html.
 /* global math, Plotly */
 
-import { evaluateSinusoid, fitSinusoid, cosPhase, derived } from "./model.js";
+import { evaluateSinusoid, fitSinusoid, cosPhase, derived, circlePoint } from "./model.js";
 import { linspace } from "../shared/numeric.js";
 import { piTicks, piLabel } from "../shared/ticks.js";
 import { compileExpression } from "../shared/parser.js";
@@ -21,6 +21,8 @@ const DEFAULTS = { A: 1, omega: 1, phi: 0, D: 0 };
 
 const state = {
   mode: "sliders",
+  x0: 0, // abscissa shown on the unit circle (float: the slider step would stall the animation)
+  playing: false,
   view: [...X_RANGE], // current x range, kept in sync with zoom/pan
   expr: { fn: null, error: null },
 };
@@ -59,14 +61,86 @@ function compute() {
     return { ys: evaluateSinusoid(params, xs), params, fit: null };
   }
   if (!state.expr.fn) return { ys: [], params: null, fit: null };
-  const ys = xs.map(state.expr.fn);
-  const fit = fitSinusoid(xs, ys);
-  return { ys, params: fit, fit };
+  // The fit is costly: reuse it while the expression is unchanged (circle playback).
+  if (state.expr.result?.fn !== state.expr.fn) {
+    const ys = xs.map(state.expr.fn);
+    const fit = fitSinusoid(xs, ys);
+    state.expr.result = { fn: state.expr.fn, ys, params: fit, fit };
+  }
+  const { ys, params, fit } = state.expr.result;
+  return { ys, params, fit };
+}
+
+// ---------- unit circle ----------
+
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+const piTex = (label) => label.replaceAll("π", "\\pi ").replaceAll("−", "-");
+
+/** Params for the circle, or the reason it cannot be drawn (null when the box is unchecked). */
+function circleStatus({ params, fit }) {
+  if (!$("show-circle").checked) return null;
+  if (state.mode === "free") {
+    if (!$("expr").value.trim()) return { reason: "Saisissez une expression pour afficher le cercle." };
+    if (!state.expr.fn) return { reason: "Expression invalide : le cercle ne peut pas être construit." };
+    if (!params) {
+      return { reason: "Aucune sinusoïde n'a pu être ajustée (fonction constante, non définie, ou sans période " +
+        "complète sur l'intervalle) : il n'y a pas d'angle θ = ωx − φ à représenter sur le cercle." };
+    }
+    if (fit.r2 < GOOD_FIT) {
+      return { reason: `Ajustement trop approximatif (R² = ${nf.format(Math.round(fit.r2 * 1000) / 1000)}) : ` +
+        "la courbe n'est pas de la forme A·sin(ωx − φ) + D, elle ne se lit donc pas sur le cercle." };
+    }
+  }
+  return { params, point: circlePoint(params, state.x0) };
+}
+
+/** Shapes, labels and traces of the unit circle, the angle θ and the matching point of the curve. */
+function circleLayers({ params, point }, c, shapes, annotations, traces) {
+  const { theta, cos, sin, y } = point;
+  const line = (x0, y0, x1, y1, dash = "solid", width = 1.5) =>
+    ({ type: "line", x0, y0, x1, y1, line: { color: c.circle, width, dash } });
+  shapes.push(
+    { type: "circle", x0: -1, y0: -1, x1: 1, y1: 1, line: { color: c.circle, width: 2 } },
+    line(0, 0, cos, sin, "solid", 2),
+    line(cos, sin, cos, 0, "dot"),
+    line(cos, sin, 0, sin, "dot"),
+    line(0, y, state.x0, y, "dash", 1),
+  );
+  const font = { color: c.circle, size: 12 };
+  annotations.push(
+    { x: cos, y: sin / 2, text: "sin θ", showarrow: false, font, xanchor: cos >= 0 ? "left" : "right", xshift: cos >= 0 ? 4 : -4 },
+    { x: cos / 2, y: sin, text: "cos θ", showarrow: false, font, yanchor: sin >= 0 ? "bottom" : "top", yshift: sin >= 0 ? 2 : -2 },
+    { x: 0.45 * Math.cos(theta / 2), y: 0.45 * Math.sin(theta / 2), text: "θ", showarrow: false, font },
+  );
+  const arc = Array.from({ length: 41 }, (_, i) => (theta * i) / 40);
+  traces.push({
+    x: arc.map((t) => 0.3 * Math.cos(t)), y: arc.map((t) => 0.3 * Math.sin(t)),
+    mode: "lines", line: { color: c.circle, width: 1.5 }, hoverinfo: "skip", name: "θ",
+  }, {
+    x: [cos], y: [sin], mode: "markers", marker: { color: c.circle, size: 9 },
+    hovertemplate: "cos θ = %{x:.3f}<br>sin θ = %{y:.3f}<extra></extra>", name: "cercle",
+  }, {
+    x: [state.x0], y: [y], mode: "markers", marker: { color: c.circle, size: 9, symbol: "diamond" },
+    hovertemplate: "x = %{x:.2f}<br>y = A·sin θ + D = %{y:.3f}<extra></extra>", name: "point",
+  });
+}
+
+function renderCircleCalc(circle) {
+  const el = $("circle-calc");
+  if (!circle?.point) { el.textContent = ""; return; }
+  const { params: { omega, phi }, point: { theta, cos, sin, y } } = circle;
+  const raw = omega * state.x0 - phi;
+  const thetaPi = piApprox(theta);
+  const reduced = Math.abs(raw - theta) > 0.005 ? ` \\equiv ${tex(theta)} \\ (\\mathrm{mod}\\ 2\\pi)` : "";
+  renderTex(el,
+    `\\theta = \\omega x - \\varphi = ${tex(raw)}${reduced}${thetaPi ? ` \\approx ${piTex(thetaPi)}` : ""}` +
+    ` \\qquad \\cos\\theta = ${tex(cos)} \\quad \\sin\\theta = ${tex(sin)}` +
+    ` \\qquad y = A\\sin\\theta + D = ${tex(y)}`);
 }
 
 // ---------- plot ----------
 
-function renderPlot({ ys, params, fit }) {
+function renderPlot({ ys, params, fit }, circle) {
   const c = themeColors();
   const traces = [{
     x: xs, y: ys.map((y) => (Number.isFinite(y) ? y : null)),
@@ -105,19 +179,24 @@ function renderPlot({ ys, params, fit }) {
     }
   }
 
+  const showCircle = Boolean(circle?.point);
+  if (showCircle) circleLayers(circle, c, shapes, annotations, traces);
+
   const xaxis = axis(c, { range: X_RANGE, title: { text: $("axis").value === "radians" ? "x (rad)" : "x" } });
   if ($("axis").value === "radians") {
     const { values, labels } = piTicks(...state.view);
     Object.assign(xaxis, { tickmode: "array", tickvals: values, ticktext: labels });
   }
+  // Equal units with the circle: Plotly widens the y range around 0 to match x.
   const yaxis = axis(c, {
     title: { text: "y" },
-    ...(state.mode === "sliders" ? { range: Y_RANGE_SLIDERS } : { autorange: true }),
+    ...(showCircle ? { range: [-1, 1], scaleanchor: "x", scaleratio: 1 }
+      : state.mode === "sliders" ? { range: Y_RANGE_SLIDERS } : { autorange: true }),
   });
 
   Plotly.react("plot", traces, layout(c, {
     xaxis, yaxis, shapes, annotations,
-    uirevision: state.mode, // keep the user's zoom across updates, reset it when switching mode
+    uirevision: `${state.mode}-${showCircle}`, // keep the user's zoom across updates, reset it when switching mode
   }), PLOT_CONFIG);
 }
 
@@ -181,10 +260,40 @@ function update() {
     const p = k === "phi" ? piApprox(v) : "";
     $(`${k}-out`).textContent = fmt(v) + (p ? ` ≈ ${p}` : "");
   }
+  $("x0-out").textContent = fmt(state.x0);
   const result = compute();
-  renderPlot(result);
+  const circle = circleStatus(result);
+  if (!circle?.point) stopPlaying();
+  $("circle-note").textContent = circle?.reason ?? "";
+  $("circle-play").disabled = reducedMotion.matches || !circle?.point;
+  renderPlot(result, circle);
   renderResults(result);
+  renderCircleCalc(circle);
 }
+
+// Playback: θ turns by π/2 per second; x wraps around the visible range.
+let last = 0, playFrame = 0;
+function tick(now) {
+  const omega = compute().params?.omega;
+  if (!state.playing || !omega) return;
+  const dt = Math.min((now - last) / 1000, 0.1);
+  last = now;
+  let x = state.x0 + (dt * Math.PI) / (2 * omega);
+  if (x > X_RANGE[1]) x = X_RANGE[0];
+  state.x0 = x;
+  $("x0").value = x;
+  update();
+  playFrame = requestAnimationFrame(tick);
+}
+
+function setPlaying(on) {
+  state.playing = on;
+  $("circle-play").setAttribute("aria-pressed", String(on));
+  $("circle-play").textContent = on ? "⏸ Pause" : "▶ Lecture";
+  cancelAnimationFrame(playFrame);
+  if (on) playFrame = requestAnimationFrame((now) => { last = now; tick(now); });
+}
+function stopPlaying() { if (state.playing) setPlaying(false); }
 
 let frame = 0;
 const scheduleUpdate = () => {
@@ -247,7 +356,23 @@ for (const chip of document.querySelectorAll("[data-expr]")) {
   });
 }
 
-for (const id of ["axis", "show-midline", "show-bounds", "show-period"]) {
+$("show-circle").addEventListener("change", () => {
+  $("circle-controls").hidden = !$("show-circle").checked;
+});
+$("x0").addEventListener("input", () => {
+  stopPlaying();
+  state.x0 = Number($("x0").value);
+  scheduleUpdate();
+});
+$("circle-play").addEventListener("click", () => setPlaying(!state.playing));
+const motionNote = () => {
+  $("circle-play").title = reducedMotion.matches ? "Animation désactivée : mouvement réduit demandé par le système." : "";
+  if (reducedMotion.matches) stopPlaying();
+};
+reducedMotion.addEventListener("change", () => { motionNote(); update(); });
+motionNote();
+
+for (const id of ["axis", "show-midline", "show-bounds", "show-period", "show-circle"]) {
   $(id).addEventListener("change", update);
 }
 initTheme($("theme-toggle"), update);

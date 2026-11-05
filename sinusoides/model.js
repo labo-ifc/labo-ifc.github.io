@@ -122,3 +122,14 @@ export function fitSinusoid(xsIn, ysIn, { omegaMax = 30 } = {}) {
   const phi = normalizeAngle(Math.atan2(-fit.b, fit.a));
   return { A, omega, phi, D: fit.c, r2: 1 - fit.sse / sst };
 }
+
+/**
+ * Point of the unit circle reached at abscissa x: θ = ωx − φ, reduced to
+ * [0, 2π), with its cosine, sine and the curve value y = A·sin θ + D.
+ */
+export function circlePoint({ A, omega, phi, D }, x) {
+  const raw = omega * x - phi;
+  const theta = ((raw % TAU) + TAU) % TAU;
+  const sin = Math.sin(raw), cos = Math.cos(raw);
+  return { theta, cos, sin, y: A * sin + D };
+}

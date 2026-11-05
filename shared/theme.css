@@ -16,6 +16,7 @@
   --midline: #d97706;
   --bounds: #059669;
   --period: #7c3aed;
+  --circle: #0e7490;
   --radius: 10px;
   --mono: ui-monospace, "SF Mono", Menlo, monospace;
   color-scheme: light;
@@ -37,6 +38,7 @@
   --midline: #ffb86b;
   --bounds: #4ade80;
   --period: #c4a5ff;
+  --circle: #22d3ee;
   color-scheme: dark;
 }
 

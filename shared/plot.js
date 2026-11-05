@@ -10,7 +10,7 @@ export function themeColors() {
   const v = (n) => cssVar(`--${n}`);
   return {
     fg: v("fg"), muted: v("muted"), grid: v("plot-grid"), accent: v("accent"),
-    curve: v("curve"), fit: v("fit"), midline: v("midline"), bounds: v("bounds"), period: v("period"),
+    curve: v("curve"), fit: v("fit"), midline: v("midline"), bounds: v("bounds"), period: v("period"), circle: v("circle"),
   };
 }
 
