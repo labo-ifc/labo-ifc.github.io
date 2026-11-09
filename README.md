@@ -80,6 +80,9 @@ shared/
   plot.js           couleurs du thème et mise en page Plotly communes
   calc.js           calculatrice : saisie → arbre → valeur (variable x, sin/cos/tan), TeX et erreurs en français (sans DOM, pas d'eval)
   calculator.js/.css  widget calculatrice (écran de taille fixe, aperçu TeX, clavier, historique, Rép)
+  course.css        mise en page des cours : barre de chapitres, méthodes, exemples résolus, exercices, barre collante, pense-bête, impression
+  course.js         un chapitre par « page » (hash de l'URL), précédent/suivant, boutons « S'entraîner »
+  trainer.js        carte d'exercice commune (indices, étapes, vérification, score, barre collante) ; chaque cours fournit son générateur et ses messages
 maths/
   sinusoides/
     index.html, style.css, app.js
@@ -91,7 +94,7 @@ maths/
                       (panneau pleine largeur sous la rangée de la méthode, un seul ouvert à la fois)
     exercises.js      générateur d'exercices (sans DOM) : énoncé, indices, étapes, solutions, lecture et correction
                       des réponses (valeurs, expressions avec ln/e, dérivées vérifiées numériquement)
-    trainer.js        carte d'exercice : indices, « Étape suivante », vérification de la réponse, barre collante
+    trainer.js        messages propres à exp-log pour la carte d'exercice commune (shared/trainer.js)
 tests/
   *.test.js         tests Node
   tex-eval.js       évaluateur numérique du TeX des corrigés (utilisé par exp-log.steps.test.js)
