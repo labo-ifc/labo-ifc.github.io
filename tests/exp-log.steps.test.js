@@ -3,7 +3,7 @@
 // redone, the final set must match `solutions`, and no root of the equation may be missing.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { TYPES, seeded } from "../exp-log/exercises.js";
+import { TYPES, seeded } from "../maths/exp-log/exercises.js";
 import { compile, evaluateTex, literalDecimals, splitChain, splitSegments } from "./tex-eval.js";
 
 const RUNS = 2000;

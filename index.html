@@ -17,7 +17,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Labo maths</title>
+  <title>Labo IFC</title>
   <meta name="description" content="Outils interactifs pour comprendre les mathématiques en les manipulant.">
   <link rel="stylesheet" href="shared/theme.css">
   <script src="shared/theme-boot.js"></script>
@@ -26,42 +26,45 @@
 </head>
 <body>
   <header class="topbar">
-    <h1>Labo maths</h1>
+    <h1>Labo IFC</h1>
     <button id="theme-toggle" class="ghost" type="button" aria-label="Changer de thème">Thème</button>
   </header>
 
   <main class="home">
     <p class="intro">Des outils interactifs pour comprendre les mathématiques en les manipulant :
-      on fait varier les paramètres et on voit tout de suite l'effet sur la courbe.</p>
+      on fait varier les paramètres et on voit tout de suite l'effet.</p>
 
-    <!-- One <li> per tool. Each tool lives in its own folder and reuses shared/. -->
+    <!-- One <section> per subject, one <li> per tool. Each tool lives in <subject>/<tool>/ and reuses shared/. -->
+    <section class="subject" id="maths" data-subject="maths" aria-labelledby="maths-title">
+    <h2 id="maths-title">Mathématiques</h2>
     <ul class="tools">
       <li>
-        <a class="panel tool-card" href="sinusoides/">
+        <a class="panel tool-card" href="maths/sinusoides/">
           <svg viewBox="0 0 200 72" aria-hidden="true">
             <line x1="0" y1="36" x2="200" y2="36" stroke="var(--midline)" stroke-dasharray="4 4"/>
             <path d="M0 36 C 16 4, 34 4, 50 36 S 84 68, 100 36 S 134 4, 150 36 S 184 68, 200 36"
                   fill="none" stroke="var(--curve)" stroke-width="2.5"/>
           </svg>
-          <h2>Fonctions sinusoïdales</h2>
+          <h3>Fonctions sinusoïdales</h3>
           <p><span class="tex">y = A·sin(ωx − φ) + D</span> : curseurs, saisie libre
             et ajustement automatique d'une sinusoïde.</p>
         </a>
       </li>
       <li>
-        <a class="panel tool-card" href="exp-log/">
+        <a class="panel tool-card" href="maths/exp-log/">
           <svg viewBox="0 0 200 72" aria-hidden="true">
             <line x1="20" y1="70" x2="90" y2="0" stroke="var(--muted)" stroke-dasharray="3 4"/>
             <path d="M0 68 C 30 66, 50 60, 62 44 S 76 10, 80 0" fill="none" stroke="var(--curve)" stroke-width="2.5"/>
             <path d="M24 72 C 30 50, 44 38, 64 32 S 100 26, 130 22" fill="none" stroke="var(--fit)" stroke-width="2.5"/>
             <text x="140" y="44" fill="var(--muted)" font-size="18" font-style="italic">aˣ · logₐ</text>
           </svg>
-          <h2>Exponentielles et logarithmes</h2>
+          <h3>Exponentielles et logarithmes</h3>
           <p>Fonctions réciproques, <span class="tex">aˣ</span>, logarithmes, équations exponentielles et logarithmiques,
             un pense-bête et un générateur d'exercices corrigés pas à pas.</p>
         </a>
       </li>
     </ul>
+    </section>
   </main>
 
   <script type="module">

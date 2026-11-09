@@ -1,7 +1,7 @@
 // Exercise UI: generate, check the answer, reveal hints and the solution step by step.
 
 import { TYPES, LEVELS, generate, checkAnswer } from "./exercises.js";
-import { renderTex, renderMixed } from "../shared/tex.js";
+import { renderTex, renderMixed } from "../../shared/tex.js";
 
 const $ = (id) => document.getElementById(id);
 

@@ -1,11 +1,11 @@
 // Entry point: static formulas, chapters, trainer, theme and chapter navigation.
 /* global Plotly */
 
-import { renderStaticTex } from "../shared/tex.js";
-import { initTheme } from "../shared/theme.js";
+import { renderStaticTex } from "../../shared/tex.js";
+import { initTheme } from "../../shared/theme.js";
 import { initLessons } from "./lessons.js";
 import { initTrainer } from "./trainer.js";
-import { initCalculator } from "../shared/calculator.js";
+import { initCalculator } from "../../shared/calculator.js";
 
 renderStaticTex();
 const lessons = initLessons();

@@ -3,12 +3,12 @@
 /* global math, Plotly */
 
 import { evaluateSinusoid, fitSinusoid, cosPhase, derived, circlePoint } from "./model.js";
-import { linspace } from "../shared/numeric.js";
-import { piTicks, piLabel } from "../shared/ticks.js";
-import { compileExpression } from "../shared/parser.js";
-import { initTheme } from "../shared/theme.js";
-import { renderTex, renderStaticTex } from "../shared/tex.js";
-import { themeColors, axis, layout, hline, PLOT_CONFIG } from "../shared/plot.js";
+import { linspace } from "../../shared/numeric.js";
+import { piTicks, piLabel } from "../../shared/ticks.js";
+import { compileExpression } from "../../shared/parser.js";
+import { initTheme } from "../../shared/theme.js";
+import { renderTex, renderStaticTex } from "../../shared/tex.js";
+import { themeColors, axis, layout, hline, PLOT_CONFIG } from "../../shared/plot.js";
 
 const X_RANGE = [-10, 10];
 const Y_RANGE_SLIDERS = [-10.5, 10.5]; // fixed so changing A or D visibly moves the curve

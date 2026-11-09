@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { TYPES, LEVELS, generate, parseAnswer, checkAnswer, seeded, linTex } from "../exp-log/exercises.js";
+import { TYPES, LEVELS, generate, parseAnswer, checkAnswer, seeded, linTex } from "../maths/exp-log/exercises.js";
 import { fr, add, mul, div, pow, fracTex, fracText } from "../shared/fraction.js";
 
 const RUNS = 300;

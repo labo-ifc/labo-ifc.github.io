@@ -2,10 +2,10 @@
 // function, worked examples, the logarithm converter, the slope of a^x at 0 and semi-log plots.
 /* global Plotly */
 
-import { fr, pow, value, fracTex, fracText } from "../shared/fraction.js";
-import { renderTex, renderMixed, numTex } from "../shared/tex.js";
-import { themeColors, axis, layout, hline, PLOT_CONFIG } from "../shared/plot.js";
-import { linspace } from "../shared/numeric.js";
+import { fr, pow, value, fracTex, fracText } from "../../shared/fraction.js";
+import { renderTex, renderMixed, numTex } from "../../shared/tex.js";
+import { themeColors, axis, layout, hline, PLOT_CONFIG } from "../../shared/plot.js";
+import { linspace } from "../../shared/numeric.js";
 import { TYPES, seeded } from "./exercises.js";
 import { appendStep } from "./trainer.js";
 

@@ -42,6 +42,11 @@
   color-scheme: dark;
 }
 
+/* Accent per subject: data-subject on <body> (tool pages) or on a home section.
+   Maths keeps the default blue. */
+[data-subject="chimie"] { --accent: #0f7a55; --accent-soft: #d9f2e7; --curve: #0f7a55; }
+:root[data-theme="dark"] [data-subject="chimie"] { --accent: #4fd1a0; --accent-soft: #1d3a30; --curve: #4fd1a0; }
+
 * { box-sizing: border-box; scrollbar-color: var(--border) transparent; }
 
 body {
@@ -130,15 +135,23 @@ button, input, select { font: inherit; color: inherit; }
 .check { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .check input { accent-color: var(--accent); }
 
-/* Header breadcrumb: "Labo maths / <outil>" */
+/* Header breadcrumb: "Labo IFC / <matière> / <outil>" */
 .crumbs { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
 .crumbs a { color: var(--muted); text-decoration: none; white-space: nowrap; }
 .crumbs a:hover { color: var(--accent); }
 .crumbs span { color: var(--border); }
+.topbar { gap: 12px; }
+.topbar > button { flex-shrink: 0; }
+/* Phone: keep only "<Matière> / <outil>" */
+@media (max-width: 600px) {
+  .crumbs > a:first-child, .crumbs > a:first-child + span { display: none; }
+}
 
 /* Home page */
 .home { max-width: 960px; margin: 0 auto; padding: 32px 16px; }
 .home .intro { color: var(--muted); margin: 0 0 24px; max-width: 60ch; }
+.subject + .subject { margin-top: 32px; }
+.subject > h2 { margin: 0 0 12px; color: var(--accent); font-size: 1.1em; text-transform: uppercase; letter-spacing: 0.05em; }
 .tools {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -158,6 +171,6 @@ button, input, select { font: inherit; color: inherit; }
 }
 .tool-card:hover, .tool-card:focus-visible { border-color: var(--accent); }
 .tool-card svg { width: 100%; height: 72px; }
-.tool-card h2 { margin: 0; }
+.tool-card h3 { margin: 0; font-size: 1rem; }
 .tool-card p { margin: 0; color: var(--muted); }
 .tool-card .tex { color: var(--fg); }

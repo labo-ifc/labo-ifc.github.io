@@ -6,9 +6,9 @@
 // $…$ math (see shared/tex.js), `solutions` are numbers (empty = no solution),
 // and `residual(x)` returns [lhs, rhs] so tests can check every solution.
 
-import { fr, mul, pow, value, fracTex } from "../shared/fraction.js";
-import { numTex } from "../shared/tex.js";
-import { parse, evaluate, toTex } from "../shared/calc.js";
+import { fr, mul, pow, value, fracTex } from "../../shared/fraction.js";
+import { numTex } from "../../shared/tex.js";
+import { parse, evaluate, toTex } from "../../shared/calc.js";
 
 // ---------- small helpers ----------
 

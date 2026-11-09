@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { linspace } from "../shared/numeric.js";
 import {
   normalizeAngle, evaluateSinusoid, fitSinusoid, cosPhase, derived,
-} from "../sinusoides/model.js";
+} from "../maths/sinusoides/model.js";
 import { piLabel, piTicks } from "../shared/ticks.js";
 
 const xs = linspace(-10, 10, 1000);
@@ -80,7 +80,7 @@ test("piTicks stays readable at every zoom level", () => {
 });
 
 test("circlePoint reduces θ = ωx − φ to [0, 2π) and matches the curve", async () => {
-  const { circlePoint } = await import("../sinusoides/model.js");
+  const { circlePoint } = await import("../maths/sinusoides/model.js");
   const p = { A: 2.5, omega: 3, phi: -1.2, D: 0.7 };
   for (const x of [-9.3, -1, 0, 0.4, 7.77]) {
     const c = circlePoint(p, x);
