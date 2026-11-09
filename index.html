@@ -18,7 +18,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Labo IFC</title>
-  <meta name="description" content="Outils interactifs pour comprendre les mathématiques en les manipulant.">
+  <meta name="description" content="Outils interactifs pour comprendre les mathématiques et la chimie en les manipulant.">
   <link rel="stylesheet" href="shared/theme.css">
   <script src="shared/theme-boot.js"></script>
   <script>window.goatcounter = { path: p => location.host + p };</script>
@@ -31,7 +31,7 @@
   </header>
 
   <main class="home">
-    <p class="intro">Des outils interactifs pour comprendre les mathématiques en les manipulant :
+    <p class="intro">Des outils interactifs pour comprendre les mathématiques et la chimie en les manipulant :
       on fait varier les paramètres et on voit tout de suite l'effet.</p>
 
     <!-- One <section> per subject, one <li> per tool. Each tool lives in <subject>/<tool>/ and reuses shared/. -->
@@ -61,6 +61,34 @@
           <h3>Exponentielles et logarithmes</h3>
           <p>Fonctions réciproques, <span class="tex">aˣ</span>, logarithmes, équations exponentielles et logarithmiques,
             un pense-bête et un générateur d'exercices corrigés pas à pas.</p>
+        </a>
+      </li>
+    </ul>
+    </section>
+    <section class="subject" id="chimie" data-subject="chimie" aria-labelledby="chimie-title">
+    <h2 id="chimie-title">Chimie</h2>
+    <ul class="tools">
+      <li>
+        <a class="panel tool-card" href="chimie/hydrocarbures/">
+          <svg viewBox="0 0 200 72" aria-hidden="true">
+            <g stroke="var(--muted)" stroke-width="2">
+              <line x1="30" y1="36" x2="170" y2="36"/>
+              <line x1="30" y1="36" x2="30" y2="12"/><line x1="30" y1="36" x2="30" y2="60"/><line x1="30" y1="36" x2="8" y2="36"/>
+              <line x1="65" y1="36" x2="65" y2="12"/><line x1="65" y1="36" x2="65" y2="60"/>
+              <line x1="100" y1="36" x2="100" y2="12"/><line x1="100" y1="36" x2="100" y2="60"/>
+              <line x1="135" y1="36" x2="135" y2="12"/><line x1="135" y1="36" x2="135" y2="60"/>
+              <line x1="170" y1="36" x2="170" y2="12"/><line x1="170" y1="36" x2="170" y2="60"/><line x1="170" y1="36" x2="192" y2="36"/>
+            </g>
+            <g fill="var(--accent)"><circle cx="30" cy="36" r="8"/><circle cx="65" cy="36" r="8"/><circle cx="100" cy="36" r="8"/><circle cx="135" cy="36" r="8"/><circle cx="170" cy="36" r="8"/></g>
+            <g fill="var(--panel)" stroke="var(--muted)" stroke-width="1.5">
+              <circle cx="30" cy="10" r="4.5"/><circle cx="30" cy="62" r="4.5"/><circle cx="7" cy="36" r="4.5"/>
+              <circle cx="65" cy="10" r="4.5"/><circle cx="65" cy="62" r="4.5"/><circle cx="100" cy="10" r="4.5"/><circle cx="100" cy="62" r="4.5"/>
+              <circle cx="135" cy="10" r="4.5"/><circle cx="135" cy="62" r="4.5"/><circle cx="170" cy="10" r="4.5"/><circle cx="170" cy="62" r="4.5"/><circle cx="193" cy="36" r="4.5"/>
+            </g>
+          </svg>
+          <h3>Hydrocarbures</h3>
+          <p>Le pétrole et son raffinage, les carburants, les combustions et leur énergie,
+            les alcènes, les polymères et les plastiques, avec un générateur d'exercices corrigés pas à pas.</p>
         </a>
       </li>
     </ul>

@@ -1,0 +1,58 @@
+/* Hydrocarbures: labs specific to this course. Course layout lives in shared/course.css. */
+
+.values { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 0; }
+.values div { background: var(--bg); border-radius: 8px; padding: 6px 10px; }
+.values dt { color: var(--muted); font-size: 0.85em; }
+.values dd { margin: 0; font-weight: 600; overflow-x: auto; }
+
+.text-table td { text-align: left; }
+.text-table td:first-child, .text-table td:nth-child(2) { white-space: nowrap; }
+.atoms-table { min-width: 0; margin-top: 12px; }
+.atoms-table th:first-child { width: auto; }
+.value-table tr.active td { background: var(--accent-soft); font-weight: 600; }
+.lab-title { margin: 0 0 6px; }
+
+/* Distillation column */
+.column { width: 100%; max-width: 420px; height: auto; justify-self: center; }
+.column-body { fill: var(--bg); stroke: var(--border); stroke-width: 2; }
+.column-tray, .column-pipe, .column-feed { stroke: var(--border); stroke-width: 2; }
+.column-feed { stroke: var(--warn); stroke-width: 3; }
+.plateau-zone { fill: transparent; transition: fill 0.2s; }
+.plateau.active .plateau-zone { fill: var(--accent-soft); }
+.plateau.active .column-pipe { stroke: var(--accent); stroke-width: 3; }
+.plateau text { fill: var(--muted); font: 12px system-ui, sans-serif; }
+.plateau .plateau-name { fill: var(--fg); font: 600 13px system-ui, sans-serif; }
+.plateau.active .plateau-name { fill: var(--accent); }
+.column > .plateau-temp { fill: var(--muted); font: 12px system-ui, sans-serif; }
+.column-dot { fill: var(--accent); transition: cy 0.3s; }
+@media (prefers-reduced-motion: reduce) { .plateau-zone, .column-dot { transition: none; } }
+
+/* Octane scale 0 → 120 */
+.octane-scale {
+  position: relative; height: 14px; margin: 8px 0 16px; border-radius: 7px;
+  background: linear-gradient(to right, var(--warn), var(--bounds));
+}
+.octane-tick { position: absolute; top: -3px; width: 2px; height: 20px; background: var(--fg); opacity: 0.5; }
+.octane-marker {
+  position: absolute; top: -5px; width: 24px; height: 24px; margin-left: -12px; border-radius: 50%;
+  background: var(--panel); border: 3px solid var(--accent);
+}
+
+/* Carbon chain builder */
+.chain { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; margin: 10px 0; font-size: 1.25em; }
+.chain-atom { padding: 4px 6px; border-radius: 8px; background: var(--bg); font-weight: 600; }
+.chain-bond {
+  min-width: 2.2em; padding: 2px 6px; border: 1px dashed var(--border); border-radius: 8px;
+  background: transparent; color: var(--fg); font: inherit; cursor: pointer;
+}
+.chain-bond:hover, .chain-bond:focus-visible { border-color: var(--accent); color: var(--accent); }
+.chain-bond.order-2, .chain-bond.order-3 { color: var(--accent); border-style: solid; }
+
+/* Resin identification code */
+.resin {
+  display: inline-grid; place-items: center; width: 2em; height: 2em; padding-top: 0.35em; box-sizing: border-box;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%); background: var(--accent); color: var(--panel); font-weight: 700;
+}
+
+@media print { .octane-scale, .column { display: none; } }
+.text-table { min-width: 40em; }

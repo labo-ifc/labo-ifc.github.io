@@ -12,12 +12,18 @@ Un dossier par matière (`maths/`, `chimie/`), un sous-dossier par outil.
 | Fonctions sinusoïdales : `y = A·sin(ωx − φ) + D`, curseurs, saisie libre, ajustement automatique, cercle trigonométrique animé | [`maths/sinusoides/`](maths/sinusoides/) |
 | Exponentielles et logarithmes : fonctions réciproques, `aˣ`, logarithmes, équations exponentielles et logarithmiques (avec exposants, troisième degré, changement de base), le nombre e et les dérivées, graphiques semi-log, problèmes de croissance et d'intérêts, pense-bête imprimable, générateur d'exercices avec indices, résolution pas à pas et calculatrice | [`maths/exp-log/`](maths/exp-log/) |
 
+### Chimie
+
+| Outil | Dossier |
+|---|---|
+| Hydrocarbures : pétrole, colonne de distillation interactive, carburants (indice d'octane, craquage), combustions complètes et incomplètes (équilibrage), énergie par les énergies de liaison et pouvoir calorifique, alcènes (liaisons σ et π, additions), polymères et plastiques, pense-bête imprimable, générateur d'exercices avec indices, résolution pas à pas et calculatrice | [`chimie/hydrocarbures/`](chimie/hydrocarbures/) |
+
 ## Services
 
 | Service | Rôle |
 |---|---|
 | [GitHub](https://github.com/labo-ifc/labo-ifc.github.io) | Dépôt du code et hébergement (GitHub Pages, mise à jour à chaque push sur `main`) ; dépôt `labo-maths/labo-maths.github.io` gardé pour rediriger l'ancien site |
-| [cdnjs](https://cdnjs.com) (Cloudflare) | KaTeX (formules) et math.js (calcul) |
+| [cdnjs](https://cdnjs.com) (Cloudflare) | KaTeX (formules, extension mhchem pour la chimie) et math.js (calcul) |
 | [jsDelivr](https://www.jsdelivr.com) | Plotly (graphiques) |
 | [GoatCounter](https://www.goatcounter.com) | Statistiques de visites, privées et sans cookie (compte partagé avec le portfolio) |
 
@@ -29,7 +35,7 @@ chemins préfixés par le domaine (`labo-ifc.github.io/…`, avant la migration 
 | Lien | Où c'est réglé | Détails |
 |---|---|---|
 | GitHub → GitHub Pages | Repo → **Settings** → **Pages** | Publication de la branche `main` à chaque push, sans build (`.nojekyll` désactive Jekyll). |
-| Pages → cdnjs (Cloudflare) | balises `<script>` / `<link>` des pages | KaTeX `0.16.11` (`katex.min.js`, `katex.min.css`) et math.js `13.2.0`, versions figées dans l'URL. Aucun compte. Si cdnjs est inaccessible, formules et calculs ne s'affichent pas. |
+| Pages → cdnjs (Cloudflare) | balises `<script>` / `<link>` des pages | KaTeX `0.16.11` (`katex.min.js`, `katex.min.css`, `contrib/mhchem.min.js` pour la chimie) et math.js `13.2.0`, versions figées dans l'URL. Aucun compte. Si cdnjs est inaccessible, formules et calculs ne s'affichent pas. |
 | Pages → jsDelivr | balise `<script>` des pages | Plotly `plotly.js-dist-min@2.35.2`. Aucun compte. |
 | Pages → GoatCounter | `<head>` de chaque page (`gc.zgo.at/count.js`, envoi vers `exokayn.goatcounter.com/count`) | Compte GoatCounter `exokayn`, partagé avec le portfolio. |
 
@@ -51,7 +57,7 @@ Chaque `git push` sur `main` met le site à jour (GitHub Pages, racine du dépô
 
 ## Tests
 
-La partie mathématique n'a aucune dépendance et se teste avec Node ≥ 20 :
+La logique (maths et chimie) n'a aucune dépendance et se teste avec Node ≥ 20 :
 
 ```sh
 node --test
@@ -60,6 +66,8 @@ node --test
 Pour les exercices de `exp-log/`, `tests/exp-log.steps.test.js` vérifie numériquement chaque étape de
 2000 corrigés par type (chaque égalité aux solutions, Δ, Horner, ensemble final, aucune racine oubliée)
 ainsi que les trois indices, qui ne doivent jamais donner la réponse.
+Pour `chimie/hydrocarbures/`, `tests/hydrocarbures.test.js` vérifie chaque type d'exercice (réponse acceptée,
+indices, formules bien formées), la conservation des atomes des combustions et les enthalpies recalculées.
 
 L'interface de `exp-log/` se vérifie dans le navigateur : avec le serveur local lancé,
 ouvrir http://localhost:8000/tests/exp-log.browser.html (toutes les lignes doivent être vertes).
@@ -96,6 +104,15 @@ maths/
     exercises.js      générateur d'exercices (sans DOM) : énoncé, indices, étapes, solutions, lecture et correction
                       des réponses (valeurs, expressions avec ln/e, dérivées vérifiées numériquement)
     trainer.js        messages propres à exp-log pour la carte d'exercice commune (shared/trainer.js)
+chimie/
+  hydrocarbures/
+    index.html, style.css, app.js
+    chem.js           chimie du cours (sans DOM) : formules, masses molaires, distillation, combustions équilibrées,
+                      énergies de liaison, chaînes carbonées (σ, π), additions, monomères
+    lessons.js        laboratoires du cours (colonne, indice d'octane, craquage, combustions, ΔH, chaîne σ/π,
+                      additions, polymères) et exemples résolus
+    exercises.js      générateur d'exercices (sans DOM), lecture et correction des réponses (nombres séparés par « ; »)
+    trainer.js        messages propres au cours pour la carte d'exercice commune
 tests/
   *.test.js         tests Node
   tex-eval.js       évaluateur numérique du TeX des corrigés (utilisé par exp-log.steps.test.js)

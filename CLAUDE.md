@@ -39,8 +39,17 @@ Ancien nom « Labo maths » : le dépôt `labo-maths/labo-maths.github.io` ne co
 - Point du cercle à l'angle θ = ωx − φ (`circlePoint` dans `model.js`) pour la position `state.x0` (flottant, le pas du curseur bloquerait l'animation) ; lecture ▶ : θ avance de π/2 par seconde, désactivée si `prefers-reduced-motion`.
 - En saisie libre, le cercle utilise l'ajustement (mis en cache par expression) et `#circle-note` explique pourquoi il manque (pas d'expression, expression invalide, ajustement impossible ou R² < 0,99).
 
+## chimie/hydrocarbures
+
+- Même mise en page que exp-log (`shared/course.*`, `shared/trainer.js`, `shared/examples.js`) ; `data-subject="chimie"`.
+- Formules chimiques avec mhchem : `\ce{…}` (script `contrib/mhchem.min.js` après `katex.min.js`). Formules générales (`C_nH_{2n+2}` dans une équation) en TeX simple (`\mathrm{C}_n…`) : mhchem lit `n+1` comme une charge. Motif de polymère : `\left[\text{–}\ce{CH2-CH2}\text{–}\right]_n` (un `-` final dans `\ce` devient une charge).
+- Chimie dans `chem.js` (sans DOM), exercices dans `exercises.js` : réponses = nombres séparés par « ; » (`labels` pour l'ordre, `kind: "coefs"` pour les coefficients, refus des coefficients non simplifiés), tolérance `tol` absolue ou `rel` relative ; **exactement 3 indices** sans la réponse. `tests/hydrocarbures.test.js` vérifie tout nouveau type automatiquement.
+- Données du cours : énergies de liaison et masses molaires du PDF (gardé en local, jamais versionné). Le tableau du chapitre 2 suit le cours (essences C5–C7) ; le labo de la colonne utilise les paliers de température (C5–C10).
+- Niveaux : 1 Raffinage, 2 Combustions, 3 Énergie, 4 Alcènes, 5 Polymères.
+
 ## Vérification
 
 - `node --test` (Node ≥ 20) doit passer.
+- Captures : couper les animations (`.steps li`, panneau d'exemple) sinon les étapes paraissent vides.
 - Interface : `python3 -m http.server 8000` puis `http://localhost:8000/tests/exp-log.browser.html` ; mettre ce test à jour quand l'interface change.
 - Sans réseau (Plotly en CDN indisponible), le test navigateur échoue en masse : ce n'est pas une régression.

@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hydrocarbures · Labo IFC</title>
+  <meta name="description" content="Parcours interactif : le pétrole et son raffinage, les carburants, les combustions et leur énergie, les alcènes, les polymères et les plastiques, pense-bête et générateur d'exercices corrigés pas à pas.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+  <link rel="stylesheet" href="../../shared/theme.css">
+  <link rel="stylesheet" href="../../shared/calculator.css">
+  <link rel="stylesheet" href="../../shared/course.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="../../shared/theme-boot.js"></script>
+  <script>window.goatcounter = { path: p => location.host + p };</script>
+  <script data-goatcounter="https://exokayn.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body data-subject="chimie">
+  <header class="topbar">
+    <nav class="crumbs"><a href="../../">Labo IFC</a><span aria-hidden="true">/</span><a href="../../#chimie">Chimie</a><span aria-hidden="true">/</span><h1>Hydrocarbures</h1></nav>
+    <button id="theme-toggle" class="ghost" type="button" aria-label="Changer de thème">Thème</button>
+  </header>
+
+  <div class="course">
+    <nav class="chapters" aria-label="Chapitres">
+      <ol>
+        <li><a href="#petrole" title="Le pétrole">Pétrole</a></li>
+        <li><a href="#raffinage" title="Le raffinage">Raffinage</a></li>
+        <li><a href="#carburants" title="Les carburants modernes">Carburants</a></li>
+        <li><a href="#combustions" title="Les combustions">Combustions</a></li>
+        <li><a href="#energie" title="L'énergie des combustions">Énergie</a></li>
+        <li><a href="#alcenes" title="Les alcènes">Alcènes</a></li>
+        <li><a href="#polymeres" title="La polymérisation">Polymères</a></li>
+        <li><a href="#plastiques" title="Les plastiques">Plastiques</a></li>
+        <li><a href="#pense-bete" title="Pense-bête">Pense-bête</a></li>
+        <li><a href="#exercices" title="Exercices">Exercices</a></li>
+      </ol>
+    </nav>
+
+    <main class="chapters-content">
+      <!-- 1 ─────────────────────────────────────────────── -->
+      <section id="petrole" class="panel chapter">
+        <p class="kicker">Chapitre 1</p>
+        <h2>Le pétrole : origine et exploitation</h2>
+        <p>Le pétrole est un mélange complexe d'<strong>hydrocarbures</strong>, des molécules faites uniquement de carbone et d'hydrogène.
+          Ce cours montre comment ils permettent de produire de l'<strong>énergie</strong> et des <strong>matériaux</strong>, et quelles sont les conséquences de leur utilisation.</p>
+
+        <h3>Comment se forme le pétrole ?</h3>
+        <p>Des organismes morts sont recouverts de sable et de sédiments. Les couches s'accumulent pendant des centaines de millions d'années,
+          sur des centaines de mètres. À l'abri des décomposeurs et <strong>sans oxygène</strong> (milieu anaérobie), sous l'action d'une
+          <strong>pression</strong> et d'une <strong>chaleur</strong> intenses, la matière organique se transforme lentement en <strong>pétrole brut</strong>.</p>
+        <p>La <strong>pétrochimie</strong> est l'industrie qui utilise les composés issus du pétrole pour fabriquer des composés synthétiques (carburants, plastiques, solvants…).</p>
+
+        <h3>Pourquoi est-ce important ?</h3>
+        <p>Depuis la révolution industrielle, le pétrole définit notre mode de vie. Les gisements ne sont pas répartis uniformément :
+          surtout au Moyen-Orient (Arabie saoudite, Koweït…), en Amérique centrale et du Sud (Mexique, Venezuela) et en Russie (Sibérie occidentale).
+          Cette répartition pèse sur la géopolitique, l'énergie, l'économie et l'écologie.</p>
+
+        <h3>Comment le récupère-t-on ?</h3>
+        <p>On <strong>fore</strong> pour atteindre les gisements. Le pétrole est compté en <strong>barils</strong>, transporté par pipelines ou par pétroliers
+          (plusieurs centaines de milliers de tonnes), puis transformé en raffinerie.</p>
+        <p class="formula-box" data-tex="1\ \text{baril} \approx 159\ \text{L}" data-display></p>
+
+        <h3>Des alternatives ?</h3>
+        <ul class="plain-list">
+          <li><strong>Sables bitumineux</strong> (Alberta, Canada) : des procédés complexes et coûteux séparent le bitume du sable et de l'argile, puis le transforment en pétrole synthétique.</li>
+          <li><strong>Fracturation hydraulique</strong> (« fracking ») : on brise des roches peu perméables pour récolter pétrole et gaz de schiste.
+            Grâce à elle, les États-Unis sont le premier producteur mondial depuis 2017 : en 2022, <strong>17,8 millions de barils par jour</strong>,
+            devant l'Arabie saoudite (12,1) et la Russie (11,2).</li>
+        </ul>
+        <p class="note-box">Les énergies renouvelables progressent, mais ces techniques permettent de continuer à exploiter des hydrocarbures plus difficiles d'accès, à un coût environnemental plus élevé.</p>
+      </section>
+
+      <!-- 2 ─────────────────────────────────────────────── -->
+      <section id="raffinage" class="panel chapter">
+        <p class="kicker">Chapitre 2</p>
+        <h2>Le raffinage</h2>
+        <p>Le pétrole brut est chauffé jusqu'à environ <strong>400 °C</strong>. Ses constituants passent à l'état gazeux et montent dans une
+          <strong>colonne de distillation</strong>, une tour divisée en <strong>paliers de température</strong>, plus froids vers le haut.
+          Chaque constituant se <strong>condense</strong> au palier qui correspond à sa température d'ébullition ; les plus volatils continuent de monter.</p>
+        <p class="note-box">Plus la chaîne carbonée est longue, plus la molécule est lourde, plus sa température d'ébullition est élevée,
+          et plus <strong>bas</strong> elle est récupérée dans la colonne (il faut plus d'énergie pour la faire passer à l'état gazeux).</p>
+
+        <div class="lab column-lab">
+          <div class="lab-controls">
+            <div class="slider">
+              <label for="bp-n">Atomes de carbone <span data-tex="n"></span></label>
+              <output id="bp-n-out" for="bp-n"></output>
+              <input type="range" id="bp-n" min="1" max="30" step="1" value="8">
+            </div>
+            <dl class="values">
+              <div><dt>Alcane linéaire</dt><dd id="bp-formula"></dd></div>
+              <div><dt>Masse molaire</dt><dd id="bp-mass"></dd></div>
+              <div><dt>Température d'ébullition</dt><dd id="bp-temp"></dd></div>
+              <div><dt>Fraction récupérée</dt><dd id="bp-fraction"></dd></div>
+            </dl>
+          </div>
+          <svg id="column" class="column" viewBox="0 0 360 400" role="img" aria-label="Colonne de distillation"></svg>
+        </div>
+        <p class="lab-note">Par exemple, le palier entre 255 °C et 355 °C recueille tous les alcanes dont la température d'ébullition est comprise entre ces deux valeurs.</p>
+
+        <h3>Les produits du raffinage</h3>
+        <div class="table-wrap">
+          <table class="value-table text-table">
+            <thead><tr><th>Fraction</th><th>Chaînes</th><th>% approximatif (en masse)</th><th>Usages essentiels</th></tr></thead>
+            <tbody>
+              <tr><td>Gaz</td><td>C3 à C4</td><td>1 %</td><td>Chauffage</td></tr>
+              <tr><td>Essences</td><td>C5 à C7</td><td>20 %</td><td>Solvants (éther de pétrole), matière de base de la pétrochimie, carburants automobiles</td></tr>
+              <tr><td>Kérosène</td><td>C11 à C16</td><td>5 %</td><td>Solvants, carburants pour moteurs à réaction</td></tr>
+              <tr><td>Gazole, fioul</td><td>C17 à C20</td><td>35 %</td><td>Chauffage domestique, moteurs Diesel, centrales thermiques, moteurs de navires, industrie lourde</td></tr>
+              <tr><td>Résidus lourds</td><td>mélange d'hydrocarbures lourds</td><td>40 %</td><td>Lubrification et graissage des moteurs, revêtement des routes, toitures</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="lab-note">Remarque : les fractions lourdes sont abondantes (environ 40 %) alors que le marché demande surtout des essences ; le craquage (chapitre 3) corrige ce déséquilibre.</p>
+
+        <h3>Formule des alcanes</h3>
+        <p>Un alcane a pour formule <span data-tex="\ce{C_nH_{2n+2}}"></span> ; sa masse molaire vaut donc</p>
+        <p class="formula-box" data-tex="M = 12n + (2n + 2) \cdot 1 = 14n + 2\ \text{g/mol}" data-display></p>
+        <div class="methods">
+          <article class="method">
+            <h3>Retrouver un alcane par sa masse</h3>
+            <p>Résoudre <span data-tex="14n + 2 = M"></span>, puis écrire <span data-tex="\ce{C_nH_{2n+2}}"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="alkaneFromMass" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="alkaneFromMass">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 3 ─────────────────────────────────────────────── -->
+      <section id="carburants" class="panel chapter">
+        <p class="kicker">Chapitre 3</p>
+        <h2>Les carburants modernes</h2>
+
+        <h3>Composition de l'essence</h3>
+        <p>Aux pompes, on lit <strong>SP95, SP98, E5, E10…</strong> : le nombre après SP est l'<strong>indice d'octane</strong>, celui après E le pourcentage maximal d'éthanol (biocarburant) dans l'essence.</p>
+        <p>Des <strong>additifs</strong> nettoient et protègent le moteur et contrôlent mieux l'explosion (lubrification, anti-corrosion, anti-mousse, stabilisation),
+          et rendent le carburant moins polluant. Les normes européennes <strong>Euro 3, 4, 5 et 6</strong> imposent aux moteurs des restrictions de plus en plus strictes.
+          Les moteurs anciens supportent parfois mal ces nouveaux produits (corrosion, usure, obstruction).</p>
+
+        <h3>L'indice d'octane</h3>
+        <p>Un carburant d'indice d'octane bas est médiocre : il s'enflamme <strong>spontanément</strong>, sans l'étincelle de la bougie (<strong>auto-allumage</strong>).
+          L'explosion ne se produit pas quand le piston est au plus haut et gêne son mouvement : le rendement du moteur diminue.</p>
+        <p>Le <strong>2,2,4-triméthylpentane</strong> (iso-octane), autrefois le meilleur carburant connu, a reçu l'indice <strong>100</strong> ; le <strong>n-heptane</strong>, médiocre, l'indice <strong>0</strong>.
+          Un carburant d'indice 95 résiste à l'auto-allumage comme un mélange de 95 % d'iso-octane et 5 % de n-heptane. Certains carburants font mieux que l'iso-octane : leur indice dépasse 100.</p>
+
+        <div class="lab octane-lab">
+          <div class="lab-controls">
+            <div class="slider">
+              <label for="oct-iso">Iso-octane dans le mélange</label>
+              <output id="oct-iso-out" for="oct-iso"></output>
+              <input type="range" id="oct-iso" min="0" max="100" step="1" value="95">
+            </div>
+            <p id="oct-verdict" class="verdict"></p>
+          </div>
+          <div>
+            <div class="octane-scale" aria-hidden="true"><div id="oct-marker" class="octane-marker"></div></div>
+            <div class="table-wrap">
+              <table class="value-table" id="oct-table">
+                <thead><tr><th>Carburant</th><th>Indice d'octane</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <h3>Le reformage</h3>
+        <p>Les essences sorties de la distillation ne résistent pas assez à l'auto-allumage. Le <strong>reformage</strong>, par la chaleur et des catalyseurs,
+          réorganise les chaînes <strong>linéaires</strong> en chaînes <strong>ramifiées</strong> : plus les molécules sont ramifiées, mieux l'essence résiste à l'auto-allumage.
+          Trois isomères à 8 carbones, de formule <span data-tex="\ce{C8H18}"></span> :</p>
+        <ul class="plain-list">
+          <li>n-octane (linéaire) : <span data-tex="\ce{CH3-CH2-CH2-CH2-CH2-CH2-CH2-CH3}"></span></li>
+          <li>méthylheptane (une ramification) : <span data-tex="\ce{CH3-CH(CH3)-CH2-CH2-CH2-CH2-CH3}"></span></li>
+          <li>2,2,4-triméthylpentane (très ramifié, indice 100) : <span data-tex="\ce{CH3-C(CH3)2-CH2-CH(CH3)-CH3}"></span></li>
+        </ul>
+
+        <h3>Le craquage catalytique</h3>
+        <p>Toujours par la chaleur et des catalyseurs, les longues molécules des fractions lourdes sont <strong>brisées</strong> en molécules plus légères (essences).
+          Une chaîne d'alcane se coupe en un <strong>alcane</strong> plus court et un <strong>alcène</strong> : il n'y a pas assez d'hydrogène pour saturer les deux morceaux.</p>
+        <p class="formula-box" data-tex="\mathrm{C}_n\mathrm{H}_{2n+2} \longrightarrow \mathrm{C}_k\mathrm{H}_{2k+2} + \mathrm{C}_{n-k}\mathrm{H}_{2(n-k)}" data-display></p>
+        <div class="lab">
+          <div class="lab-controls">
+            <div class="slider">
+              <label for="crack-n">Alcane de départ</label>
+              <output id="crack-n-out" for="crack-n"></output>
+              <input type="range" id="crack-n" min="6" max="20" step="1" value="16">
+            </div>
+            <div class="slider">
+              <label for="crack-k">Carbones dans l'alcane formé</label>
+              <output id="crack-k-out" for="crack-k"></output>
+              <input type="range" id="crack-k" min="1" max="14" step="1" value="8">
+            </div>
+          </div>
+          <div>
+            <p id="crack-eq" class="formula-box"></p>
+            <p id="crack-note" class="lab-note"></p>
+          </div>
+        </div>
+        <div class="methods">
+          <article class="method">
+            <h3>Compléter un craquage</h3>
+            <p>Les atomes se conservent : les carbones et les hydrogènes manquants forment l'alcène <span data-tex="\ce{C_mH_{2m}}"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="cracking" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="cracking">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+
+        <h3>Le pot catalytique</h3>
+        <p>Les gaz d'échappement ne contiennent pas que du <span data-tex="\ce{CO2}"></span> et de l'eau : on y trouve des résidus de combustions incomplètes
+          (même dans les moteurs les mieux réglés), des vapeurs d'hydrocarbures, des oxydes d'azote… La loi impose des mesures dépolluantes : filtres,
+          systèmes de contrôle de la pollution, et le <strong>pot catalytique</strong>, qui transforme ces gaz nocifs en gaz moins dangereux.</p>
+      </section>
+
+      <!-- 4 ─────────────────────────────────────────────── -->
+      <section id="combustions" class="panel chapter">
+        <p class="kicker">Chapitre 4</p>
+        <h2>Les combustions</h2>
+        <p>Un combustible brûle en réagissant avec le dioxygène <span data-tex="\ce{O2}"></span>. Tous les combustibles sont caractérisés par leur
+          <strong>pouvoir calorifique</strong> : la chaleur dégagée par quantité de combustible (en kJ/kg ou MJ/kg).</p>
+
+        <h3>Combustion complète</h3>
+        <p>Avec assez d'oxygène, un hydrocarbure donne du <strong>dioxyde de carbone</strong> et de l'<strong>eau</strong> :</p>
+        <p class="formula-box" data-tex="\mathrm{C}_n\mathrm{H}_{2n+2} + \frac{3n+1}{2}\,\ce{O2} \longrightarrow n\,\ce{CO2} + (n+1)\,\ce{H2O}" data-display></p>
+        <p>Le méthane, mélangé à l'air dans certaines proportions, forme un mélange explosif (le « coup de grisou ») :
+          sa combustion libère rapidement beaucoup d'énergie.</p>
+        <p class="formula-box" data-tex="\ce{CH4 + 2O2 -> CO2 + 2H2O} \qquad \Delta H \approx -891\ \text{kJ/mol}" data-display></p>
+
+        <h3>Combustions incomplètes</h3>
+        <p>Une combustion 100 % complète est impossible en pratique : il se forme aussi du <strong>monoxyde de carbone</strong> <span data-tex="\ce{CO}"></span>
+          et/ou de la <strong>suie</strong> (carbone <span data-tex="\ce{C}"></span>).</p>
+        <p class="formula-box" data-tex="\ce{2C5H12 + 11O2 -> 10CO + 12H2O} \qquad \ce{C5H12 + 3O2 -> 5C + 6H2O}" data-display></p>
+        <p class="note-box">Le <strong>CO</strong> est un gaz dangereux et <strong>inodore</strong>. Respiré, il prend la place de l'oxygène dans le sang et provoque l'asphyxie :
+          des accidents dus à des chauffe-eau mal réglés ont lieu chaque année.</p>
+
+        <div class="lab">
+          <div class="lab-controls">
+            <label class="row">Combustible
+              <select id="comb-family">
+                <option value="alkane">Alcane</option>
+                <option value="alkene">Alcène</option>
+              </select>
+            </label>
+            <div class="slider">
+              <label for="comb-n">Atomes de carbone</label>
+              <output id="comb-n-out" for="comb-n"></output>
+              <input type="range" id="comb-n" min="1" max="10" step="1" value="4">
+            </div>
+            <label class="row">Combustion
+              <select id="comb-kind">
+                <option value="complete">Complète (CO₂)</option>
+                <option value="co">Incomplète (CO)</option>
+                <option value="c">Incomplète (suie)</option>
+              </select>
+            </label>
+          </div>
+          <div>
+            <p id="comb-eq" class="formula-box"></p>
+            <div class="table-wrap">
+              <table class="value-table fixed-table atoms-table">
+                <thead><tr><th>Atomes</th><th>Réactifs</th><th>Produits</th></tr></thead>
+                <tbody id="comb-atoms"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <h3>Pondérer une combustion</h3>
+        <div class="methods">
+          <article class="method">
+            <h3>Combustion complète</h3>
+            <p>Dans l'ordre : le carbone (<span data-tex="\ce{CO2}"></span>), puis l'hydrogène (<span data-tex="\ce{H2O}"></span>), enfin l'oxygène (<span data-tex="\ce{O2}"></span>).
+              Une demi-molécule de <span data-tex="\ce{O2}"></span> ? On multiplie tout par 2.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="combComplete" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="combComplete">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Incomplète (CO)</h3>
+            <p>Même méthode, mais chaque carbone donne <span data-tex="\ce{CO}"></span> : un seul oxygène par carbone.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="combCO" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="combCO">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Incomplète (suie)</h3>
+            <p>Le carbone reste du carbone <span data-tex="\ce{C}"></span> : l'oxygène ne sert qu'à former l'eau.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="combC" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="combC">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Combustion d'un alcène</h3>
+            <p>Un alcène <span data-tex="\ce{C_nH_{2n}}"></span> se pondère de la même façon ; il donne autant de <span data-tex="\ce{CO2}"></span> que de <span data-tex="\ce{H2O}"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="combAlkene" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="level:2">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 5 ─────────────────────────────────────────────── -->
+      <section id="energie" class="panel chapter">
+        <p class="kicker">Chapitre 5</p>
+        <h2>L'énergie des combustions</h2>
+        <p>Une combustion est <strong>exothermique</strong> : elle libère de l'énergie, donc <span data-tex="\Delta H < 0"></span>.
+          Il faut de l'énergie pour <strong>rompre</strong> les liaisons des réactifs ; la formation des liaisons des produits en libère davantage.
+          L'<strong>enthalpie</strong> de réaction est la différence :</p>
+        <p class="formula-box" data-tex="\Delta H = E_\text{rupture} - E_\text{formation}" data-display></p>
+
+        <div class="lab bonds-lab">
+          <div class="table-wrap">
+            <table class="value-table">
+              <thead><tr><th>Liaison</th><th>Énergie (kJ/mol)</th></tr></thead>
+              <tbody id="bond-table"></tbody>
+            </table>
+          </div>
+          <div>
+            <h4 class="lab-title">Méthode</h4>
+            <ol class="plain-list">
+              <li>Écrire l'équation de combustion.</li>
+              <li>La pondérer.</li>
+              <li>Représenter les molécules (formules développées).</li>
+              <li>Compter les liaisons de chaque type, rompues et formées.</li>
+              <li>Multiplier chaque nombre par l'énergie de la liaison.</li>
+              <li>Faire le bilan : <span data-tex="\Delta H = E_\text{rupture} - E_\text{formation}"></span>.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="lab">
+          <div class="lab-controls">
+            <div class="slider">
+              <label for="dh-n">Alcane</label>
+              <output id="dh-n-out" for="dh-n"></output>
+              <input type="range" id="dh-n" min="1" max="8" step="1" value="3">
+            </div>
+            <label class="row">Combustion
+              <select id="dh-kind">
+                <option value="complete">Complète (CO₂)</option>
+                <option value="co">Incomplète (CO)</option>
+              </select>
+            </label>
+          </div>
+          <div class="rules" id="dh-calc"></div>
+        </div>
+        <p class="note-box">Le calcul donne <span data-tex="-814\ \text{kJ/mol}"></span> pour le méthane, la mesure <span data-tex="-891\ \text{kJ/mol}"></span> :
+          les énergies de liaison sont des <strong>moyennes</strong>, le résultat n'est qu'une estimation.</p>
+
+        <div class="methods">
+          <article class="method">
+            <h3>ΔH d'une combustion complète</h3>
+            <p>Chaque alcane : <span data-tex="n - 1"></span> liaisons C–C et <span data-tex="2n + 2"></span> C–H ; chaque <span data-tex="\ce{CO2}"></span> : 2 C=O ; chaque <span data-tex="\ce{H2O}"></span> : 2 H–O.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="enthalpy" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="enthalpy">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>ΔH avec du CO</h3>
+            <p>Même bilan, mais chaque <span data-tex="\ce{CO}"></span> forme une seule liaison C≡O (1062 kJ/mol) : moins d'énergie libérée.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="enthalpyCO" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="enthalpyCO">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Pouvoir calorifique</h3>
+            <p>Énergie libérée = masse brûlée × pouvoir calorifique : <span data-tex="Q = m \cdot PC"></span> (masse en kg ; pour un liquide, <span data-tex="m = \rho V"></span>).</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="heat" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="heat">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 6 ─────────────────────────────────────────────── -->
+      <section id="alcenes" class="panel chapter">
+        <p class="kicker">Chapitre 6</p>
+        <h2>Les alcènes : des molécules très réactives</h2>
+        <p>Un <strong>alcène</strong> <span data-tex="\ce{C_nH_{2n}}"></span> possède une <strong>double liaison</strong> entre deux carbones.
+          Plus rares dans la nature que les alcanes, les alcènes sont obtenus par craquage et jouent un rôle de premier plan en pétrochimie :
+          l'éthylène <span data-tex="\ce{CH2=CH2}"></span> sert à fabriquer solvants, antigels, explosifs, caoutchouc, parfums, détergents, colorants…</p>
+
+        <h3>Liaisons σ et π</h3>
+        <p>Dans l'éthylène, tous les atomes sont dans un même plan. Les liaisons C–H et la première liaison C–C sont des liaisons
+          <strong>σ (sigma)</strong>. La deuxième liaison C–C est hors du plan : ses électrons sont plus loin des noyaux, c'est une liaison
+          <strong>π (pi)</strong>, plus fragile, donc plus <strong>réactive</strong>. La rotation autour de C=C est impossible : la molécule est rigide à cet endroit.</p>
+        <p class="formula-box" data-tex="\text{simple} = 1\,\sigma \qquad \text{double} = 1\,\sigma + 1\,\pi \qquad \text{triple} = 1\,\sigma + 2\,\pi" data-display></p>
+
+        <div class="lab chain-lab">
+          <div class="lab-controls">
+            <div class="slider">
+              <label for="chain-n">Atomes de carbone</label>
+              <output id="chain-n-out" for="chain-n"></output>
+              <input type="range" id="chain-n" min="2" max="6" step="1" value="4">
+            </div>
+            <dl class="values">
+              <div><dt>Famille</dt><dd id="chain-family"></dd></div>
+              <div><dt>Formule brute</dt><dd id="chain-brute"></dd></div>
+              <div><dt>Liaisons</dt><dd id="chain-bonds"></dd></div>
+            </dl>
+          </div>
+          <div>
+            <p class="lab-note">Clique sur une liaison C–C pour la rendre double, triple, puis simple : les hydrogènes s'adaptent (4 liaisons par carbone).</p>
+            <div id="chain" class="chain" role="group" aria-label="Chaîne carbonée"></div>
+            <p id="chain-ce" class="formula-box"></p>
+          </div>
+        </div>
+        <div class="methods">
+          <article class="method">
+            <h3>Compter σ et π</h3>
+            <p>Une liaison σ par paire d'atomes liés (C–H et C–C) ; une π de plus par double liaison, deux par triple.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="sigmaPi" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="sigmaPi">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+
+        <h3>Les réactions d'addition</h3>
+        <p>La liaison π se casse facilement : on <strong>additionne</strong> une molécule sur la double liaison, qui devient simple.</p>
+        <ul class="plain-list">
+          <li><strong>Hydrogénation</strong> (ajout de <span data-tex="\ce{H2}"></span>) : on obtient un alcane. Elle transforme les huiles végétales (insaturées, liquides) en graisses
+            partiellement saturées (margarines) : c'est le « durcissement des huiles », qui limite aussi le rancissement (oxydation des doubles liaisons par l'air).</li>
+          <li><strong>Hydratation</strong> (ajout de <span data-tex="\ce{H2O}"></span>) : on obtient un <strong>alcool</strong> (fabrication de l'éthanol, de solvants, de désinfectants…).
+            Le groupe OH se fixe surtout sur le carbone qui porte le moins d'hydrogènes.</li>
+          <li><strong>Halogénation</strong> (ajout de <span data-tex="\ce{Cl2}"></span>, <span data-tex="\ce{Br2}"></span>… éléments de la 7<sup>e</sup> famille) : les produits sont les maillons de base de nombreux polymères.</li>
+        </ul>
+        <div class="lab">
+          <div class="lab-controls">
+            <label class="row">Alcène
+              <select id="add-alkene">
+                <option value="2">éthylène</option>
+                <option value="3" selected>propène</option>
+                <option value="4">but-1-ène</option>
+              </select>
+            </label>
+            <label class="row">Réactif
+              <select id="add-reagent"></select>
+            </label>
+          </div>
+          <div>
+            <p id="add-eq" class="formula-box"></p>
+            <p id="add-note" class="lab-note"></p>
+          </div>
+        </div>
+        <div class="methods">
+          <article class="method">
+            <h3>Masses dans une addition</h3>
+            <p>Une mole d'alcène donne une mole de produit : <span data-tex="n = \frac{m}{M}"></span>, puis <span data-tex="m = n \cdot M"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="additionMass" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="additionMass">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+        <p class="lab-note">D'autres additions existent : elles ajoutent toutes un groupement choisi sur la double liaison, ce qui donne des produits aux propriétés très variées.</p>
+      </section>
+
+      <!-- 7 ─────────────────────────────────────────────── -->
+      <section id="polymeres" class="panel chapter">
+        <p class="kicker">Chapitre 7</p>
+        <h2>La polymérisation</h2>
+        <p>Un <strong>polymère</strong> est une molécule géante (<strong>macromolécule</strong>) formée par l'assemblage d'un grand nombre de petites unités, les <strong>monomères</strong>.
+          Sa masse molaire dépasse facilement 10 000 g/mol. Les polymères de synthèse remplacent le métal, le bois, le verre… : en deux décennies à peine,
+          les déchets plastiques mondiaux sont passés de 180 à plus de 350 millions de tonnes par an.</p>
+        <p>Les alcènes viennent du <strong>craquage</strong> des fractions lourdes : quand trop de liaisons C–C se cassent, des doubles liaisons se forment et on obtient un mélange d'alcanes et d'alcènes.</p>
+
+        <h3>La polyaddition</h3>
+        <p>Un seul type de monomère, qui réagit grâce à son <strong>insaturation</strong> (double liaison) : les doubles liaisons s'ouvrent et les monomères s'enchaînent.</p>
+        <div class="lab">
+          <div class="lab-controls">
+            <label class="row">Monomère
+              <select id="poly-monomer"></select>
+            </label>
+            <div class="slider">
+              <label for="poly-n">Degré de polymérisation <span data-tex="n"></span></label>
+              <output id="poly-n-out" for="poly-n"></output>
+              <input type="range" id="poly-n" min="100" max="10000" step="100" value="3000">
+            </div>
+          </div>
+          <div>
+            <p id="poly-eq" class="formula-box"></p>
+            <p id="poly-note" class="lab-note"></p>
+          </div>
+        </div>
+
+        <h3>La polycondensation</h3>
+        <p>Deux monomères <strong>différents</strong> s'associent en libérant un résidu, généralement <span data-tex="\ce{H2O}"></span> ou <span data-tex="\ce{HCl}"></span>
+          (polyesters, polyamides comme le Kevlar des gilets pare-balles) :</p>
+        <p class="formula-box" data-tex="n\,\text{B} + n\,\text{C} \longrightarrow \left[\text{–B–C–}\right]_n + \text{résidus}" data-display></p>
+
+        <h3>Propriétés des polymères</h3>
+        <ul class="plain-list">
+          <li><strong>Homopolymères</strong> (linéaires ou ramifiés) : un seul type de monomère.</li>
+          <li><strong>Copolymères</strong> : plusieurs monomères, répartis au hasard (statistique), en alternance régulière (alterné) ou seulement dans les ramifications (greffé).</li>
+          <li><strong>Polymères réticulés</strong> : les macromolécules s'enchaînent dans les trois directions de l'espace.</li>
+        </ul>
+        <p>Le nombre de maillons est le <strong>degré de polymérisation</strong> :</p>
+        <p class="formula-box" data-tex="n = \frac{M(\text{polymère})}{M(\text{monomère})}" data-display></p>
+        <p>Il change les propriétés : le polyéthylène se décline en <strong>PEBD</strong> (basse densité, films plastiques) et <strong>PEHD</strong> (haute densité, plus rigide, bouteilles).</p>
+
+        <div class="methods">
+          <article class="method">
+            <h3>Degré de polymérisation</h3>
+            <p>Masse molaire du monomère, mêmes unités pour les deux masses, puis le quotient.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="degree" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="degree">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>CO₂ d'un plastique brûlé</h3>
+            <p>Un motif brûle comme une petite molécule : chaque carbone du motif donne un <span data-tex="\ce{CO2}"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="polymerCO2" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="polymerCO2">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Synthèse du styrène</h3>
+            <p>Lire les proportions dans l'équation, puis passer des moles aux masses avec les masses molaires.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="styrene" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="styrene">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 8 ─────────────────────────────────────────────── -->
+      <section id="plastiques" class="panel chapter">
+        <p class="kicker">Chapitre 8</p>
+        <h2>Les plastiques</h2>
+        <p>Un code numérique dans un triangle identifie chaque type de résine, pour trier et recycler selon la composition chimique.</p>
+        <div class="table-wrap">
+          <table class="value-table text-table">
+            <thead><tr><th>Code</th><th>Nom</th><th>Utilisations</th><th>Réutilisation</th></tr></thead>
+            <tbody>
+              <tr><td><span class="resin">1</span></td><td>PET (polyéthylène téréphtalate)</td><td>Bouteilles d'eau, boissons gazeuses, barquettes alimentaires</td><td>Recyclage facile</td></tr>
+              <tr><td><span class="resin">2</span></td><td>PEHD (polyéthylène haute densité)</td><td>Bouteilles de lait, de détergents, bidons</td><td>Recyclage facile</td></tr>
+              <tr><td><span class="resin">3</span></td><td>PVC (polychlorure de vinyle)</td><td>Tuyaux, revêtements, emballages alimentaires (moins courant)</td><td>Recyclage presque impossible</td></tr>
+              <tr><td><span class="resin">4</span></td><td>PEBD (polyéthylène basse densité)</td><td>Sacs poubelle, films alimentaires, emballages souples</td><td>Recyclage possible</td></tr>
+              <tr><td><span class="resin">5</span></td><td>PP (polypropylène)</td><td>Pots de yaourt, pailles, emballages alimentaires</td><td>Recyclage possible</td></tr>
+              <tr><td><span class="resin">6</span></td><td>PS (polystyrène)</td><td>Barquettes alimentaires, gobelets, isolants</td><td>Difficile, ou incinération</td></tr>
+              <tr><td><span class="resin">7</span></td><td>Autres plastiques</td><td>Résines composites, mélanges…</td><td>Incinération</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Avantages</h3>
+        <ul class="plain-list">
+          <li><strong>Légèreté</strong> : 150 kg de plastiques remplacent 300 à 400 kg de métaux dans une voiture (leur usage y a augmenté d'environ 50 % en 10 ans) : moins de carburant et de <span data-tex="\ce{CO2}"></span>. Même gain dans les emballages, à la place du verre.</li>
+          <li><strong>Isolation</strong> : électrique (PVC des interrupteurs, des gaines de câbles) et thermique (frigolite ou PSE, polystyrène expansé, et autres mousses).</li>
+          <li><strong>Résistance aux chocs</strong> : boîtes à œufs, emballages, pots de fleurs, barquettes en PP, nylon des airbags…</li>
+          <li><strong>Inertie chimique, teinture dans la masse, mise en forme facile</strong> : pare-chocs, enjoliveurs, tableaux de bord, jouets, sans entretien coûteux.</li>
+        </ul>
+
+        <h3>Inconvénients</h3>
+        <ul class="plain-list">
+          <li>La plupart ne sont <strong>pas biodégradables</strong>.</li>
+          <li>Ils <strong>dépendent du pétrole</strong>.</li>
+          <li>Ils s'<strong>accumulent dans la nature</strong> (bords des routes, mers et océans…).</li>
+          <li>Ils sont <strong>employés à l'excès</strong>, surtout dans les emballages.</li>
+        </ul>
+        <p>En Belgique, chaque habitant produit environ <strong>500 kg de déchets par an</strong>, dont un dixième de plastique.
+          Des produits à usage unique sont interdits (vaisselle jetable, cotons-tiges, certains emballages), les gobelets réutilisables se répandent, et une conférence internationale contre les plastiques s'est tenue à Nairobi (Kenya) en novembre 2023.</p>
+
+        <h3>Gérer les déchets plastiques</h3>
+        <div class="methods">
+          <article class="method">
+            <h3>Valorisation matière</h3>
+            <p>Les <strong>thermoplastiques</strong> (PE, PS, PP, PET, PVC) peuvent être fondus et remis en forme. Les <strong>thermodurcissables</strong> ne le peuvent pas : ils finissent comme charge dans d'autres plastiques.
+              Attention, recycler n'est souvent que <strong>décycler</strong> : à chaque cycle, la qualité baisse (une bouteille devient du rembourrage de veste…), c'est une spirale plutôt qu'un cercle.</p>
+          </article>
+          <article class="method">
+            <h3>Valorisation chimique</h3>
+            <p>On retransforme le plastique en monomères, combustibles ou gaz : le PS redonne du styrène pour du polystyrène neuf ; des enzymes dépolymérisent le PET (procédé Carbios).</p>
+          </article>
+          <article class="method">
+            <h3>Valorisation énergétique</h3>
+            <p>On <strong>brûle</strong> les déchets : leur pouvoir calorifique est proche de celui du pétrole brut, la chaleur chauffe des bâtiments ou produit de l'électricité.
+              Mais les incinérateurs rejettent des gaz polluants (<span data-tex="\ce{HCl}"></span>, <span data-tex="\ce{HF}"></span>, <span data-tex="\ce{SO2}"></span>, <span data-tex="\ce{NO_x}"></span>).</p>
+          </article>
+          <article class="method">
+            <h3>Enfouissement</h3>
+            <p>En dernier recours, les déchets vont en centre d'enfouissement technique (C.E.T.), comme celui d'Hallembaye, près de Liège : un site choisi pour sa géologie, son accès et son éloignement des habitations.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 9 ─────────────────────────────────────────────── -->
+      <section id="pense-bete" class="panel chapter">
+        <p class="kicker">Chapitre 9</p>
+        <div class="cheat-head">
+          <h2>Pense-bête</h2>
+          <button type="button" id="cheat-print" class="ghost">Imprimer</button>
+        </div>
+        <div class="cheat">
+          <article class="cheat-card">
+            <h3>Familles et formules</h3>
+            <ul>
+              <li>Alcane : <span data-tex="\ce{C_nH_{2n+2}}"></span>, liaisons simples, <span data-tex="M = 14n + 2"></span></li>
+              <li>Alcène : <span data-tex="\ce{C_nH_{2n}}"></span>, une double liaison C=C</li>
+              <li>Masses molaires (g/mol) : C 12, H 1, O 16, Cl 35,5</li>
+              <li><span data-tex="n = \frac{m}{M}"></span> et <span data-tex="m = n \cdot M"></span></li>
+              <li>1 baril ≈ 159 L</li>
+            </ul>
+          </article>
+          <article class="cheat-card">
+            <h3>Raffinage et carburants</h3>
+            <ul>
+              <li>Distillation : séparation selon la température d'ébullition ; chaînes longues en bas, courtes en haut</li>
+              <li>Indice d'octane : n-heptane 0, iso-octane 100 ; plus il est haut, moins d'auto-allumage</li>
+              <li>Reformage : chaînes linéaires → ramifiées (indice d'octane plus élevé)</li>
+              <li>Craquage : <span data-tex="\text{alcane} \longrightarrow \text{alcane} + \text{alcène}"></span></li>
+              <li>Pot catalytique : réduit les gaz nocifs</li>
+            </ul>
+          </article>
+          <article class="cheat-card">
+            <h3>Combustions</h3>
+            <ul>
+              <li>Complète : <span data-tex="\ce{CO2 + H2O}"></span></li>
+              <li>Incomplète : <span data-tex="\ce{CO}"></span> (toxique, inodore) ou <span data-tex="\ce{C}"></span> (suie)</li>
+              <li>Pondérer : C, puis H, puis O ; doubler si on obtient une demi-molécule</li>
+              <li><span data-tex="\Delta H = E_\text{rupture} - E_\text{formation} < 0"></span> (exothermique)</li>
+              <li><span data-tex="Q = m \cdot PC"></span> (pouvoir calorifique en MJ/kg)</li>
+            </ul>
+          </article>
+          <article class="cheat-card">
+            <h3>Énergies de liaison <small>(kJ/mol)</small></h3>
+            <ul>
+              <li>H–H 436 · O=O 498 · H–O 464</li>
+              <li>C–C 346 · C–H 413</li>
+              <li>C=O (dans <span data-tex="\ce{CO2}"></span>) 803 · C≡O (dans <span data-tex="\ce{CO}"></span>) 1062</li>
+            </ul>
+          </article>
+          <article class="cheat-card">
+            <h3>Alcènes</h3>
+            <ul>
+              <li>σ : une par paire d'atomes liés ; π : +1 par double, +2 par triple</li>
+              <li>Hydrogénation : <span data-tex="\ce{CH2=CH2 + H2 -> CH3-CH3}"></span></li>
+              <li>Hydratation : <span data-tex="\ce{CH2=CH2 + H2O -> CH3-CH2OH}"></span></li>
+              <li>Halogénation : <span data-tex="\ce{CH2=CH2 + Cl2 -> CH2Cl-CH2Cl}"></span></li>
+            </ul>
+          </article>
+          <article class="cheat-card">
+            <h3>Polymères et plastiques</h3>
+            <ul>
+              <li>Polyaddition : <span data-tex="n\,\ce{CH2=CH2} \longrightarrow \left[\text{–}\ce{CH2-CH2}\text{–}\right]_n"></span></li>
+              <li>Polycondensation : deux monomères différents + résidu (<span data-tex="\ce{H2O}"></span>, <span data-tex="\ce{HCl}"></span>)</li>
+              <li><span data-tex="n = \frac{M(\text{polymère})}{M(\text{monomère})}"></span></li>
+              <li>Codes 1 à 7 : PET, PEHD, PVC, PEBD, PP, PS, autres</li>
+              <li>Valorisation matière, chimique, énergétique ; enfouissement</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- 10 ─────────────────────────────────────────────── -->
+      <section id="exercices" class="panel chapter">
+        <p class="kicker">Chapitre 10</p>
+        <h2>Exercices</h2>
+        <div class="trainer-bar">
+          <label class="row">Type
+            <select id="ex-choice"></select>
+          </label>
+          <button type="button" id="ex-new" class="primary">Nouvel exercice</button>
+          <button type="button" id="calc-toggle" class="ghost" aria-controls="calc" aria-pressed="true">Calculatrice</button>
+          <p id="ex-score" class="score" role="status"></p>
+        </div>
+
+        <div class="ex-layout">
+          <div class="exercise" id="exercise">
+            <p class="prompt" id="ex-prompt"></p>
+            <p class="statement" id="ex-statement"></p>
+
+            <form id="ex-form" class="answer" autocomplete="off">
+              <label for="ex-answer" class="field-label">Ta réponse</label>
+              <div class="answer-row">
+                <input id="ex-answer" class="text-input" type="text" spellcheck="false">
+                <button type="submit" class="primary">Vérifier</button>
+              </div>
+              <p id="ex-feedback" class="feedback" role="status"></p>
+            </form>
+
+            <div class="helpers">
+              <button type="button" id="ex-hint" class="ghost">Indice</button>
+              <button type="button" id="ex-step" class="ghost">Étape suivante</button>
+              <button type="button" id="ex-all" class="ghost link">Tout afficher</button>
+            </div>
+            <div class="ex-dock-anchor">
+              <div id="ex-dock" class="ex-dock" hidden aria-label="Commandes de l'exercice">
+                <div class="dock-row">
+                  <span id="dock-statement" class="dock-statement"></span>
+                  <form id="dock-form" class="dock-form" autocomplete="off">
+                    <input id="dock-answer" class="text-input" type="text" spellcheck="false" placeholder="Ta réponse" aria-label="Ta réponse">
+                    <button type="submit" class="primary">Vérifier</button>
+                  </form>
+                </div>
+                <div class="dock-row">
+                  <button type="button" id="dock-hint" class="ghost">Indice</button>
+                  <button type="button" id="dock-step" class="ghost">Étape suivante</button>
+                  <button type="button" id="dock-all" class="ghost link">Tout afficher</button>
+                  <p id="dock-feedback" class="feedback" aria-hidden="true"></p>
+                </div>
+              </div>
+            </div>
+            <ol id="ex-hints" class="hints"></ol>
+            <ol id="ex-steps" class="steps"></ol>
+          </div>
+          <aside id="calc" aria-label="Calculatrice"></aside>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/contrib/mhchem.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
