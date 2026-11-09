@@ -83,6 +83,7 @@ shared/
   course.css        mise en page des cours : barre de chapitres, méthodes, exemples résolus, exercices, barre collante, pense-bête, impression
   course.js         un chapitre par « page » (hash de l'URL), précédent/suivant, boutons « S'entraîner »
   trainer.js        carte d'exercice commune (indices, étapes, vérification, score, barre collante) ; chaque cours fournit son générateur et ses messages
+  examples.js       exemples résolus des cartes de méthode, dans un panneau pleine largeur sous la rangée de la carte
 maths/
   sinusoides/
     index.html, style.css, app.js

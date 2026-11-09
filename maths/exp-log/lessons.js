@@ -7,7 +7,7 @@ import { renderTex, renderMixed, numTex } from "../../shared/tex.js";
 import { themeColors, axis, layout, hline, PLOT_CONFIG } from "../../shared/plot.js";
 import { linspace } from "../../shared/numeric.js";
 import { TYPES, seeded } from "./exercises.js";
-import { appendStep } from "./trainer.js";
+import { initExamples } from "../../shared/examples.js";
 
 const $ = (id) => document.getElementById(id);
 const nf = (digits = 2) => new Intl.NumberFormat("fr-FR", { maximumFractionDigits: digits });
@@ -205,68 +205,6 @@ function renderExp() {
   }
 }
 
-// ───────────── 4. Exemples résolus ─────────────
-
-// One full-width panel per group of methods, shown under the row of the card whose
-// "Voir un exemple" was clicked; a second click, ✕ or Échap closes it.
-function initExamples() {
-  for (const grid of document.querySelectorAll(".methods")) {
-    const panel = document.createElement("div");
-    panel.className = "example-panel";
-    panel.hidden = true;
-    panel.innerHTML = `<div class="example-head"><p class="kicker">Exemple résolu</p><h4></h4>
-      <button type="button" class="ghost link" aria-label="Fermer l'exemple">✕</button></div>
-      <p class="example-text" hidden></p><ol class="steps"></ol>`;
-    const title = panel.querySelector("h4");
-    const list = panel.querySelector(".steps");
-    const text = panel.querySelector(".example-text");
-    let current = null;
-
-    // Insert the panel after the last card on the active card's row, so it spans the grid right below it.
-    const place = () => {
-      if (!current) return;
-      const card = current.closest(".method");
-      const cards = [...grid.querySelectorAll(".method")];
-      const rowEnd = cards.filter((c) => c.offsetTop === card.offsetTop).at(-1);
-      if (panel.previousElementSibling !== rowEnd) rowEnd.after(panel);
-    };
-    const close = () => {
-      if (!current) return;
-      current.setAttribute("aria-expanded", "false");
-      current.closest(".method").classList.remove("active");
-      current = null;
-      panel.hidden = true;
-    };
-    const open = (btn) => {
-      close();
-      current = btn;
-      btn.setAttribute("aria-expanded", "true");
-      const card = btn.closest(".method");
-      card.classList.add("active");
-      title.textContent = card.querySelector("h3").textContent;
-      list.replaceChildren();
-      const ex = TYPES[btn.dataset.example].gen(seeded(11));
-      text.hidden = !ex.text;
-      if (ex.text) renderMixed(text, ex.text);
-      for (const s of ex.steps) appendStep(list, s);
-      panel.hidden = false;
-      place();
-      panel.scrollIntoView({ block: "nearest", behavior: "smooth" });
-    };
-
-    for (const btn of grid.querySelectorAll("[data-example]")) {
-      btn.addEventListener("click", () => (btn === current ? close() : open(btn)));
-    }
-    panel.querySelector(".example-head button").addEventListener("click", () => {
-      const btn = current;
-      close();
-      btn.focus();
-    });
-    panel.addEventListener("keydown", (e) => { if (e.key === "Escape") panel.querySelector(".example-head button").click(); });
-    new ResizeObserver(place).observe(grid);
-  }
-}
-
 // ───────────── 5. Convertisseur de logarithme ─────────────
 
 const readNumber = (s) => Number(s.trim().replace(",", ".").replace(/[−–]/g, "-"));
@@ -439,7 +377,7 @@ export function initLessons() {
   }
   $("exp-inverse").addEventListener("change", renderExp);
 
-  initExamples();
+  initExamples((type) => TYPES[type].gen(seeded(11)));
   for (const id of ["log-a", "log-x"]) $(id).addEventListener("input", renderLog);
 
   $("e-a").addEventListener("input", renderSlope);
