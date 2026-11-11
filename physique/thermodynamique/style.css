@@ -1,0 +1,51 @@
+/* Énergie et thermodynamique: labs specific to this course. Course layout lives in shared/course.css. */
+
+.values { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 0; }
+.values-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 12px; }
+.values div { background: var(--bg); border-radius: 8px; padding: 6px 10px; }
+.values dt { color: var(--muted); font-size: 0.85em; }
+.values dd { margin: 0; font-weight: 600; overflow-x: auto; font-variant-numeric: tabular-nums; }
+.lab-controls output { font-variant-numeric: tabular-nums; }
+.lab .lab-note { margin-top: 10px; }
+.lab-controls .lab-note { margin-top: -6px; }
+.text-table td { text-align: left; }
+.text-table td:first-child { white-space: nowrap; font-weight: 600; }
+blockquote.note-box { margin-left: 0; margin-right: 0; font-style: italic; }
+
+/* Free fall: object, ruler and energy bars */
+.fall-scene, .work-scene, .fl-scene { width: 100%; max-width: 460px; height: auto; justify-self: center; display: block; margin: 0 auto; }
+.fall-ground, .work-ground { stroke: var(--fg); stroke-width: 2; }
+.fall-ruler { stroke: var(--border); stroke-width: 2; }
+.fall-label, .work-label, .fl-label { fill: var(--muted); font: 12px system-ui, sans-serif; }
+.fall-ball { fill: var(--accent); }
+.fall-bar-bg { fill: var(--bg); stroke: var(--border); }
+.fall-ep { fill: var(--circle); }
+.fall-ec { fill: var(--accent); }
+.fall-em { fill: var(--muted); }
+
+/* Work: inclined force on a box */
+.work-box { fill: var(--accent-soft); stroke: var(--border); stroke-width: 2; }
+.work-force { stroke: var(--accent); stroke-width: 3; }
+.arrow-force { fill: var(--accent); }
+.work-par { stroke: var(--bounds); stroke-width: 3; stroke-dasharray: 6 4; }
+.arrow-par { fill: var(--bounds); }
+.work-guide { stroke: var(--border); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.work-disp { stroke: var(--muted); stroke-width: 2; }
+.arrow-disp { fill: var(--muted); }
+.work-angle { fill: none; stroke: var(--fg); stroke-width: 1.5; }
+.work-label-force { fill: var(--accent); font-weight: 700; font-size: 14px; }
+
+/* First law: gas in a cylinder */
+.fl-cylinder { fill: none; stroke: var(--fg); stroke-width: 3; }
+.fl-gas { fill: var(--bg); transition: fill 0.2s; }
+.fl-gas.warm { fill: var(--accent-soft); }
+.fl-gas.cool { fill: color-mix(in srgb, var(--circle) 18%, var(--bg)); }
+.fl-piston { fill: var(--muted); }
+.fl-q { stroke: var(--accent); stroke-width: 3; }
+.fl-w { stroke: var(--circle); stroke-width: 3; }
+.fl-head { fill: var(--fg); }
+.fl-label { fill: var(--fg); font-size: 13px; }
+@media (prefers-reduced-motion: reduce) { .fl-gas { transition: none; } }
+
+@media (max-width: 600px) { .values-3 { grid-template-columns: 1fr; } }
+@media print { .fall-scene, .work-scene, .fl-scene { display: none; } }

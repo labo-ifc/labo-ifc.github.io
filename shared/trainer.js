@@ -47,9 +47,46 @@ function fillChoices(select, TYPES, LEVELS) {
  * @param {(ex) => string} course.placeholder    answer field placeholder
  * @param {(ex, r) => string | null} course.unreadable   message when r.values is null
  * @param {(ex, r) => string} course.wrong       message for a wrong answer
+ *
+ * An exercise with `choices` (texts, $…$ allowed) is a multiple choice question:
+ * buttons replace the answer field and checkAnswer gets the index clicked ("0", "1"…).
  */
 export function initTrainer({ TYPES, LEVELS, generate, checkAnswer, roundingNote, placeholder, unreadable, wrong }) {
   const state = { ex: null, hints: 0, steps: 0, solved: false, counted: false, ok: 0, tried: 0 };
+
+  // Multiple choice buttons, in the card and in the sticky dock.
+  const choiceBoxes = [document.createElement("div"), document.createElement("div")];
+  choiceBoxes[0].id = "ex-choices";
+  choiceBoxes[1].id = "dock-choices";
+  for (const box of choiceBoxes) {
+    box.className = "choices";
+    box.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (btn) submit(btn.dataset.index);
+    });
+  }
+  $("ex-form").querySelector(".answer-row").before(choiceBoxes[0]);
+  $("dock-form").prepend(choiceBoxes[1]);
+
+  function fillChoiceBoxes(ex) {
+    for (const [k, box] of choiceBoxes.entries()) {
+      box.replaceChildren();
+      box.closest("form").classList.toggle("choice-mode", Boolean(ex.choices));
+      for (const [i, text] of (ex.choices ?? []).entries()) {
+        const btn = Object.assign(document.createElement("button"), { type: "button", className: "ghost choice" });
+        btn.dataset.index = i;
+        renderMixed(btn, text);
+        if (k === 1) btn.tabIndex = -1; // the card buttons are the ones reached with Tab
+        box.append(btn);
+      }
+    }
+  }
+
+  function markChoice(i, ok) {
+    for (const box of choiceBoxes) box.children[i]?.classList.add(ok ? "ok" : "bad");
+  }
+
+  const answerFocus = () => (state.ex.choices ? choiceBoxes[0].querySelector("button") : $("ex-answer"));
 
   function updateButtons() {
     const { ex, hints, steps } = state;
@@ -93,14 +130,19 @@ export function initTrainer({ TYPES, LEVELS, generate, checkAnswer, roundingNote
     for (const id of ["ex-feedback", "dock-feedback"]) Object.assign($(id), { textContent: "", className: "feedback" });
     $("ex-hints").replaceChildren();
     $("ex-steps").replaceChildren();
+    fillChoiceBoxes(ex);
     updateButtons();
-    if (focus) $("ex-answer").focus({ preventScroll: true });
+    if (focus) answerFocus().focus({ preventScroll: true });
   }
 
   function check(event) {
     event.preventDefault();
+    submit($("ex-answer").value);
+  }
+
+  function submit(text) {
     const { ex } = state;
-    const r = checkAnswer(ex, $("ex-answer").value);
+    const r = checkAnswer(ex, text);
     if (!r.values) {
       feedback("warn", unreadable(ex, r));
       return;
@@ -118,6 +160,7 @@ export function initTrainer({ TYPES, LEVELS, generate, checkAnswer, roundingNote
     } else {
       feedback("bad", wrong(ex, r));
     }
+    if (ex.choices) markChoice(Number(text), r.ok);
     updateScore();
     updateButtons();
   }
@@ -194,7 +237,7 @@ export function initTrainer({ TYPES, LEVELS, generate, checkAnswer, roundingNote
     train(choice) {
       $("ex-choice").value = choice;
       newExercise({ focus: false });
-      $("ex-answer").focus({ preventScroll: true });
+      answerFocus().focus({ preventScroll: true });
     },
   };
 }

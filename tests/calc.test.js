@@ -125,3 +125,10 @@ test("x is a variable when evaluate gets a value, sin/cos/tan are known", () => 
   assert.ok(Math.abs(calculate("cos(0) + tan(0)").value - 1) < 1e-12);
   assert.equal(toTex(parse("2x")), "2 x");
 });
+
+test("degrees with °", () => {
+  assert.ok(Math.abs(calculate("cos(60°)").value - 0.5) < 1e-12);
+  assert.ok(Math.abs(calculate("50·10·cos(30°)").value - 250 * Math.sqrt(3)) < 1e-9);
+  assert.ok(Math.abs(calculate("sin 90°").value - 1) < 1e-12);
+  assert.equal(toTex(parse("cos(60°)")), "\\cos\\left(60^\\circ\\right)");
+});

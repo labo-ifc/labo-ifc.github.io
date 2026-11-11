@@ -69,7 +69,28 @@ function screenLine(tag, className, scrollTo, props = {}) {
  * Builds a calculator inside `root`. With `onUse(text)`, a button sends the
  * current result elsewhere (e.g. into an exercise's answer field).
  */
-export function initCalculator(root, { onUse } = {}) {
+/** Function keys for physics (degrees): they replace the first two rows of KEYS. */
+export const PHYSICS_KEYS = [
+  ["x²", "²", "Au carré"],
+  ["xʸ", "^", "Puissance : 2^5"],
+  ["√", "√(|)", "Racine carrée"],
+  ["10ˣ", "10^(|)", "10 puissance x"],
+  ["ⁿ√", "^(1/|)", "Racine n-ième : x^(1/n)"],
+  ["sin", "sin(|°)", "Sinus d'un angle en degrés : sin(30°)"],
+  ["cos", "cos(|°)", "Cosinus d'un angle en degrés : cos(60°)"],
+  ["tan", "tan(|°)", "Tangente d'un angle en degrés : tan(45°)"],
+  ["°", "°", "Degrés (sans °, l'angle est en radians)"],
+  ["ln", "ln(|)", "Logarithme népérien (base e)"],
+];
+
+/**
+ * @param {HTMLElement} root
+ * @param {object} [options]
+ * @param {(text: string) => void} [options.onUse] "Utiliser comme réponse"
+ * @param {Array} [options.functionKeys] 10 keys replacing the default function keys (ex. PHYSICS_KEYS)
+ * @param {string} [options.placeholder] example shown in the empty input
+ */
+export function initCalculator(root, { onUse, functionKeys, placeholder = "ex. log_2(8)   ·   ln(5)/ln(2)" } = {}) {
   let ans; // last confirmed result, used by Rép
   let shown = null; // result on screen, what "Utiliser comme réponse" sends
   const history = [];
@@ -79,7 +100,7 @@ export function initCalculator(root, { onUse } = {}) {
     className: "calc-input",
     spellcheck: false,
     autocomplete: "off",
-    placeholder: "ex. log_2(8)   ·   ln(5)/ln(2)",
+    placeholder,
     ariaLabel: "Calcul",
   });
   const preview = screenLine("div", "calc-line calc-preview", "end", { ariaHidden: "true" });
@@ -88,7 +109,8 @@ export function initCalculator(root, { onUse } = {}) {
   const keypad = el("div", { className: "calc-keys" });
   const historyList = el("ol", { className: "calc-history", ariaLabel: "Calculs précédents" });
 
-  for (const [label, insert = label, title] of KEYS) {
+  const keys = functionKeys ? [...functionKeys, ...KEYS.slice(10)] : KEYS;
+  for (const [label, insert = label, title] of keys) {
     const key = el("button", { type: "button", textContent: label, title: title ?? "" });
     if (/^[\d,]$/.test(label)) key.className = "digit";
     key.dataset.insert = insert;

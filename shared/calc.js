@@ -4,6 +4,7 @@
 // Syntax: + − × ÷ ^ ² ³, parentheses (missing ")" are closed at the end),
 // implicit products (2π, 3(1+2), 2√3), decimal comma or point,
 // functions √ ∛ ln log exp sin cos tan (log_a(x) for base a), constants π, e and Rép (last result),
+// degrees with ° (cos(60°): angles are in radians otherwise),
 // and the variable x when `evaluate` gets a value for it (derivatives typed as answers).
 
 export class CalcError extends Error {}
@@ -16,7 +17,7 @@ const NAMES = [
 const FUNCTIONS = new Set(["sqrt", "cbrt", "exp", "ln", "log", "sin", "cos", "tan"]);
 const SYMBOLS = {
   "+": "+", "-": "-", "−": "-", "–": "-", "*": "*", "×": "*", "·": "*", "/": "/", "÷": "/", ":": "/",
-  "^": "^", "(": "(", ")": ")", "²": "²", "³": "³", "_": "_", "π": "pi", "√": "sqrt", "∛": "cbrt",
+  "^": "^", "(": "(", ")": ")", "²": "²", "³": "³", "_": "_", "π": "pi", "√": "sqrt", "∛": "cbrt", "°": "°",
 };
 
 function tokenize(text) {
@@ -90,7 +91,11 @@ export function parse(text) {
 
   function power() {
     let node = primary();
-    while (peek()?.t === "²" || peek()?.t === "³") node = { type: "bin", op: "^", l: node, r: { type: "num", value: next().t === "²" ? 2 : 3 } };
+    for (;;) {
+      if (peek()?.t === "°") { next(); node = { type: "deg", arg: node }; }
+      else if (peek()?.t === "²" || peek()?.t === "³") node = { type: "bin", op: "^", l: node, r: { type: "num", value: next().t === "²" ? 2 : 3 } };
+      else break;
+    }
     if (peek()?.t === "^") { next(); return { type: "bin", op: "^", l: node, r: unary() }; }
     return node;
   }
@@ -108,8 +113,10 @@ export function parse(text) {
     const tok = peek();
     if (!tok) throw incomplete();
     if (tok.t === "(") return group();
-    if (tok.t === "num") { next(); return { type: "num", value: tok.value }; }
-    if (tok.t === "const") { next(); return { type: "const", name: tok.name }; }
+    // A lone number keeps its ° (sin 30°).
+    const deg = (node) => (peek()?.t === "°" ? (next(), { type: "deg", arg: node }) : node);
+    if (tok.t === "num") { next(); return deg({ type: "num", value: tok.value }); }
+    if (tok.t === "const") { next(); return deg({ type: "const", name: tok.name }); }
     throw new CalcError(`Il faut une parenthèse après ${what}`);
   }
 
@@ -145,6 +152,7 @@ export function evaluate(node, ans, x) {
     case "num": return node.value;
     case "paren": return ev(node.arg);
     case "neg": return -ev(node.arg);
+    case "deg": return (ev(node.arg) * Math.PI) / 180;
     case "const":
       if (node.name === "pi") return Math.PI;
       if (node.name === "e") return Math.E;
@@ -213,6 +221,7 @@ export function toTex(node) {
     case "const": return { pi: "\\pi", e: "e", x: "x", ans: "\\text{Rép}" }[node.name];
     case "paren": return `\\left(${toTex(node.arg)}\\right)`;
     case "neg": return `-${toTex(node.arg)}`;
+    case "deg": return `${toTex(node.arg)}^\\circ`;
     case "fn": {
       const arg = toTex(node.arg), inner = toTex(unwrap(node.arg));
       if (node.name === "sqrt") return `\\sqrt{${inner}}`;

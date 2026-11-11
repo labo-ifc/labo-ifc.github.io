@@ -243,6 +243,16 @@ kbd { font-family: var(--mono); font-size: 0.85em; padding: 1px 5px; border: 1px
 .answer .field-label { font-size: 0.9em; }
 .answer-row { display: flex; gap: 8px; }
 #ex-answer { flex: 1; min-width: 0; max-width: 22em; }
+/* Multiple choice: buttons instead of the answer field */
+.choices { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 2px; }
+.choices:empty, .choice-mode .answer-row, .choice-mode > .field-label,
+.dock-form.choice-mode > input, .dock-form.choice-mode > button[type="submit"] { display: none; }
+.choice { text-align: left; }
+.choice.ok { border-color: var(--bounds); background: var(--accent-soft); color: var(--bounds); font-weight: 600; }
+.choice.bad { border-color: var(--error); color: var(--error); text-decoration: line-through; }
+.ex-dock .choices { margin: 0; gap: 4px; }
+.dock-form.choice-mode { flex: 1 1 auto; }
+.ex-dock .choice { padding: 2px 8px; font-size: 0.85em; }
 .feedback { min-height: 1.5em; margin: 8px 0; }
 .feedback.ok { color: var(--bounds); font-weight: 600; }
 .feedback.bad { color: var(--error); }

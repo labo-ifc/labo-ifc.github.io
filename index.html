@@ -18,7 +18,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Labo IFC</title>
-  <meta name="description" content="Outils interactifs pour comprendre les mathématiques et la chimie en les manipulant.">
+  <meta name="description" content="Outils interactifs pour comprendre les mathématiques, la chimie et la physique en les manipulant.">
   <link rel="stylesheet" href="shared/theme.css">
   <script src="shared/theme-boot.js"></script>
   <script>window.goatcounter = { path: p => location.host + p };</script>
@@ -31,7 +31,7 @@
   </header>
 
   <main class="home">
-    <p class="intro">Des outils interactifs pour comprendre les mathématiques et la chimie en les manipulant :
+    <p class="intro">Des outils interactifs pour comprendre les mathématiques, la chimie et la physique en les manipulant :
       on fait varier les paramètres et on voit tout de suite l'effet.</p>
 
     <!-- One <section> per subject, one <li> per tool. Each tool lives in <subject>/<tool>/ and reuses shared/. -->
@@ -89,6 +89,30 @@
           <h3>Hydrocarbures</h3>
           <p>Le pétrole et son raffinage, les carburants, les combustions et leur énergie,
             les alcènes, les polymères et les plastiques, avec un générateur d'exercices corrigés pas à pas.</p>
+        </a>
+      </li>
+    </ul>
+    </section>
+
+    <section class="subject" id="physique" data-subject="physique" aria-labelledby="physique-title">
+    <h2 id="physique-title">Physique</h2>
+    <ul class="tools">
+      <li>
+        <a class="panel tool-card" href="physique/thermodynamique/">
+          <svg viewBox="0 0 200 72" aria-hidden="true">
+            <line x1="10" y1="66" x2="120" y2="66" stroke="var(--muted)" stroke-width="2"/>
+            <path d="M 40 10 Q 70 12 92 58" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="4 4"/>
+            <circle cx="40" cy="10" r="7" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.5"/>
+            <circle cx="92" cy="57" r="8" fill="var(--accent)"/>
+            <g stroke="var(--border)" stroke-width="1.5" fill="var(--panel)">
+              <rect x="140" y="6" width="14" height="60" rx="3"/><rect x="170" y="6" width="14" height="60" rx="3"/>
+            </g>
+            <rect x="140" y="52" width="14" height="14" rx="3" fill="var(--muted)"/>
+            <rect x="170" y="18" width="14" height="48" rx="3" fill="var(--accent)"/>
+          </svg>
+          <h3>Énergie et thermodynamique</h3>
+          <p>Les formes d'énergie, l'énergie cinétique et potentielle, la chaleur, le travail,
+            le premier et le deuxième principe, avec un générateur d'exercices corrigés pas à pas.</p>
         </a>
       </li>
     </ul>

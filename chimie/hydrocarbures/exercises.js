@@ -9,6 +9,7 @@ import {
   combustionEnthalpy, BONDS, chainCe, chainFormula, sigmaPi, chainHydrogens, ADDITIONS, addition, MONOMERS,
 } from "./chem.js";
 import { numTex } from "../../shared/tex.js";
+import { readNumber } from "../../shared/answer.js";
 
 const randInt = (rng, a, b) => a + Math.floor(rng() * (b - a + 1));
 const pick = (rng, list) => list[Math.floor(rng() * list.length)];
@@ -392,14 +393,6 @@ export function generate(choice = "all", rng = Math.random) {
 }
 
 // ---------- answers ----------
-
-/** One number: "12,5", "-814", "3/2", "1,2·10^6", "1.2e6". NaN when unreadable. */
-function readNumber(p) {
-  const t = p.replace(/,/g, ".").replace(/(?:[·*×x]10\^|e)\(?([+-]?\d+)\)?$/, "e$1");
-  const m = t.match(/^([+-]?\d+(?:\.\d+)?(?:e[+-]?\d+)?)(?:\/(\d+(?:\.\d+)?))?$/);
-  if (!m) return NaN;
-  return m[2] ? Number(m[1]) / Number(m[2]) : Number(m[1]);
-}
 
 /** "2 ; 13 ; 8 ; 10", "-2044 kJ/mol", "1,5 t" → numbers, or null when unreadable. */
 export function parseAnswer(text) {

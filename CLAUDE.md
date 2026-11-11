@@ -1,6 +1,6 @@
 # Labo IFC : consignes pour Claude
 
-Site statique d'outils interactifs de maths et de chimie (cours de secondaire, en français), un dossier par matière (`maths/`, `chimie/`).
+Site statique d'outils interactifs de maths, de chimie et de physique (cours de secondaire, en français), un dossier par matière (`maths/`, `chimie/`, `physique/`).
 Ancien nom « Labo maths » : le dépôt `labo-maths/labo-maths.github.io` ne contient plus que des redirections vers ce site. Voir `README.md` pour la structure et le lancement.
 
 ## Conventions
@@ -46,6 +46,17 @@ Ancien nom « Labo maths » : le dépôt `labo-maths/labo-maths.github.io` ne co
 - Chimie dans `chem.js` (sans DOM), exercices dans `exercises.js` : réponses = nombres séparés par « ; » (`labels` pour l'ordre, `kind: "coefs"` pour les coefficients, refus des coefficients non simplifiés), tolérance `tol` absolue ou `rel` relative ; **exactement 3 indices** sans la réponse. `tests/hydrocarbures.test.js` vérifie tout nouveau type automatiquement.
 - Données du cours : énergies de liaison et masses molaires du PDF (gardé en local, jamais versionné). Le tableau du chapitre 2 suit le cours (essences C5–C7) ; le labo de la colonne utilise les paliers de température (C5–C10).
 - Niveaux : 1 Raffinage, 2 Combustions, 3 Énergie, 4 Alcènes, 5 Polymères.
+
+## physique/thermodynamique
+
+- Même mise en page que exp-log et hydrocarbures ; `data-subject="physique"` (accent ambre dans `shared/theme.css`). Pas de mhchem.
+- Physique dans `physics.js` (sans DOM, g = 9,81 N/kg, valeurs de c dans `MATERIALS`), exercices dans `exercises.js`.
+- Réponses : un nombre avec ou sans unité, lu par `parseAnswer(text, unit)` (unités converties via `UNITS` : kJ, MJ, km/h, g, °C, K…, mauvaise unité signalée par `badUnit`) ; tolérance **1 % relative**.
+- QCM : `choices` (textes) et `answers: [index]` ; `shared/trainer.js` affiche les boutons au lieu du champ. Utilisé par le niveau « Notions ».
+- **Exactement 3 indices**, sans aucun nombre de la réponse (même 273,15 : il pourrait correspondre à une réponse) ; `tests/thermodynamique.test.js` vérifie tout nouveau type automatiquement.
+- Accord des phrases : drapeau `fem` dans les données (`HIGH`…), pas de remplacements par regex.
+- Niveaux : 1 Notions, 2 Énergie mécanique, 3 Chaleur et température, 4 Travail, 5 Premier principe.
+- Contenu tiré du PDF de synthèse (gardé en local, jamais versionné).
 
 ## Vérification
 

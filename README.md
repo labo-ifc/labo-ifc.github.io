@@ -1,9 +1,9 @@
 # Labo IFC
 
-Outils interactifs pour comprendre les mathématiques et la chimie en les manipulant.
+Outils interactifs pour comprendre les mathématiques, la chimie et la physique en les manipulant.
 Site : https://labo-ifc.github.io (l'ancien site https://labo-maths.github.io redirige vers les nouvelles adresses).
 
-Un dossier par matière (`maths/`, `chimie/`), un sous-dossier par outil.
+Un dossier par matière (`maths/`, `chimie/`, `physique/`), un sous-dossier par outil.
 
 ### Mathématiques
 
@@ -17,6 +17,12 @@ Un dossier par matière (`maths/`, `chimie/`), un sous-dossier par outil.
 | Outil | Dossier |
 |---|---|
 | Hydrocarbures : pétrole, colonne de distillation interactive, carburants (indice d'octane, craquage), combustions complètes et incomplètes (équilibrage), énergie par les énergies de liaison et pouvoir calorifique, alcènes (liaisons σ et π, additions), polymères et plastiques, pense-bête imprimable, générateur d'exercices avec indices, résolution pas à pas et calculatrice | [`chimie/hydrocarbures/`](chimie/hydrocarbures/) |
+
+### Physique
+
+| Outil | Dossier |
+|---|---|
+| Énergie et thermodynamique : formes et conversions d'énergie, énergies cinétique et potentielle (chute animée), énergie interne et température, chaleur (Q = mcΔT, modes de transfert), travail d'une force inclinée, premier principe (ΔU = Q + W, cycles), deuxième principe, pense-bête imprimable, générateur d'exercices (calculs avec unités et QCM « Notions ») avec indices, résolution pas à pas et calculatrice | [`physique/thermodynamique/`](physique/thermodynamique/) |
 
 ## Services
 
@@ -68,6 +74,8 @@ Pour les exercices de `exp-log/`, `tests/exp-log.steps.test.js` vérifie numéri
 ainsi que les trois indices, qui ne doivent jamais donner la réponse.
 Pour `chimie/hydrocarbures/`, `tests/hydrocarbures.test.js` vérifie chaque type d'exercice (réponse acceptée,
 indices, formules bien formées), la conservation des atomes des combustions et les enthalpies recalculées.
+Pour `physique/thermodynamique/`, `tests/thermodynamique.test.js` vérifie chaque type d'exercice sur 300 tirages
+(réponse acceptée, avec ou sans unité, QCM, indices sans la réponse) et les formules de `physics.js`.
 
 L'interface de `exp-log/` se vérifie dans le navigateur : avec le serveur local lancé,
 ouvrir http://localhost:8000/tests/exp-log.browser.html (toutes les lignes doivent être vertes).
@@ -75,7 +83,7 @@ ouvrir http://localhost:8000/tests/exp-log.browser.html (toutes les lignes doive
 ## Structure
 
 ```
-index.html          page d'accueil : les outils groupés par matière (une section par matière, ancre #maths, #chimie)
+index.html          page d'accueil : les outils groupés par matière (une section par matière, ancre #maths, #chimie, #physique)
 shared/
   theme.css         couleurs (variables CSS), thèmes clair/sombre, composants communs (boutons, champs, curseurs)
   theme-boot.js     thème appliqué avant le premier affichage (script bloquant dans <head>)
@@ -86,11 +94,12 @@ shared/
   fraction.js       fractions exactes (calcul et affichage TeX)
   tex.js            rendu KaTeX (formules statiques, texte mêlé de $…$)
   plot.js           couleurs du thème et mise en page Plotly communes
-  calc.js           calculatrice : saisie → arbre → valeur (variable x, sin/cos/tan), TeX et erreurs en français (sans DOM, pas d'eval)
-  calculator.js/.css  widget calculatrice (écran de taille fixe, aperçu TeX, clavier, historique, Rép)
+  calc.js           calculatrice : saisie → arbre → valeur (variable x, sin/cos/tan, angles en degrés avec °), TeX et erreurs en français (sans DOM, pas d'eval)
+  calculator.js/.css  widget calculatrice (écran de taille fixe, aperçu TeX, clavier, historique, Rép ; touches de fonction au choix, PHYSICS_KEYS)
+  answer.js         lecture d'un nombre tapé par l'élève (virgule, fraction, puissance de 10)
   course.css        mise en page des cours : barre de chapitres, méthodes, exemples résolus, exercices, barre collante, pense-bête, impression
   course.js         un chapitre par « page » (hash de l'URL), précédent/suivant, boutons « S'entraîner »
-  trainer.js        carte d'exercice commune (indices, étapes, vérification, score, barre collante) ; chaque cours fournit son générateur et ses messages
+  trainer.js        carte d'exercice commune (indices, étapes, vérification, score, barre collante, QCM) ; chaque cours fournit son générateur et ses messages
   examples.js       exemples résolus des cartes de méthode, dans un panneau pleine largeur sous la rangée de la carte
 maths/
   sinusoides/
@@ -113,6 +122,14 @@ chimie/
                       additions, polymères) et exemples résolus
     exercises.js      générateur d'exercices (sans DOM), lecture et correction des réponses (nombres séparés par « ; »)
     trainer.js        messages propres au cours pour la carte d'exercice commune
+physique/
+  thermodynamique/
+    index.html, style.css, app.js
+    physics.js        physique du cours (sans DOM) : Ec, Ep, chute libre, Q = mcΔT, kelvins, travail, ΔU = Q + W,
+                      situations des QCM (formes, conversions, modes de transfert, affirmations)
+    lessons.js        laboratoires du cours (chute, travail d'une force inclinée, chauffage, signes de ΔU) et exemples résolus
+    exercises.js      générateur d'exercices (sans DOM) : calculs avec unités (kJ, km/h, g, °C…) et QCM
+    trainer.js        messages propres au cours (erreurs de signe, de facteur 1000, de km/h)
 tests/
   *.test.js         tests Node
   tex-eval.js       évaluateur numérique du TeX des corrigés (utilisé par exp-log.steps.test.js)

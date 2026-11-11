@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Énergie et thermodynamique · Labo IFC</title>
+  <meta name="description" content="Parcours interactif : formes d'énergie, énergie cinétique et potentielle, énergie interne et température, chaleur, travail, premier et deuxième principes, pense-bête et générateur d'exercices corrigés pas à pas.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+  <link rel="stylesheet" href="../../shared/theme.css">
+  <link rel="stylesheet" href="../../shared/calculator.css">
+  <link rel="stylesheet" href="../../shared/course.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="../../shared/theme-boot.js"></script>
+  <script>window.goatcounter = { path: p => location.host + p };</script>
+  <script data-goatcounter="https://exokayn.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body data-subject="physique">
+  <header class="topbar">
+    <nav class="crumbs"><a href="../../">Labo IFC</a><span aria-hidden="true">/</span><a href="../../#physique">Physique</a><span aria-hidden="true">/</span><h1>Énergie et thermodynamique</h1></nav>
+    <button id="theme-toggle" class="ghost" type="button" aria-label="Changer de thème">Thème</button>
+  </header>
+
+  <div class="course">
+    <nav class="chapters" aria-label="Chapitres">
+      <ol>
+        <li><a href="#formes" title="Les formes d'énergie">Formes</a></li>
+        <li><a href="#mecanique" title="L'énergie mécanique">Mécanique</a></li>
+        <li><a href="#energie-interne" title="Énergie interne et température">Énergie interne</a></li>
+        <li><a href="#chaleur" title="La chaleur">Chaleur</a></li>
+        <li><a href="#travail" title="Le travail">Travail</a></li>
+        <li><a href="#premier-principe" title="Le premier principe">1er principe</a></li>
+        <li><a href="#deuxieme-principe" title="Le deuxième principe">2e principe</a></li>
+        <li><a href="#pense-bete" title="Pense-bête">Pense-bête</a></li>
+        <li><a href="#exercices" title="Exercices">Exercices</a></li>
+      </ol>
+    </nav>
+
+    <main class="chapters-content">
+      <!-- 1 ─────────────────────────────────────────────── -->
+      <section id="formes" class="panel chapter">
+        <p class="kicker">Chapitre 1</p>
+        <h2>Les formes d'énergie</h2>
+        <p>L'<strong>énergie</strong> est la capacité d'un système à produire un travail, à transférer de la chaleur
+          ou à provoquer un changement d'état ou de mouvement. Elle se mesure en <strong>joules</strong> (J).</p>
+
+        <div class="table-wrap">
+          <table class="value-table text-table">
+            <thead><tr><th>Forme</th><th>Idée clé</th><th>Exemples</th></tr></thead>
+            <tbody>
+              <tr><td>Mécanique cinétique</td><td>Énergie d'un objet en mouvement : plus il va vite, plus elle est grande</td><td>Vent (éolien), cours d'eau (hydraulique)</td></tr>
+              <tr><td>Mécanique potentielle</td><td>Énergie stockée dans un objet immobile : plus il est haut, plus elle est grande</td><td>Eau d'un barrage, balle tenue en l'air</td></tr>
+              <tr><td>Thermique</td><td>Agitation des atomes et des molécules : énergie cinétique d'un ensemble au repos</td><td>Géothermie, machine à vapeur</td></tr>
+              <tr><td>Rayonnante</td><td>Transportée par les ondes électromagnétiques, sans support matériel</td><td>Lumière du Soleil, infrarouges, UV, micro-ondes</td></tr>
+              <tr><td>Chimique</td><td>Liaisons entre les atomes des molécules, libérée quand elles se brisent</td><td>Combustion du pétrole, du gaz, du charbon, de la biomasse</td></tr>
+              <tr><td>Nucléaire</td><td>Liaisons entre les protons et les neutrons du noyau</td><td>Fission de l'uranium (centrale), fusion de l'hydrogène (Soleil)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="note-box">L'énergie <strong>électrique</strong> n'est pas une forme d'énergie en soi : c'est un <strong>vecteur</strong> d'énergie entre deux systèmes,
+          par un mouvement d'électrons (alternateur ou pile → lampe, moteur, résistance).</p>
+
+        <h3>Les conversions à connaître</h3>
+        <p>L'énergie ne disparaît pas : elle passe d'une forme à une autre.</p>
+        <ul class="plain-list">
+          <li><strong>Corps humain</strong> : chimique → thermique</li>
+          <li><strong>Objet qui tombe</strong> : potentielle → cinétique</li>
+          <li><strong>Lance-pierre</strong> : élastique tendu (potentielle) → balle lancée (cinétique) → balle en haut (potentielle)</li>
+          <li><strong>Barrage</strong> : potentielle → cinétique → mécanique (turbine) → électrique</li>
+          <li><strong>Centrale au charbon</strong> : chimique → thermique → mécanique → électrique</li>
+          <li><strong>Panneau photovoltaïque</strong> : rayonnante → électrique</li>
+        </ul>
+
+        <div class="methods">
+          <article class="method">
+            <h3>Reconnaître une forme</h3>
+            <p>Cherche ce qui porte l'énergie : un objet qui bouge, un objet en hauteur, des particules agitées, des ondes, des liaisons chimiques, un noyau.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="energyForm" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="energyForm">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Chaîne de conversion</h3>
+            <p>Pars de la forme d'énergie au départ, termine par celle qu'on utilise, et suis le dispositif étape par étape.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="conversion" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="conversion">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 2 ─────────────────────────────────────────────── -->
+      <section id="mecanique" class="panel chapter">
+        <p class="kicker">Chapitre 2</p>
+        <h2>L'énergie mécanique</h2>
+        <p>L'<strong>énergie mécanique</strong> est la somme de l'énergie cinétique (due à la vitesse) et de l'énergie potentielle (due à la hauteur).</p>
+        <p class="formula-box" data-tex="E_c = \tfrac{1}{2} \cdot m \cdot v^2 \qquad E_p = m \cdot g \cdot h \qquad E_m = E_c + E_p" data-display></p>
+        <ul class="plain-list">
+          <li><span data-tex="m"></span> en kg, <span data-tex="v"></span> en m/s, <span data-tex="h"></span> en m, <span data-tex="g = 9{,}81\ \text{N/kg}"></span> dans nos régions.</li>
+          <li><span data-tex="E_c"></span> dépend de <span data-tex="v^2"></span> : si la vitesse <strong>double</strong>, l'énergie cinétique est multipliée par <strong>4</strong>.</li>
+          <li><span data-tex="E_c"></span> et <span data-tex="E_p"></span> sont proportionnelles à la masse.</li>
+        </ul>
+
+        <div class="lab">
+          <div class="lab-controls">
+            <div class="slider">
+              <label for="mec-m">Masse m</label>
+              <output id="mec-m-out" for="mec-m"></output>
+              <input type="range" id="mec-m" min="1" max="100" step="1" value="10">
+            </div>
+            <div class="slider">
+              <label for="mec-v">Vitesse v</label>
+              <output id="mec-v-out" for="mec-v"></output>
+              <input type="range" id="mec-v" min="0" max="40" step="0.5" value="5">
+            </div>
+            <div class="slider">
+              <label for="mec-h">Hauteur h</label>
+              <output id="mec-h-out" for="mec-h"></output>
+              <input type="range" id="mec-h" min="0" max="50" step="0.5" value="10">
+            </div>
+            <p class="lab-note">Double la vitesse : l'énergie cinétique est multipliée par 4. Double la hauteur : l'énergie potentielle double.</p>
+          </div>
+          <div>
+            <p id="mec-formula" class="formula-box"></p>
+            <dl class="values values-3">
+              <div><dt>Énergie cinétique <span data-tex="E_c"></span></dt><dd id="mec-ec"></dd></div>
+              <div><dt>Énergie potentielle <span data-tex="E_p"></span></dt><dd id="mec-ep"></dd></div>
+              <div><dt>Énergie mécanique <span data-tex="E_m"></span></dt><dd id="mec-em"></dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <h3>Un objet qui tombe : potentielle → cinétique</h3>
+        <p>On lâche l'objet de la hauteur <span data-tex="h"></span> choisie ci-dessus, sans vitesse au départ. Sans frottement,
+          l'énergie potentielle perdue devient de l'énergie cinétique : l'énergie mécanique reste <strong>constante</strong>.</p>
+        <div class="lab">
+          <div class="lab-controls">
+            <button type="button" id="fall-play" class="primary">Lâcher</button>
+            <dl class="values">
+              <div><dt>Temps</dt><dd id="fall-t"></dd></div>
+              <div><dt>Hauteur</dt><dd id="fall-h"></dd></div>
+              <div><dt>Vitesse</dt><dd id="fall-v"></dd></div>
+              <div><dt><span data-tex="E_p"></span></dt><dd id="fall-ep"></dd></div>
+              <div><dt><span data-tex="E_c"></span></dt><dd id="fall-ec"></dd></div>
+            </dl>
+          </div>
+          <svg id="fall-scene" class="fall-scene" viewBox="0 0 310 260" role="img" aria-label="Objet en chute et barres d'énergie potentielle, cinétique et mécanique"></svg>
+        </div>
+        <p class="formula-box" data-tex="m \cdot g \cdot h = \tfrac{1}{2} \cdot m \cdot v^2 \quad\Longrightarrow\quad v = \sqrt{2 \cdot g \cdot h}" data-display></p>
+        <p class="lab-note">La masse se simplifie : sans frottement, un objet lourd et un objet léger arrivent au sol à la même vitesse.</p>
+
+        <div class="methods">
+          <article class="method">
+            <h3>Énergie cinétique</h3>
+            <p>Convertis d'abord : masse en kg, vitesse en m/s (km/h ÷ 3,6). Puis <span data-tex="E_c = \tfrac{1}{2} m v^2"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="kinetic" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="kinetic">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Énergie potentielle</h3>
+            <p><span data-tex="E_p = m \cdot g \cdot h"></span>, masse en kg et hauteur en m. Pour trouver la hauteur : <span data-tex="h = \frac{E_p}{m \cdot g}"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="potential" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="potential">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Conservation</h3>
+            <p>Sans frottement, <span data-tex="E_p"></span> perdue = <span data-tex="E_c"></span> gagnée : <span data-tex="v = \sqrt{2gh}"></span> en bas, <span data-tex="h = \frac{v^2}{2g}"></span> en haut.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="fall" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="fall">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 3 ─────────────────────────────────────────────── -->
+      <section id="energie-interne" class="panel chapter">
+        <p class="kicker">Chapitre 3</p>
+        <h2>Énergie interne et température</h2>
+        <p>La <strong>thermodynamique</strong> étudie comment l'énergie entre dans un système ou en sort, sous forme de <strong>chaleur</strong> (<span data-tex="Q"></span>)
+          ou de <strong>travail</strong> (<span data-tex="W"></span>).</p>
+
+        <h3>L'énergie interne U</h3>
+        <ul class="plain-list">
+          <li><span data-tex="U"></span> est la somme des énergies cinétiques et potentielles de <strong>toutes les particules</strong> du système, en joules.</li>
+          <li><span data-tex="U"></span> est une grandeur <strong>microscopique</strong> ; la <strong>température</strong> est <strong>macroscopique</strong> : elle mesure l'énergie cinétique moyenne des particules.</li>
+          <li>La température monte → les particules s'agitent plus → <span data-tex="U"></span> augmente.</li>
+        </ul>
+
+        <h3>Types de systèmes</h3>
+        <div class="table-wrap">
+          <table class="value-table text-table">
+            <thead><tr><th>Système</th><th>Ce qui peut changer</th></tr></thead>
+            <tbody>
+              <tr><td>Fermé</td><td>La masse reste constante ; l'énergie peut entrer ou sortir</td></tr>
+              <tr><td>Ouvert</td><td>La masse et l'énergie peuvent varier</td></tr>
+              <tr><td>Isolé</td><td>Aucune énergie n'entre ni ne sort</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Les échelles de température</h3>
+        <p class="formula-box" data-tex="T(\text{K}) = T({}^\circ\text{C}) + 273{,}15" data-display></p>
+        <ul class="plain-list">
+          <li>Le <strong>kelvin</strong> est l'unité SI de température.</li>
+          <li>Une variation de 1 °C est égale à une variation de 1 K : les deux échelles ont le même pas.</li>
+          <li><strong>Zéro absolu</strong> : <span data-tex="0\ \text{K} = -273{,}15\ {}^\circ\text{C}"></span>, l'agitation des particules est nulle. Rien ne peut être plus froid.</li>
+        </ul>
+
+        <div class="methods">
+          <article class="method">
+            <h3>°C ↔ K</h3>
+            <p>Des degrés Celsius vers les kelvins : <strong>+ 273,15</strong>. Dans l'autre sens : <strong>− 273,15</strong>. Une variation garde la même valeur.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="kelvin" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="kelvin">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 4 ─────────────────────────────────────────────── -->
+      <section id="chaleur" class="panel chapter">
+        <p class="kicker">Chapitre 4</p>
+        <h2>La chaleur</h2>
+        <h3>Chaleur ≠ température</h3>
+        <div class="table-wrap">
+          <table class="value-table text-table">
+            <thead><tr><th></th><th>Température T</th><th>Chaleur Q</th></tr></thead>
+            <tbody>
+              <tr><td>Nature</td><td>Un état : l'agitation des particules</td><td>Un transfert d'énergie thermique</td></tr>
+              <tr><td>Unité</td><td>°C ou K</td><td>J</td></tr>
+              <tr><td>Remarque</td><td>Mesure l'énergie cinétique moyenne</td><td>Toujours du corps chaud vers le corps froid ; un objet ne « contient » pas de chaleur</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note-box">Une goutte et une casserole d'eau à 100 °C ont la <strong>même température</strong>, mais elles ne transfèrent pas la même chaleur à la peau :
+          la casserole contient bien plus de particules agitées.</p>
+
+        <h3>Les modes de transmission</h3>
+        <div class="table-wrap">
+          <table class="value-table text-table">
+            <thead><tr><th>Mode</th><th>Matière ?</th><th>Principe</th><th>Exemples</th></tr></thead>
+            <tbody>
+              <tr><td>Conduction</td><td>Oui</td><td>De proche en proche, sans déplacement de matière</td><td>Manche de casserole, cuillère dans la soupe</td></tr>
+              <tr><td>Convection</td><td>Oui (liquide ou gaz)</td><td>Mouvement de la matière : le chaud monte, le froid descend</td><td>Radiateur, eau qui chauffe</td></tr>
+              <tr><td>Rayonnement</td><td>Non</td><td>Ondes électromagnétiques, même dans le vide</td><td>Soleil → Terre, feu de camp</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Chaleur et variation de température</h3>
+        <p class="formula-box" data-tex="Q = m \cdot c \cdot \Delta T = m \cdot c \cdot (T_2 - T_1)" data-display></p>
+        <ul class="plain-list">
+          <li>Valable <strong>sans changement d'état</strong> et sans travail.</li>
+          <li><span data-tex="c"></span> est la <strong>capacité thermique massique</strong> (J/(kg·°C)) : la chaleur qu'il faut pour élever 1 kg de 1 °C.</li>
+          <li>Eau : <span data-tex="c = 4185\ \text{J/(kg}\cdot{}^\circ\text{C)}"></span> ; 1 L = 1 dm³ = 1 kg d'eau.</li>
+          <li><span data-tex="\Delta T = T_\text{finale} - T_\text{initiale}"></span> : si le corps se refroidit, <span data-tex="Q"></span> est négatif (il cède de la chaleur).</li>
+        </ul>
+
+        <div class="lab">
+          <div class="lab-controls">
+            <label class="row">Matériau
+              <select id="heat-mat"></select>
+            </label>
+            <div class="slider">
+              <label for="heat-m">Masse m</label>
+              <output id="heat-m-out" for="heat-m"></output>
+              <input type="range" id="heat-m" min="0.1" max="5" step="0.1" value="1">
+            </div>
+            <div class="slider">
+              <label for="heat-t1">Température initiale</label>
+              <output id="heat-t1-out" for="heat-t1"></output>
+              <input type="range" id="heat-t1" min="-20" max="100" step="1" value="20">
+            </div>
+            <div class="slider">
+              <label for="heat-t2">Température finale</label>
+              <output id="heat-t2-out" for="heat-t2"></output>
+              <input type="range" id="heat-t2" min="-20" max="100" step="1" value="80">
+            </div>
+          </div>
+          <div>
+            <p id="heat-formula" class="formula-box"></p>
+            <dl class="values values-3">
+              <div><dt>Capacité <span data-tex="c"></span></dt><dd id="heat-c"></dd></div>
+              <div><dt>Variation <span data-tex="\Delta T"></span></dt><dd id="heat-dt"></dd></div>
+              <div><dt>Chaleur <span data-tex="Q"></span></dt><dd id="heat-q"></dd></div>
+            </dl>
+            <p id="heat-note" class="lab-note"></p>
+            <p id="heat-compare" class="lab-note"></p>
+          </div>
+        </div>
+
+        <div class="methods">
+          <article class="method">
+            <h3>Mode de transmission</h3>
+            <p>Pas de matière entre les deux : rayonnement. Un liquide ou un gaz qui circule : convection. Dans un solide, de proche en proche : conduction.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="heatMode" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="heatMode">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Calculer Q</h3>
+            <p>Masse en kg (mL d'eau → g → kg), <span data-tex="\Delta T = T_2 - T_1"></span> avec son signe, puis <span data-tex="Q = m c \Delta T"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="heat" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="heat">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Trouver T ou m</h3>
+            <p>Isole l'inconnue : <span data-tex="\Delta T = \frac{Q}{m c}"></span> puis <span data-tex="T_2 = T_1 + \Delta T"></span>, ou <span data-tex="m = \frac{Q}{c \, \Delta T}"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="heatFind" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="heatFind">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 5 ─────────────────────────────────────────────── -->
+      <section id="travail" class="panel chapter">
+        <p class="kicker">Chapitre 5</p>
+        <h2>Le travail</h2>
+        <p>Le <strong>travail</strong> est l'énergie transférée par une force. Il faut un <strong>déplacement</strong>,
+          et seule la <strong>composante de la force parallèle au déplacement</strong> travaille.</p>
+        <p class="formula-box" data-tex="W = F \cdot d \ \ \text{(force parallèle)} \qquad W = F \cdot d \cdot \cos\theta \ \ \text{(force inclinée de } \theta\text{)}" data-display></p>
+        <ul class="plain-list">
+          <li><span data-tex="1\ \text{J} = 1\ \text{N} \cdot 1\ \text{m}"></span></li>
+          <li>Si l'objet ne bouge pas : <span data-tex="W = 0"></span>, même si on se fatigue.</li>
+          <li>Si la force est perpendiculaire au déplacement : <span data-tex="\cos 90^\circ = 0"></span>, donc <span data-tex="W = 0"></span>.</li>
+        </ul>
+
+        <div class="lab">
+          <div class="lab-controls">
+            <div class="slider">
+              <label for="work-f">Force F</label>
+              <output id="work-f-out" for="work-f"></output>
+              <input type="range" id="work-f" min="0" max="200" step="5" value="100">
+            </div>
+            <div class="slider">
+              <label for="work-d">Déplacement d</label>
+              <output id="work-d-out" for="work-d"></output>
+              <input type="range" id="work-d" min="0" max="20" step="0.5" value="10">
+            </div>
+            <div class="slider">
+              <label for="work-theta">Angle θ</label>
+              <output id="work-theta-out" for="work-theta"></output>
+              <input type="range" id="work-theta" min="0" max="180" step="5" value="30">
+            </div>
+            <p id="work-note" class="lab-note"></p>
+          </div>
+          <div>
+            <svg id="work-scene" class="work-scene" viewBox="0 0 400 220" role="img" aria-label="Force inclinée sur une caisse et sa composante parallèle au déplacement"></svg>
+            <p id="work-formula" class="formula-box"></p>
+            <dl class="values values-3">
+              <div><dt><span data-tex="\cos\theta"></span></dt><dd id="work-cos"></dd></div>
+              <div><dt>Composante parallèle <span data-tex="F \cos\theta"></span></dt><dd id="work-par"></dd></div>
+              <div><dt>Travail <span data-tex="W"></span></dt><dd id="work-w"></dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="methods">
+          <article class="method">
+            <h3>Calculer un travail</h3>
+            <p>Repère l'angle entre la force et le déplacement, puis <span data-tex="W = F \cdot d \cdot \cos\theta"></span>. Pas de déplacement ou angle de 90° : <span data-tex="W = 0"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="work" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="work">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Force ou distance</h3>
+            <p>Isole l'inconnue : <span data-tex="F = \frac{W}{d \cos\theta}"></span> ou <span data-tex="d = \frac{W}{F \cos\theta}"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="workFind" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="workFind">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 6 ─────────────────────────────────────────────── -->
+      <section id="premier-principe" class="panel chapter">
+        <p class="kicker">Chapitre 6</p>
+        <h2>Le premier principe : la conservation de l'énergie</h2>
+        <blockquote class="note-box">« Au cours d'une transformation d'un système fermé, la variation de son énergie est égale à l'énergie échangée avec l'extérieur par chaleur et par travail. »</blockquote>
+        <p class="formula-box" data-tex="\Delta U = Q + W" data-display></p>
+
+        <h3>Convention de signes</h3>
+        <ul class="plain-list">
+          <li>Le système <strong>reçoit</strong> de l'énergie → <strong>+</strong> ; il <strong>cède</strong> (ou fournit) de l'énergie → <strong>−</strong>. Pareil pour <span data-tex="Q"></span> et pour <span data-tex="W"></span>.</li>
+          <li><span data-tex="Q > 0"></span> ou <span data-tex="W > 0"></span> (reçus) → <span data-tex="U"></span> augmente → la température monte.</li>
+          <li><span data-tex="Q < 0"></span> ou <span data-tex="W < 0"></span> (cédés) → <span data-tex="U"></span> diminue → la température baisse.</li>
+          <li>« Le gaz fournit un travail » : <span data-tex="W < 0"></span> pour le gaz. « Il reçoit de la chaleur » : <span data-tex="Q > 0"></span>.</li>
+        </ul>
+
+        <div class="lab">
+          <div class="lab-controls">
+            <div class="slider">
+              <label for="fl-q">Chaleur Q</label>
+              <output id="fl-q-out" for="fl-q"></output>
+              <input type="range" id="fl-q" min="-2000" max="2000" step="50" value="800">
+            </div>
+            <p id="fl-q-word" class="lab-note"></p>
+            <div class="slider">
+              <label for="fl-w">Travail W</label>
+              <output id="fl-w-out" for="fl-w"></output>
+              <input type="range" id="fl-w" min="-2000" max="2000" step="50" value="-300">
+            </div>
+            <p id="fl-w-word" class="lab-note"></p>
+            <label class="check"><input type="checkbox" id="fl-cycle"> Cycle complet (machine thermique)</label>
+            <p id="fl-note" class="lab-note"></p>
+          </div>
+          <div>
+            <svg id="fl-scene" class="fl-scene" viewBox="0 0 400 220" role="img" aria-label="Gaz dans un cylindre avec les échanges de chaleur et de travail"></svg>
+            <p id="fl-formula" class="formula-box"></p>
+            <dl class="values">
+              <div><dt>Variation d'énergie interne <span data-tex="\Delta U"></span></dt><dd id="fl-du"></dd></div>
+              <div><dt>Température du gaz</dt><dd id="fl-t"></dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <h3>Les machines thermiques</h3>
+        <p>Une machine thermique (moteur, réfrigérateur…) fonctionne par <strong>cycles</strong> : à la fin de chaque cycle, elle revient à son état de départ,
+          donc <span data-tex="\Delta U = 0"></span>. Elle ne transforme <strong>jamais</strong> toute l'énergie reçue en travail : une partie est cédée à la source froide.
+          On parle de <strong>rendement</strong>.</p>
+
+        <div class="methods">
+          <article class="method">
+            <h3>Appliquer ΔU = Q + W</h3>
+            <p>Traduis chaque phrase en un nombre signé (reçu +, cédé −), puis <span data-tex="\Delta U = Q + W"></span> ou isole l'inconnue.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="firstLaw" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="firstLaw">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Sur un cycle</h3>
+            <p><span data-tex="\Delta U = 0"></span> : la somme des chaleurs et des travaux échangés est nulle, <span data-tex="Q_1 + Q_2 + W = 0"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="cycle" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="cycle">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 7 ─────────────────────────────────────────────── -->
+      <section id="deuxieme-principe" class="panel chapter">
+        <p class="kicker">Chapitre 7</p>
+        <h2>Le deuxième principe</h2>
+        <blockquote class="note-box">« Les échanges d'énergie ne se font que dans un seul sens : de la source chaude vers la source froide, jusqu'à l'équilibre thermique. »</blockquote>
+        <ul class="plain-list">
+          <li>La chaleur va <strong>spontanément</strong> du corps chaud vers le corps froid, jamais l'inverse.</li>
+          <li>Le processus est <strong>irréversible</strong> : un glaçon fond dans de l'eau chaude, mais l'eau tiède ne se sépare jamais d'elle-même en glaçon et en eau chaude.</li>
+          <li>Les échanges s'arrêtent à l'<strong>équilibre thermique</strong>, quand les deux corps ont la même température.</li>
+        </ul>
+        <h3>L'entropie</h3>
+        <p>La cause de ce sens unique est l'<strong>entropie</strong> <span data-tex="S"></span> (en J/K), qui mesure le désordre, la dispersion de l'énergie.
+          Dans un système isolé, l'entropie <strong>augmente ou reste constante</strong> : elle ne diminue jamais spontanément.</p>
+        <p class="note-box">C'est aussi pour cela qu'une machine thermique a besoin d'une source froide : elle ne peut pas transformer toute la chaleur reçue en travail.</p>
+
+        <div class="methods">
+          <article class="method">
+            <h3>Pièges classiques</h3>
+            <p>Chaleur ou température, sens des échanges, signe du travail, électricité… Une seule affirmation est correcte : laquelle ?</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="trueStatement" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="level:1">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 8 ─────────────────────────────────────────────── -->
+      <section id="pense-bete" class="panel chapter">
+        <p class="kicker">Chapitre 8</p>
+        <div class="cheat-head">
+          <h2>Pense-bête</h2>
+          <button type="button" id="cheat-print" class="ghost">Imprimer</button>
+        </div>
+        <div class="cheat">
+          <article class="cheat-card">
+            <h3>Formes d'énergie</h3>
+            <ul>
+              <li>Mécanique (cinétique, potentielle), thermique, rayonnante, chimique, nucléaire</li>
+              <li>Électrique : un <strong>vecteur</strong>, pas une forme d'énergie</li>
+              <li>Énergie en joules (J)</li>
+            </ul>
+          </article>
+          <article class="cheat-card">
+            <h3>Énergie mécanique</h3>
+            <ul>
+              <li><span data-tex="E_c = \tfrac{1}{2} m v^2"></span> (J ; kg ; m/s)</li>
+              <li><span data-tex="E_p = m g h"></span> (J ; kg ; N/kg ; m), <span data-tex="g = 9{,}81\ \text{N/kg}"></span></li>
+              <li>Chute sans frottement : <span data-tex="v = \sqrt{2gh}"></span></li>
+            </ul>
+          </article>
+          <article class="cheat-card">
+            <h3>Chaleur et température</h3>
+            <ul>
+              <li><span data-tex="Q = m \cdot c \cdot \Delta T"></span> (J ; kg ; J/(kg·°C) ; °C)</li>
+              <li>Eau : <span data-tex="c = 4185"></span> ; 1 L = 1 kg</li>
+              <li><span data-tex="T(\text{K}) = T({}^\circ\text{C}) + 273{,}15"></span></li>
+              <li>Conduction, convection, rayonnement</li>
+            </ul>
+          </article>
+          <article class="cheat-card">
+            <h3>Travail et principes</h3>
+            <ul>
+              <li><span data-tex="W = F \cdot d \cdot \cos\theta"></span> (J ; N ; m)</li>
+              <li><span data-tex="\Delta U = Q + W"></span> ; reçu +, cédé −</li>
+              <li>Cycle : <span data-tex="\Delta U = 0"></span></li>
+              <li>Chaleur : toujours du chaud vers le froid ; entropie jamais en baisse spontanée</li>
+            </ul>
+          </article>
+          <article class="cheat-card">
+            <h3>Pièges classiques</h3>
+            <ul>
+              <li>km/h → m/s : ÷ 3,6 ; g → kg : ÷ 1000 ; 500 mL d'eau = 0,5 kg</li>
+              <li><span data-tex="\Delta T = T_\text{finale} - T_\text{initiale}"></span>, sans inverser</li>
+              <li>« Le gaz fournit un travail » : <span data-tex="W < 0"></span></li>
+              <li>Force inclinée : ne pas oublier <span data-tex="\cos\theta"></span> ; objet immobile : <span data-tex="W = 0"></span></li>
+              <li>Chaleur ≠ température</li>
+            </ul>
+          </article>
+          <article class="cheat-card">
+            <h3>Rédiger une solution</h3>
+            <ul>
+              <li>Données → Inconnue → Formule → Calcul → Résultat avec unité</li>
+              <li>Convertir en unités SI avant de remplacer</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- 9 ─────────────────────────────────────────────── -->
+      <section id="exercices" class="panel chapter">
+        <p class="kicker">Chapitre 9</p>
+        <h2>Exercices</h2>
+        <div class="trainer-bar">
+          <label class="row">Type
+            <select id="ex-choice"></select>
+          </label>
+          <button type="button" id="ex-new" class="primary">Nouvel exercice</button>
+          <button type="button" id="calc-toggle" class="ghost" aria-controls="calc" aria-pressed="true">Calculatrice</button>
+          <p id="ex-score" class="score" role="status"></p>
+        </div>
+
+        <div class="ex-layout">
+          <div class="exercise" id="exercise">
+            <p class="prompt" id="ex-prompt"></p>
+            <p class="statement" id="ex-statement"></p>
+
+            <form id="ex-form" class="answer" autocomplete="off">
+              <label for="ex-answer" class="field-label">Ta réponse</label>
+              <div class="answer-row">
+                <input id="ex-answer" class="text-input" type="text" spellcheck="false">
+                <button type="submit" class="primary">Vérifier</button>
+              </div>
+              <p id="ex-feedback" class="feedback" role="status"></p>
+            </form>
+
+            <div class="helpers">
+              <button type="button" id="ex-hint" class="ghost">Indice</button>
+              <button type="button" id="ex-step" class="ghost">Étape suivante</button>
+              <button type="button" id="ex-all" class="ghost link">Tout afficher</button>
+            </div>
+            <div class="ex-dock-anchor">
+              <div id="ex-dock" class="ex-dock" hidden aria-label="Commandes de l'exercice">
+                <div class="dock-row">
+                  <span id="dock-statement" class="dock-statement"></span>
+                  <form id="dock-form" class="dock-form" autocomplete="off">
+                    <input id="dock-answer" class="text-input" type="text" spellcheck="false" placeholder="Ta réponse" aria-label="Ta réponse">
+                    <button type="submit" class="primary">Vérifier</button>
+                  </form>
+                </div>
+                <div class="dock-row">
+                  <button type="button" id="dock-hint" class="ghost">Indice</button>
+                  <button type="button" id="dock-step" class="ghost">Étape suivante</button>
+                  <button type="button" id="dock-all" class="ghost link">Tout afficher</button>
+                  <p id="dock-feedback" class="feedback" aria-hidden="true"></p>
+                </div>
+              </div>
+            </div>
+            <ol id="ex-hints" class="hints"></ol>
+            <ol id="ex-steps" class="steps"></ol>
+          </div>
+          <aside id="calc" aria-label="Calculatrice"></aside>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
