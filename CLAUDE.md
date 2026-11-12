@@ -1,6 +1,6 @@
 # Labo IFC : consignes pour Claude
 
-Site statique d'outils interactifs de maths, de chimie et de physique (cours de secondaire, en français), un dossier par matière (`maths/`, `chimie/`, `physique/`).
+Site statique d'outils interactifs de maths, de chimie, de physique et de biologie (cours de secondaire, en français), un dossier par matière (`maths/`, `chimie/`, `physique/`, `biologie/`).
 Ancien nom « Labo maths » : le dépôt `labo-maths/labo-maths.github.io` ne contient plus que des redirections vers ce site. Voir `README.md` pour la structure et le lancement.
 
 ## Conventions
@@ -57,6 +57,17 @@ Ancien nom « Labo maths » : le dépôt `labo-maths/labo-maths.github.io` ne co
 - Accord des phrases : drapeau `fem` dans les données (`HIGH`…), pas de remplacements par regex.
 - Niveaux : 1 Notions, 2 Énergie mécanique, 3 Chaleur et température, 4 Travail, 5 Premier principe.
 - Contenu tiré du PDF de synthèse (gardé en local, jamais versionné).
+
+## biologie/genetique
+
+- Même mise en page que les autres cours ; `data-subject="biologie"` (accent vert dans `shared/theme.css`). Pas de calculatrice.
+- Génétique dans `genetics.js`, arbres dans `pedigree.js` (sans DOM, testés) ; dessin des arbres dans `pedigree-svg.js` (couleurs dans `style.css`).
+- Arbres des exercices du cours dans `families.js` (une ligne par génération, colonnes placées à la main). Dans le HTML : `<div class="ped-figure" data-family="…">` ; avec `data-mode="AR|AD|XR|XD|Y"` et `data-letters="B r"`, les génotypes possibles (`possibleGenotypes`) sont écrits sous chaque personne.
+- Exercices dans `exercises.js` : `kind` = `prob` (1/4, 25 % ou 0,25), `geno`, `set` (liste dans n'importe quel ordre), `int`, `percent`, ou QCM (`choices`, `answers: [index]`) ; **exactement 3 indices** sans la réponse ; `tests/genetique.test.js` vérifie tout nouveau type.
+- Figure d'exercice : `ex.pedigree` est dessiné dans `#ex-figure` par `figure()` de `trainer.js` ; `shared/trainer.js` et `shared/examples.js` acceptent ce paramètre `figure` optionnel.
+- Corrections des exercices du PDF : `<details class="solution">` sous chaque énoncé (texte du cours, trous complétés, mots clés en gras).
+- Niveaux : 1 Monohybridisme, 2 Cas particuliers, 3 Dihybridisme et polyhybridisme, 4 Linkage, 5 Lié au sexe et arbres.
+- Contenu tiré du PDF « Biologie 2 Génétique » (gardé en local, jamais versionné) ; figures redessinées en SVG avec les variables du thème.
 
 ## Vérification
 

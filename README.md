@@ -1,9 +1,9 @@
 # Labo IFC
 
-Outils interactifs pour comprendre les mathématiques, la chimie et la physique en les manipulant.
+Outils interactifs pour comprendre les mathématiques, la chimie, la physique et la biologie en les manipulant.
 Site : https://labo-ifc.github.io (l'ancien site https://labo-maths.github.io redirige vers les nouvelles adresses).
 
-Un dossier par matière (`maths/`, `chimie/`, `physique/`), un sous-dossier par outil.
+Un dossier par matière (`maths/`, `chimie/`, `physique/`, `biologie/`), un sous-dossier par outil.
 
 ### Mathématiques
 
@@ -23,6 +23,12 @@ Un dossier par matière (`maths/`, `chimie/`, `physique/`), un sous-dossier par 
 | Outil | Dossier |
 |---|---|
 | Énergie et thermodynamique : formes et conversions d'énergie, énergies cinétique et potentielle (chute animée), énergie interne et température, chaleur (Q = mcΔT, modes de transfert), travail d'une force inclinée, premier principe (ΔU = Q + W, cycles), deuxième principe, pense-bête imprimable, générateur d'exercices (calculs avec unités et QCM « Notions ») avec indices, résolution pas à pas et calculatrice | [`physique/thermodynamique/`](physique/thermodynamique/) |
+
+### Biologie
+
+| Outil | Dossier |
+|---|---|
+| Génétique : cellule, ADN, mitose et méiose, lois de Mendel, monohybridisme (échiquier de Punnett interactif, simulateur de F2), codominance, gènes létaux, groupes sanguins, dihybridisme et polyhybridisme, linkage, arbres généalogiques (lecteur d'arbres qui teste chaque mode de transmission), maladies chromosomiques (risque de trisomie 21 selon l'âge de la mère), exercices du cours corrigés, pense-bête imprimable, générateur d'exercices (probabilités, génotypes, gamètes, arbres dessinés, QCM) avec indices et résolution pas à pas | [`biologie/genetique/`](biologie/genetique/) |
 
 ## Services
 
@@ -76,6 +82,8 @@ Pour `chimie/hydrocarbures/`, `tests/hydrocarbures.test.js` vérifie chaque type
 indices, formules bien formées), la conservation des atomes des combustions et les enthalpies recalculées.
 Pour `physique/thermodynamique/`, `tests/thermodynamique.test.js` vérifie chaque type d'exercice sur 300 tirages
 (réponse acceptée, avec ou sans unité, QCM, indices sans la réponse) et les formules de `physics.js`.
+Pour `biologie/genetique/`, `tests/genetique.test.js` vérifie chaque type d'exercice sur 300 tirages (réponse acceptée,
+indices sans la réponse), les croisements, les rapports et la lecture des arbres (génotypes possibles, modes compatibles).
 
 L'interface de `exp-log/` se vérifie dans le navigateur : avec le serveur local lancé,
 ouvrir http://localhost:8000/tests/exp-log.browser.html (toutes les lignes doivent être vertes).
@@ -83,7 +91,7 @@ ouvrir http://localhost:8000/tests/exp-log.browser.html (toutes les lignes doive
 ## Structure
 
 ```
-index.html          page d'accueil : les outils groupés par matière (une section par matière, ancre #maths, #chimie, #physique)
+index.html          page d'accueil : les outils groupés par matière (une section par matière, ancre #maths, #chimie, #physique, #biologie)
 shared/
   theme.css         couleurs (variables CSS), thèmes clair/sombre, composants communs (boutons, champs, curseurs)
   theme-boot.js     thème appliqué avant le premier affichage (script bloquant dans <head>)
@@ -130,6 +138,18 @@ physique/
     lessons.js        laboratoires du cours (chute, travail d'une force inclinée, chauffage, signes de ΔU) et exemples résolus
     exercises.js      générateur d'exercices (sans DOM) : calculs avec unités (kJ, km/h, g, °C…) et QCM
     trainer.js        messages propres au cours (erreurs de signe, de facteur 1000, de km/h)
+biologie/
+  genetique/
+    index.html, style.css, app.js
+    genetics.js       génétique du cours (sans DOM) : gènes (dominance, codominance, létal, ABO, lié à X), gamètes,
+                      croisements, distributions, rapports, probabilités exactes, risque de trisomie 21
+    pedigree.js       arbres généalogiques (sans DOM) : modes de transmission, génotypes possibles, familles en conflit,
+                      arbres aléatoires du générateur
+    pedigree-svg.js   dessin SVG d'un arbre (symboles, génotypes, personnes cliquables, familles en conflit)
+    families.js       arbres des exercices du cours, redessinés
+    lessons.js        laboratoires (échiquier de Punnett, F2, lecteur d'arbres, trisomie 21), arbres des exercices et exemples résolus
+    exercises.js      générateur d'exercices (sans DOM) : probabilités, génotypes, gamètes, nombres, QCM, arbres
+    trainer.js        messages propres au cours et dessin de l'arbre de l'exercice
 tests/
   *.test.js         tests Node
   tex-eval.js       évaluateur numérique du TeX des corrigés (utilisé par exp-log.steps.test.js)

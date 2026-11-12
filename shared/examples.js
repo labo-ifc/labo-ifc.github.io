@@ -6,18 +6,22 @@ import { renderMixed } from "./tex.js";
 import { appendStep } from "./trainer.js";
 
 // One full-width panel per group of methods; a second click, ✕ or Échap closes it.
-/** @param {(type: string) => { text?: string, steps: { tex, note }[] }} example the exercise shown for a type */
-export function initExamples(example) {
+/**
+ * @param {(type: string) => { text?: string, steps: { tex, note }[] }} example the exercise shown for a type
+ * @param {(el, ex) => boolean} [figure] draws the example's figure (false = none)
+ */
+export function initExamples(example, figure) {
   for (const grid of document.querySelectorAll(".methods")) {
     const panel = document.createElement("div");
     panel.className = "example-panel";
     panel.hidden = true;
     panel.innerHTML = `<div class="example-head"><p class="kicker">Exemple résolu</p><h4></h4>
       <button type="button" class="ghost link" aria-label="Fermer l'exemple">✕</button></div>
-      <p class="example-text" hidden></p><ol class="steps"></ol>`;
+      <p class="example-text" hidden></p><div class="example-figure" hidden></div><ol class="steps"></ol>`;
     const title = panel.querySelector("h4");
     const list = panel.querySelector(".steps");
     const text = panel.querySelector(".example-text");
+    const fig = panel.querySelector(".example-figure");
     let current = null;
 
     // Insert the panel after the last card on the active card's row, so it spans the grid right below it.
@@ -46,6 +50,8 @@ export function initExamples(example) {
       const ex = example(btn.dataset.example);
       text.hidden = !ex.text;
       if (ex.text) renderMixed(text, ex.text);
+      fig.replaceChildren();
+      fig.hidden = !(figure && figure(fig, ex));
       for (const s of ex.steps) appendStep(list, s);
       panel.hidden = false;
       place();

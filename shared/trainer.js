@@ -47,11 +47,12 @@ function fillChoices(select, TYPES, LEVELS) {
  * @param {(ex) => string} course.placeholder    answer field placeholder
  * @param {(ex, r) => string | null} course.unreadable   message when r.values is null
  * @param {(ex, r) => string} course.wrong       message for a wrong answer
+ * @param {(el, ex) => boolean} [course.figure]  draws the exercise's figure in #ex-figure (false = none)
  *
  * An exercise with `choices` (texts, $…$ allowed) is a multiple choice question:
  * buttons replace the answer field and checkAnswer gets the index clicked ("0", "1"…).
  */
-export function initTrainer({ TYPES, LEVELS, generate, checkAnswer, roundingNote, placeholder, unreadable, wrong }) {
+export function initTrainer({ TYPES, LEVELS, generate, checkAnswer, roundingNote, placeholder, unreadable, wrong, figure }) {
   const state = { ex: null, hints: 0, steps: 0, solved: false, counted: false, ok: 0, tried: 0 };
 
   // Multiple choice buttons, in the card and in the sticky dock.
@@ -125,6 +126,11 @@ export function initTrainer({ TYPES, LEVELS, generate, checkAnswer, roundingNote
     else renderTex($("ex-statement"), ex.statement, true);
     if (ex.text) renderMixed($("dock-statement"), ex.text);
     else renderTex($("dock-statement"), ex.statement);
+    const fig = $("ex-figure");
+    if (fig) {
+      fig.replaceChildren();
+      fig.hidden = !(figure && figure(fig, ex));
+    }
     $("ex-answer").placeholder = placeholder(ex);
     for (const id of ["ex-answer", "dock-answer"]) $(id).value = "";
     for (const id of ["ex-feedback", "dock-feedback"]) Object.assign($(id), { textContent: "", className: "feedback" });

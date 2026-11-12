@@ -1,0 +1,122 @@
+/* Génétique: figures and labs specific to this course. Course layout lives in shared/course.css. */
+
+.ex-layout { grid-template-columns: minmax(0, 1fr); }
+.values { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 0; }
+.values div { background: var(--bg); border-radius: 8px; padding: 6px 10px; }
+.values dt { color: var(--muted); font-size: 0.85em; }
+.values dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.lab-controls output { font-variant-numeric: tabular-nums; }
+.row[hidden] { display: none; }
+.lab-controls .row select { min-width: 0; max-width: 60%; }
+
+/* Phenotype classes (Punnett, F2 bars, swatches) */
+.pc0 { --pc: var(--accent); }
+.pc1 { --pc: var(--circle); }
+.pc2 { --pc: var(--bounds); }
+.pc3 { --pc: var(--period); }
+
+/* Course figures */
+.fig { margin: 16px 0; text-align: center; }
+.fig svg { width: 100%; max-width: 560px; height: auto; }
+.fig-small svg { max-width: 380px; }
+.fig figcaption { color: var(--muted); font-size: 0.9em; margin-top: 6px; }
+.fig-line path, .fig-wave { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; }
+.fig-thin { stroke: var(--muted) !important; stroke-width: 2 !important; }
+.fig-wave { stroke: var(--circle); }
+.fig-chr path, .fig-chr-a rect, .fig-chr-a-r { fill: var(--accent); }
+.fig-chr-b rect, .fig-chr-b-r { fill: var(--circle); }
+.fig-chr-c rect { fill: color-mix(in srgb, var(--accent) 45%, var(--panel)); }
+.fig-chr-d rect { fill: color-mix(in srgb, var(--circle) 45%, var(--panel)); }
+.fig-dot { fill: var(--fg); }
+.fig-cell circle { fill: var(--accent-soft); stroke: var(--border); stroke-width: 2; }
+.fig-arrow, .fig-arrow path { fill: none; stroke: var(--muted); stroke-width: 2; }
+.fig-cross { fill: none; stroke: var(--error); stroke-width: 2.5; stroke-dasharray: 4 3; }
+.fig-locus { fill: none; stroke: var(--fg); stroke-width: 2; }
+.fig-hole { fill: var(--panel); stroke: var(--error); stroke-width: 2; stroke-dasharray: 3 3; }
+.fig-mark { fill: var(--bounds); stroke: var(--panel); stroke-width: 1.5; }
+.fig-mark-inv { fill: var(--period); }
+.fig-inv-arrow { fill: none; stroke: var(--panel); stroke-width: 2.5; }
+.fig-text { fill: var(--muted); font: 12px system-ui, sans-serif; }
+.fig-title { fill: var(--fg); font: 600 14px system-ui, sans-serif; }
+.fig-label { fill: var(--fg); font: 700 15px system-ui, sans-serif; }
+
+/* Pedigrees */
+.ped-figure { margin: 12px 0; overflow-x: auto; }
+.ped-figure[hidden] { display: none; }
+.ped { display: block; width: 100%; height: auto; margin: 0 auto; }
+.ped-lines line, .ped-key-line { stroke: var(--fg); stroke-width: 1.5; fill: none; }
+.ped-lines line.conflict { stroke: var(--error); stroke-width: 2.5; }
+.sym, .ped-key { fill: var(--panel); stroke: var(--fg); stroke-width: 1.5; }
+.sym.aff, .ped-key.aff { fill: var(--accent); }
+.sym.grey { fill: color-mix(in srgb, var(--muted) 55%, var(--panel)); }
+.sym.conflict { stroke: var(--error); stroke-width: 2.5; }
+.ped .mark { stroke: var(--fg); stroke-width: 2; }
+.ped .dot, .ped-key-dot { fill: var(--fg); }
+.ped .ring { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+.ped-gen { fill: var(--muted); font: 600 13px system-ui, sans-serif; }
+.ped-num { fill: var(--muted); font: 11px system-ui, sans-serif; text-anchor: middle; }
+.ped-name { fill: var(--fg); font: 11px system-ui, sans-serif; text-anchor: middle; }
+.ped-label { fill: var(--accent); font: 600 11px system-ui, sans-serif; text-anchor: middle; }
+.pickable { cursor: pointer; }
+.pickable:hover .sym { stroke: var(--accent); stroke-width: 2.5; }
+.pickable:focus { outline: none; }
+.pickable:focus-visible .sym { stroke: var(--accent); stroke-width: 3; }
+
+.ped-lab { display: grid; gap: 12px; margin: 16px 0; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--panel); }
+.ped-controls { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+.ped-controls .row { flex: 1 1 260px; }
+
+/* Punnett grid */
+.punnett { border-collapse: separate; border-spacing: 4px; margin: 0 auto; }
+.punnett th { padding: 6px 10px; color: var(--muted); font-weight: 600; }
+.punnett td { padding: 8px 10px; min-width: 64px; text-align: center; border-radius: 8px;
+  background: color-mix(in srgb, var(--pc) 22%, var(--panel)); border: 1px solid color-mix(in srgb, var(--pc) 55%, var(--panel)); }
+.punnett td small { display: block; color: var(--muted); font-size: 0.78em; }
+.punnett td.dead { background: repeating-linear-gradient(135deg, var(--bg) 0 6px, var(--panel) 6px 12px); border: 1px dashed var(--error); }
+.punnett td.dead small { color: var(--error); }
+.pn-corner { font-size: 0.85em; }
+.pn-result { list-style: none; padding: 0; margin: 12px 0 6px; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.pn-result li { display: flex; align-items: center; gap: 6px; }
+.swatch { width: 14px; height: 14px; border-radius: 4px; background: color-mix(in srgb, var(--pc) 45%, var(--panel)); border: 1px solid var(--pc); }
+.pn-pc { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* F2 simulator */
+.f2-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.f2-bars { display: grid; gap: 8px; }
+.f2-row { display: grid; grid-template-columns: minmax(110px, auto) 1fr 4.5em; gap: 10px; align-items: center; }
+.f2-label { font-size: 0.92em; }
+.f2-track { height: 18px; border-radius: 6px; background: var(--bg); overflow: hidden; }
+.f2-bar { height: 100%; width: 0; background: var(--pc); border-radius: 6px; transition: width 0.3s; }
+.f2-count { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .f2-bar { transition: none; } }
+
+/* Down syndrome chart */
+.down-chart { width: 100%; max-width: 460px; height: auto; justify-self: center; }
+.down-chart .grid { stroke: var(--border); stroke-width: 1; }
+.down-chart .axis-label { fill: var(--muted); font: 11px system-ui, sans-serif; }
+.down-chart .curve { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+.down-chart .table-point { fill: var(--panel); stroke: var(--accent); stroke-width: 2; }
+.down-chart .guide { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.down-chart .point { fill: var(--circle); }
+
+/* Course exercises with hidden corrections */
+.pdf-exercises { padding-left: 1.4em; display: grid; gap: 14px; }
+.pdf-exercises > li > p:first-child { margin-top: 0; }
+details.solution { margin: 8px 0 0; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); }
+details.solution > summary { cursor: pointer; padding: 8px 12px; color: var(--accent); font-weight: 600; }
+details.solution[open] > summary { border-bottom: 1px solid var(--border); }
+details.solution > :not(summary) { margin: 10px 12px; }
+.punnett-static td { text-align: center; }
+.cheat-card.wide { grid-column: 1 / -1; }
+.cheat-table td { text-align: left; }
+.cheat-table td:first-child { white-space: nowrap; font-weight: 600; }
+
+@media (max-width: 600px) {
+  .f2-row { grid-template-columns: 1fr 3.5em; }
+  .f2-label { grid-column: 1 / -1; }
+  .punnett td { min-width: 0; padding: 6px; }
+}
+@media print {
+  .lab, .ped-lab { display: none; }
+  details.solution { display: none; }
+}

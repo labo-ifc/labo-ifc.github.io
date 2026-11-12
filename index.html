@@ -18,7 +18,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Labo IFC</title>
-  <meta name="description" content="Outils interactifs pour comprendre les mathématiques, la chimie et la physique en les manipulant.">
+  <meta name="description" content="Outils interactifs pour comprendre les mathématiques, la chimie, la physique et la biologie en les manipulant.">
   <link rel="stylesheet" href="shared/theme.css">
   <script src="shared/theme-boot.js"></script>
   <script>window.goatcounter = { path: p => location.host + p };</script>
@@ -31,7 +31,7 @@
   </header>
 
   <main class="home">
-    <p class="intro">Des outils interactifs pour comprendre les mathématiques, la chimie et la physique en les manipulant :
+    <p class="intro">Des outils interactifs pour comprendre les mathématiques, la chimie, la physique et la biologie en les manipulant :
       on fait varier les paramètres et on voit tout de suite l'effet.</p>
 
     <!-- One <section> per subject, one <li> per tool. Each tool lives in <subject>/<tool>/ and reuses shared/. -->
@@ -113,6 +113,31 @@
           <h3>Énergie et thermodynamique</h3>
           <p>Les formes d'énergie, l'énergie cinétique et potentielle, la chaleur, le travail,
             le premier et le deuxième principe, avec un générateur d'exercices corrigés pas à pas.</p>
+        </a>
+      </li>
+    </ul>
+    </section>
+    <section class="subject" id="biologie" data-subject="biologie" aria-labelledby="biologie-title">
+    <h2 id="biologie-title">Biologie</h2>
+    <ul class="tools">
+      <li>
+        <a class="panel tool-card" href="biologie/genetique/">
+          <svg viewBox="0 0 200 72" aria-hidden="true">
+            <g stroke="var(--muted)" stroke-width="1.5" fill="none">
+              <path d="M38 16h40M58 16v20M30 36h56M30 36v14M86 36v14"/>
+            </g>
+            <rect x="26" y="6" width="20" height="20" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.5"/>
+            <circle cx="88" cy="16" r="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.5"/>
+            <rect x="20" y="50" width="20" height="20" fill="var(--accent)"/>
+            <circle cx="86" cy="60" r="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.5"/>
+            <g stroke="var(--border)" stroke-width="1.5">
+              <rect x="120" y="10" width="34" height="26" rx="4" fill="var(--accent)"/><rect x="156" y="10" width="34" height="26" rx="4" fill="var(--accent)"/>
+              <rect x="120" y="38" width="34" height="26" rx="4" fill="var(--accent)"/><rect x="156" y="38" width="34" height="26" rx="4" fill="var(--panel)"/>
+            </g>
+          </svg>
+          <h3>Génétique</h3>
+          <p>La cellule et l'ADN, les lois de Mendel, codominance, gènes létaux, groupes sanguins, dihybridisme, arbres généalogiques
+            et maladies chromosomiques, avec un générateur d'exercices corrigés pas à pas.</p>
         </a>
       </li>
     </ul>

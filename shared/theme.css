@@ -43,11 +43,13 @@
 }
 
 /* Accent per subject: data-subject on <body> (tool pages) or on a home section.
-   Maths keeps the default blue, chemistry is green, physics amber. */
+   Maths keeps the default blue, chemistry is green, physics amber, biology lime. */
 [data-subject="chimie"] { --accent: #0f7a55; --accent-soft: #d9f2e7; --curve: #0f7a55; }
 :root[data-theme="dark"] [data-subject="chimie"] { --accent: #4fd1a0; --accent-soft: #1d3a30; --curve: #4fd1a0; }
 [data-subject="physique"] { --accent: #b45309; --accent-soft: #fbead6; --curve: #b45309; }
 :root[data-theme="dark"] [data-subject="physique"] { --accent: #fbbf24; --accent-soft: #3b2e14; --curve: #fbbf24; }
+[data-subject="biologie"] { --accent: #4d7c0f; --accent-soft: #e6f0d5; --curve: #4d7c0f; }
+:root[data-theme="dark"] [data-subject="biologie"] { --accent: #a3e635; --accent-soft: #2a3a14; --curve: #a3e635; }
 
 * { box-sizing: border-box; scrollbar-color: var(--border) transparent; }
 

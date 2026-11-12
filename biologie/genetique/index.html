@@ -1,0 +1,1130 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Génétique · Labo IFC</title>
+  <meta name="description" content="Parcours interactif de génétique : cellule et ADN, mitose et méiose, lois de Mendel, monohybridisme, codominance, gènes létaux, groupes sanguins, dihybridisme, linkage, arbres généalogiques, maladies chromosomiques, pense-bête et générateur d'exercices corrigés pas à pas.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+  <link rel="stylesheet" href="../../shared/theme.css">
+  <link rel="stylesheet" href="../../shared/course.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="../../shared/theme-boot.js"></script>
+  <script>window.goatcounter = { path: p => location.host + p };</script>
+  <script data-goatcounter="https://exokayn.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body data-subject="biologie">
+  <header class="topbar">
+    <nav class="crumbs"><a href="../../">Labo IFC</a><span aria-hidden="true">/</span><a href="../../#biologie">Biologie</a><span aria-hidden="true">/</span><h1>Génétique</h1></nav>
+    <button id="theme-toggle" class="ghost" type="button" aria-label="Changer de thème">Thème</button>
+  </header>
+
+  <div class="course">
+    <nav class="chapters" aria-label="Chapitres">
+      <ol>
+        <li><a href="#rappels" title="Rappels : cellule, ADN, divisions">Rappels</a></li>
+        <li><a href="#notions" title="Espèce, race, allèle, Mendel">Notions</a></li>
+        <li><a href="#monohybridisme" title="Monohybridisme">Monohybridisme</a></li>
+        <li><a href="#cas-particuliers" title="Cas particuliers">Cas particuliers</a></li>
+        <li><a href="#dihybridisme" title="Dihybridisme et polyhybridisme">Dihybridisme</a></li>
+        <li><a href="#linkage" title="Linkage">Linkage</a></li>
+        <li><a href="#arbres" title="Arbres généalogiques">Arbres</a></li>
+        <li><a href="#chromosomes" title="Maladies chromosomiques">Chromosomes</a></li>
+        <li><a href="#pense-bete" title="Pense-bête">Pense-bête</a></li>
+        <li><a href="#exercices" title="Exercices">Exercices</a></li>
+      </ol>
+    </nav>
+
+    <main class="chapters-content">
+      <!-- 1 ─────────────────────────────────────────────── -->
+      <section id="rappels" class="panel chapter">
+        <p class="kicker">Chapitre 1</p>
+        <h2>Rappels : cellule, ADN et divisions</h2>
+
+        <h3>La cellule eucaryote</h3>
+        <p>Contrairement aux bactéries, le domaine des <strong>eucaryotes</strong>, auquel nous appartenons, comprend les animaux, les végétaux,
+          les <strong>champignons</strong> et les protistes (organismes unicellulaires). Leur matériel génétique est enfermé dans un <strong>noyau</strong>.
+          Au lieu de former un anneau unique, il est divisé en plusieurs <strong>chromosomes</strong>, hérités des parents.
+          La <strong>génétique</strong> est la science qui étudie la transmission des caractères héréditaires.</p>
+        <p>L'ensemble des chromosomes d'une cellule est le <strong>caryotype</strong> : leur nombre et leur forme sont propres à chaque espèce.
+          Les chromosomes se regroupent par <strong>paires</strong> de même taille et de même forme : <strong>23 paires</strong> chez l'être humain (46 chromosomes).
+          Le caryotype permet de repérer les maladies chromosomiques (chromosome incomplet ou en nombre anormal).</p>
+
+        <h3>L'ADN et les chromosomes</h3>
+        <p>L'<strong>ADN</strong> (acide désoxyribonucléique) est une longue molécule en forme de <strong>double hélice</strong> qui porte les <strong>gènes</strong>.
+          Toutes nos cellules ont le même patrimoine génétique, mais elles ne l'utilisent pas toutes de la même façon, selon leur rôle.
+          L'ADN peut être <strong>relâché</strong> (filaments dans le noyau) ou <strong>condensé</strong> en chromosome en forme de « X » avant une division.</p>
+        <figure class="fig">
+          <svg viewBox="0 0 520 170" role="img" aria-label="De l'ADN au chromosome : double hélice, filament relâché, chromosome condensé à deux chromatides">
+            <g class="fig-line">
+              <path d="M30 30 C60 60 60 100 30 130 M70 30 C40 60 40 100 70 130"/>
+              <path d="M37 45h26M33 60h34M34 100h32M38 115h24" class="fig-thin"/>
+              <path d="M170 40c30-20 50 30 20 40s-40 40 0 40 40-40 70-20" class="fig-wave"/>
+            </g>
+            <g class="fig-chr">
+              <path d="M360 25c8 0 14 6 12 20l-8 32 8 32c2 14-4 30-12 30s-14-16-12-30l6-32-6-32c-2-14 4-20 12-20z"/>
+              <path d="M400 25c8 0 14 6 12 20l-6 32 6 32c2 14-4 30-12 30s-14-16-12-30l8-32-8-32c-2-14 4-20 12-20z"/>
+            </g>
+            <circle cx="380" cy="77" r="7" class="fig-dot"/>
+            <text x="50" y="158" class="fig-text" text-anchor="middle">double hélice</text>
+            <text x="210" y="158" class="fig-text" text-anchor="middle">ADN relâché</text>
+            <text x="380" y="158" class="fig-text" text-anchor="middle">chromosome condensé</text>
+            <text x="440" y="40" class="fig-text">chromatides</text>
+            <text x="400" y="81" class="fig-text" dx="16">centromère</text>
+          </svg>
+        </figure>
+
+        <h3>Transcription et traduction</h3>
+        <p>L'ADN ne sort pas du noyau. Le gène utile est d'abord copié en <strong>ARN messager</strong> (<strong>transcription</strong>).
+          Cette copie sort du noyau et est lue par les <strong>ribosomes</strong>, qui assemblent un à un les acides aminés pour fabriquer une
+          <strong>protéine</strong> (<strong>traduction</strong>).</p>
+
+        <h3>Mitose et méiose</h3>
+        <p>La <strong>mitose</strong> est la division des cellules du corps (somatiques). Avant de se diviser, la cellule mère <strong>réplique</strong> son ADN :
+          les deux copies forment les deux <strong>chromatides</strong> du chromosome en « X ». Chaque cellule fille reçoit une copie : les deux cellules filles
+          sont <strong>identiques</strong> à la cellule mère.</p>
+        <p>La <strong>méiose</strong> fabrique les <strong>gamètes</strong> (spermatozoïde, ovule) en deux divisions successives. Chaque gamète ne reçoit qu'un
+          exemplaire de chaque chromosome : il est <strong>haploïde</strong> (1n). À la <strong>fécondation</strong>, deux gamètes donnent un individu
+          <strong>diploïde</strong> (2n) : le nombre de chromosomes ne double donc pas à chaque génération. La répartition des chromosomes dépend
+          du <strong>hasard</strong>, et les chromosomes homologues peuvent même échanger des morceaux (<strong>crossing-over</strong>) : les enfants
+          sont tous différents.</p>
+        <figure class="fig">
+          <svg viewBox="0 0 560 230" role="img" aria-label="Mitose : une cellule à 2n donne deux cellules à 2n identiques. Méiose : une cellule à 2n donne quatre gamètes à n, tous différents">
+            <text x="130" y="18" class="fig-title" text-anchor="middle">Mitose</text>
+            <text x="420" y="18" class="fig-title" text-anchor="middle">Méiose</text>
+            <g class="fig-cell">
+              <circle cx="130" cy="70" r="34"/>
+              <circle cx="80" cy="175" r="30"/><circle cx="180" cy="175" r="30"/>
+              <circle cx="420" cy="70" r="34"/>
+              <circle cx="360" cy="140" r="24"/><circle cx="480" cy="140" r="24"/>
+              <circle cx="320" cy="200" r="18"/><circle cx="385" cy="200" r="18"/><circle cx="455" cy="200" r="18"/><circle cx="520" cy="200" r="18"/>
+            </g>
+            <g class="fig-arrow">
+              <path d="M115 104 90 142M145 104 170 142M400 100 372 116M440 100 468 116M352 164 330 182M368 164 380 182M472 164 460 182M488 164 512 182"/>
+            </g>
+            <g class="fig-chr-a"><rect x="112" y="55" width="7" height="30" rx="3"/><rect x="72" y="160" width="7" height="30" rx="3"/><rect x="172" y="160" width="7" height="30" rx="3"/>
+              <rect x="402" y="55" width="7" height="30" rx="3"/><rect x="352" y="128" width="7" height="24" rx="3"/><rect x="316" y="190" width="7" height="20" rx="3"/><rect x="381" y="190" width="7" height="20" rx="3"/></g>
+            <g class="fig-chr-b"><rect x="124" y="55" width="7" height="30" rx="3"/><rect x="84" y="160" width="7" height="30" rx="3"/><rect x="184" y="160" width="7" height="30" rx="3"/>
+              <rect x="414" y="55" width="7" height="30" rx="3"/><rect x="476" y="128" width="7" height="24" rx="3"/><rect x="451" y="190" width="7" height="20" rx="3"/><rect x="516" y="190" width="7" height="20" rx="3"/></g>
+            <g class="fig-chr-c"><rect x="136" y="60" width="7" height="20" rx="3"/><rect x="96" y="165" width="7" height="20" rx="3"/><rect x="196" y="165" width="7" height="20" rx="3"/>
+              <rect x="426" y="60" width="7" height="20" rx="3"/><rect x="364" y="132" width="7" height="16" rx="3"/><rect x="327" y="192" width="6" height="15" rx="3"/><rect x="460" y="192" width="6" height="15" rx="3"/></g>
+            <g class="fig-chr-d"><rect x="148" y="60" width="7" height="20" rx="3"/><rect x="108" y="165" width="7" height="20" rx="3"/><rect x="208" y="165" width="7" height="20" rx="3"/>
+              <rect x="438" y="60" width="7" height="20" rx="3"/><rect x="488" y="132" width="7" height="16" rx="3"/><rect x="392" y="192" width="6" height="15" rx="3"/><rect x="525" y="192" width="6" height="15" rx="3"/></g>
+            <text x="130" y="225" class="fig-text" text-anchor="middle">2 cellules 2n identiques</text>
+            <text x="420" y="225" class="fig-text" text-anchor="middle">4 gamètes n, tous différents</text>
+          </svg>
+          <figcaption>Une paire claire et une paire foncée (chromosome du père et de la mère) : la mitose garde les deux paires, la méiose n'en garde qu'un exemplaire, tiré au hasard.</figcaption>
+        </figure>
+        <details class="solution">
+          <summary>À quoi servent la mitose et la méiose ?</summary>
+          <p>La <strong>mitose</strong> sert à la croissance et au renouvellement des cellules du corps : elle produit des cellules identiques.
+            La <strong>méiose</strong> sert à la reproduction : elle produit des gamètes haploïdes, tous différents, qui reformeront un individu diploïde à la fécondation.</p>
+        </details>
+      </section>
+
+      <!-- 2 ─────────────────────────────────────────────── -->
+      <section id="notions" class="panel chapter">
+        <p class="kicker">Chapitre 2</p>
+        <h2>Espèce, race, allèle et naissance de la génétique</h2>
+
+        <h3>Espèce et race</h3>
+        <p>Une <strong>espèce</strong> est un groupe d'êtres vivants issus d'un même ancêtre, qui se ressemblent et qui peuvent se
+          <strong>reproduire entre eux</strong> en donnant une descendance féconde.</p>
+        <p class="note-box">Des individus de la même espèce mais de types différents donnent des hybrides féconds entre eux. Un croisement entre
+          deux espèces donne des hybrides (presque toujours) <strong>stériles</strong> : âne + jument = <strong>mulet</strong> ; cheval + ânesse =
+          <strong>bardot</strong> ; orange + mandarine = <strong>clémentine</strong>.</p>
+        <p>Une <strong>race</strong> est une subdivision de l'espèce : des individus qui partagent des caractères héréditaires communs (couleur, pelage, forme…),
+          par exemple les bovins charolais ou normands. Chez les plantes, on parle de <strong>variétés</strong>.</p>
+
+        <h3>Gène et allèle</h3>
+        <p>Un <strong>allèle</strong> est une version d'un gène. Il occupe une position précise, le <strong>locus</strong>, sur les deux chromosomes
+          homologues d'une paire. Chaque caractère dépend d'au moins deux allèles :</p>
+        <ul class="plain-list">
+          <li><strong>identiques</strong> (A-A ou a-a) : l'individu est <strong>homozygote</strong> ;</li>
+          <li><strong>différents</strong> (A-a) : l'individu est <strong>hétérozygote</strong>.</li>
+        </ul>
+        <figure class="fig fig-small">
+          <svg viewBox="0 0 360 150" role="img" aria-label="Paire de chromosomes homologues : le même locus porte l'allèle A sur l'un et l'allèle a sur l'autre">
+            <g class="fig-chr-a"><rect x="110" y="15" width="22" height="110" rx="11"/></g>
+            <g class="fig-chr-b"><rect x="190" y="15" width="22" height="110" rx="11"/></g>
+            <rect x="108" y="52" width="26" height="12" class="fig-locus"/><rect x="188" y="52" width="26" height="12" class="fig-locus"/>
+            <text x="98" y="62" class="fig-label" text-anchor="end">A</text>
+            <text x="224" y="62" class="fig-label">a</text>
+            <path d="M240 58h40" class="fig-arrow"/>
+            <text x="286" y="62" class="fig-text">locus</text>
+            <text x="161" y="145" class="fig-text" text-anchor="middle">chromosomes homologues</text>
+          </svg>
+        </figure>
+
+        <h3>Les fondateurs</h3>
+        <p>On a longtemps cru que l'enfant était un <strong>mélange</strong> des caractères des parents. <strong>August Weismann</strong> (1834-1914) distingue
+          les <strong>cellules somatiques</strong> (peau, nerfs, muscles : le soma), qui assurent la vie de l'organisme, et les <strong>cellules germinales</strong>
+          (le germen), qui donnent les gamètes. Seules les cellules germinales transmettent l'information héréditaire.</p>
+        <p><strong>Gregor Mendel</strong> (1822-1884), moine à Brno, publie en 1865, après 8 ans de travail, une théorie nouvelle : chaque caractère est transmis
+          par des <strong>particules</strong> (nos gènes) qui passent d'une génération à l'autre <strong>sans se mélanger</strong>. Ses travaux ne seront reconnus
+          qu'après sa mort : il est le fondateur de la génétique.</p>
+
+        <h3>Pourquoi le petit pois ?</h3>
+        <ul class="plain-list">
+          <li>il existe de nombreuses <strong>variétés</strong> (formes, couleurs) faciles à reconnaître ;</li>
+          <li>le temps entre deux générations est <strong>court</strong> ;</li>
+          <li>la fleur porte les organes ♂ et ♀ : elle se reproduit par <strong>autofécondation</strong>. L'expérimentateur peut aussi faire une
+            <strong>fécondation croisée</strong> en coupant les étamines (anthères) avant de déposer le pollen d'une autre plante.</li>
+        </ul>
+        <p>Mendel part de <strong>lignées pures</strong> (homozygotes) aux caractères bien distincts : fleurs pourpres ou blanches, graines lisses ou ridées,
+          jaunes ou vertes, tiges longues ou courtes. Son originalité : croiser des plantes qui ne diffèrent que par <strong>un seul caractère</strong>
+          et faire une étude <strong>quantitative</strong> (statistique) de la descendance.</p>
+      </section>
+
+      <!-- 3 ─────────────────────────────────────────────── -->
+      <section id="monohybridisme" class="panel chapter">
+        <p class="kicker">Chapitre 3</p>
+        <h2>Monohybridisme : un caractère</h2>
+
+        <h3>L'expérience de Mendel</h3>
+        <p>Mendel croise deux lignées pures (génération parentale <strong>P</strong>) qui ne diffèrent que par la texture des graines : <strong>lisses</strong> ou
+          <strong>ridées</strong>. L'aspect observable d'un individu est son <strong>phénotype</strong>, noté entre crochets : [lisse], [ridé].</p>
+        <p>Après 287 pollinisations entre 70 plantes, il n'obtient que des graines lisses en <strong>F1</strong>, quel que soit le sexe des parents : le caractère
+          ridé semble avoir disparu.</p>
+        <p class="formula-box"><strong>1re loi de Mendel, uniformité de la F1</strong> : si l'on croise deux lignées pures (homozygotes), tous les descendants de première génération (F1) sont identiques.</p>
+        <p>En autofécondant la F1, il récolte 7 324 graines de <strong>F2</strong> : 5 474 lisses et 1 850 ridées. Le caractère ridé réapparaît :</p>
+        <p class="formula-box" data-tex="\frac{5\,474 \text{ lisses}}{1\,850 \text{ ridées}} \approx 2{,}96 \approx 3 \quad\Longrightarrow\quad 3 : 1" data-display></p>
+        <p>Les F1 lisses ont donc gardé la possibilité de transmettre le caractère ridé. Mendel appelle <strong>dominant</strong> le caractère qui s'exprime en F1
+          (lisse, <span data-tex="L"></span>) et <strong>récessif</strong> celui qui est masqué (ridé, <span data-tex="r"></span>). Il obtient le même résultat
+          pour six autres caractères.</p>
+        <p>Le <strong>génotype</strong> est l'ensemble des allèles d'un individu pour les gènes étudiés. Les trois génotypes <span data-tex="LL"></span>,
+          <span data-tex="Lr"></span> et <span data-tex="rr"></span> ne donnent que deux phénotypes, car <span data-tex="L"></span> domine
+          <span data-tex="r"></span> : un récessif ne s'exprime qu'à l'état homozygote.</p>
+        <p class="formula-box" data-tex="\underbrace{LL \quad Lr \quad Lr}_{\textstyle 3\ [\text{lisse}]} \quad \underbrace{rr}_{\textstyle 1\ [\text{ridé}]} \qquad \text{génotypes } 1 : 2 : 1, \text{ phénotypes } 3 : 1" data-display></p>
+
+        <h3>L'échiquier de Punnett</h3>
+        <p>L'<strong>échiquier gamétique</strong> (grille de Punnett) place les gamètes d'un parent en lignes, ceux de l'autre en colonnes : chaque case est un
+          descendant, toutes les cases ont la même probabilité.</p>
+        <p class="formula-box"><strong>2e loi de Mendel, pureté des gamètes</strong> : chaque caractère est gouverné par un couple d'allèles qui se séparent lors de la formation des gamètes ;
+          chaque gamète ne reçoit qu'<strong>un seul</strong> des deux allèles, il est dit <strong>pur</strong> pour ce caractère.</p>
+
+        <div class="lab">
+          <div class="lab-controls">
+            <label class="row">Nombre de gènes
+              <select id="pn-genes"><option value="1">1 gène</option><option value="2">2 gènes (+ L / l)</option></select>
+            </label>
+            <label class="row">Premier gène
+              <select id="pn-kind">
+                <option value="dom">Dominance A / a</option>
+                <option value="co">Codominance R / B (roux, blanc)</option>
+                <option value="lethal">Gène létal Q / q (souris)</option>
+              </select>
+            </label>
+            <label class="row">Parent ♀ <select id="pn-p1-a"></select></label>
+            <label class="row">… second gène <select id="pn-p1-b"></select></label>
+            <label class="row">Parent ♂ <select id="pn-p2-a"></select></label>
+            <label class="row">… second gène <select id="pn-p2-b"></select></label>
+            <p class="lab-note">Les cases de même couleur ont le même phénotype ; les cases barrées sont des embryons qui meurent.</p>
+          </div>
+          <div>
+            <div id="pn-grid" class="table-wrap"></div>
+            <ul id="pn-result" class="pn-result"></ul>
+            <p id="pn-ratio" class="lab-note" role="status"></p>
+          </div>
+        </div>
+
+        <h3>Simuler la F2 de Mendel</h3>
+        <p>Chaque graine de F2 tire ses deux allèles au hasard. Sème des graines pour voir le rapport 3 : 1 (ou 9 : 3 : 3 : 1 pour deux caractères) apparaître peu à peu.</p>
+        <div class="lab">
+          <div class="lab-controls">
+            <label class="row">Croisement
+              <select id="f2-mode">
+                <option value="mono">Lisse × ridé (F1 Lr)</option>
+                <option value="di">Jaune lisse × vert ridé (F1 JjLr)</option>
+              </select>
+            </label>
+            <div class="f2-buttons">
+              <button type="button" id="f2-sow-10" class="ghost">Semer 10</button>
+              <button type="button" id="f2-sow-100" class="primary">Semer 100</button>
+              <button type="button" id="f2-sow-1000" class="ghost">Semer 1000</button>
+              <button type="button" id="f2-reset" class="ghost link">Recommencer</button>
+            </div>
+          </div>
+          <div>
+            <div id="f2-bars" class="f2-bars"></div>
+            <p id="f2-ratio" class="lab-note" role="status"></p>
+          </div>
+        </div>
+
+        <div class="methods">
+          <article class="method">
+            <h3>Calculer une probabilité</h3>
+            <p>Écris les gamètes de chaque parent, remplis l'échiquier puis compte les cases qui conviennent sur le nombre total de cases.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="monoProb" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="monoProb">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Retrouver les parents</h3>
+            <p>3 : 1 → deux hétérozygotes ; 1 : 1 → un hétérozygote et un homozygote récessif ; un seul phénotype → au moins un homozygote dominant.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="monoParents" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="monoParents">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Croisement-test</h3>
+            <p>Pour savoir si un individu dominant est homozygote ou hétérozygote, on le croise avec un homozygote récessif : un seul phénotype → homozygote ; moitié-moitié → hétérozygote.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="testCross" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="testCross">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Génotypes possibles</h3>
+            <p>Un phénotype récessif n'a qu'un génotype (homozygote) ; un phénotype dominant en a deux, tant qu'aucun enfant ou parent ne permet de trancher.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="monoGenos" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="monoGenos">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+
+        <h3>Exercices du cours</h3>
+        <ol class="pdf-exercises">
+          <li><p>Chez le lapin, <span data-tex="N"></span> (robe noire) est dominant et <span data-tex="b"></span> (robe blanche) récessif. Quels peuvent être les génotypes d'un lapin noir et d'un lapin blanc ? Justifie.</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>Un lapin noir est <span data-tex="NN"></span> ou <span data-tex="Nb"></span> : un seul allèle dominant suffit. Un lapin blanc est forcément
+                <span data-tex="bb"></span> : un caractère récessif ne s'exprime qu'à l'état homozygote.</p></details></li>
+          <li><p>Deux lapins blancs se reproduisent : quelle sera la couleur des lapereaux ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p><span data-tex="bb \times bb"></span> : chaque parent ne donne que des gamètes <span data-tex="b"></span>. Tous les lapereaux sont
+                <span data-tex="bb"></span>, donc <strong>blancs</strong>.</p></details></li>
+          <li><p>L'allèle œil brun (<span data-tex="B"></span>) domine l'allèle œil bleu (<span data-tex="b"></span>). Deux parents hétérozygotes ont un enfant : quelle chance a-t-il d'avoir les yeux bleus ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p><span data-tex="Bb \times Bb"></span> donne <span data-tex="BB"></span>, <span data-tex="Bb"></span>, <span data-tex="Bb"></span>,
+                <span data-tex="bb"></span>. Une case sur quatre est <span data-tex="bb"></span> : <span data-tex="\frac{1}{4}"></span>, soit 25 %.</p></details></li>
+          <li><p>Ces parents ont déjà deux enfants aux yeux bleus. Quelle est la probabilité que le troisième ait aussi les yeux bleus ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>Toujours <span data-tex="\frac{1}{4}"></span> : chaque fécondation est un nouveau tirage, indépendant des naissances précédentes.</p></details></li>
+          <li><p>Les taches de rousseur (<span data-tex="R"></span>) dominent l'absence de taches (<span data-tex="r"></span>). Un enfant dont les deux parents ont des taches n'en a pas. Quelle chance y avait-il ? L'enfant est-il homozygote ou hétérozygote ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>L'enfant, sans taches, est <span data-tex="rr"></span> (<strong>homozygote</strong>) : il a reçu un <span data-tex="r"></span> de chaque parent.
+                Les parents, tachetés, sont donc <span data-tex="Rr"></span>. <span data-tex="Rr \times Rr"></span> donne <span data-tex="rr"></span> dans
+                <span data-tex="\frac{1}{4}"></span> des cas.</p></details></li>
+          <li><p>On croise des pois jaunes (dominant) avec des pois verts. Si l'un des parents est hétérozygote, quelle sera la couleur de la F1 ? Et de la F2 ? Analyse tous les cas.</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>Le parent hétérozygote est le jaune : <span data-tex="Jj \times jj"></span>. F1 : <span data-tex="\frac{1}{2}\,Jj"></span> jaunes et
+                <span data-tex="\frac{1}{2}\,jj"></span> verts.</p>
+              <p>F2, selon les F1 croisés : <span data-tex="Jj \times Jj"></span> → 3 jaunes : 1 vert ; <span data-tex="Jj \times jj"></span> → 1 jaune : 1 vert ;
+                <span data-tex="jj \times jj"></span> → tous verts.</p></details></li>
+          <li><p>En croisant deux lignées de pois de type inconnu, j'obtiens 536 gousses renflées et 185 gousses ridées. Quel était le génotype des pois ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p><span data-tex="536 / 185 \approx 2{,}9"></span> : c'est un rapport 3 : 1. Renflé est dominant et les deux parents sont
+                <strong>hétérozygotes</strong> (<span data-tex="Rr \times Rr"></span>).</p></details></li>
+          <li><p>La même expérience ne donne cette fois que des gousses renflées. Que conclure sur les parents et les descendants ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>Aucun descendant <span data-tex="rr"></span> : au moins un parent est <span data-tex="RR"></span> (<span data-tex="RR \times RR"></span>,
+                <span data-tex="RR \times Rr"></span> ou <span data-tex="RR \times rr"></span>). Les descendants sont <span data-tex="RR"></span> ou
+                <span data-tex="Rr"></span>.</p></details></li>
+        </ol>
+      </section>
+
+      <!-- 4 ─────────────────────────────────────────────── -->
+      <section id="cas-particuliers" class="panel chapter">
+        <p class="kicker">Chapitre 4</p>
+        <h2>Cas particuliers</h2>
+
+        <h3>Dominance incomplète et codominance</h3>
+        <p>Mendel croise des fleurs violettes (<span data-tex="VV"></span>) et blanches (<span data-tex="BB"></span>) : toute la F1 est <strong>rose</strong>
+          (<span data-tex="VB"></span>). Aucun allèle ne domine l'autre : c'est la <strong>dominance incomplète</strong>, le phénotype est intermédiaire.
+          Quand les deux allèles s'expriment côte à côte (robe rouanne des bovins, groupe AB), on parle de <strong>codominance</strong>.
+          L'hétérozygote a alors son propre phénotype : la F2 donne <strong>1 : 2 : 1</strong> au lieu de 3 : 1.</p>
+        <div class="table-wrap">
+          <table class="value-table punnett-static">
+            <thead><tr><th>Gamètes</th><th data-tex="V"></th><th data-tex="V"></th></tr></thead>
+            <tbody>
+              <tr><th data-tex="B"></th><td>VB (rose)</td><td>VB (rose)</td></tr>
+              <tr><th data-tex="B"></th><td>VB (rose)</td><td>VB (rose)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Gènes létaux</h3>
+        <p>Chez la drosophile, des ailes relevées sont dues à un allèle <span data-tex="G"></span>. On croise un mâle et une femelle aux ailes relevées :
+          on obtient 207 mouches aux ailes relevées et 101 normales, soit environ <strong>2 : 1</strong>.</p>
+        <details class="solution">
+          <summary>Quelle hypothèse ? Comment la vérifier ?</summary>
+          <p>Les parents sont <span data-tex="Gg"></span>. Le croisement devrait donner 1 <span data-tex="GG"></span> : 2 <span data-tex="Gg"></span> :
+            1 <span data-tex="gg"></span>, soit 3 relevées pour 1 normale. On n'en voit que 2 pour 1 : les <span data-tex="GG"></span> <strong>meurent</strong>
+            avant de naître. <span data-tex="G"></span> est dominant pour l'aspect des ailes mais <strong>létal à l'état homozygote</strong>.</p>
+          <p>Vérification : compter les œufs qui n'éclosent pas (environ un quart), ou croiser une mouche aux ailes relevées avec une normale : on doit obtenir 1 : 1,
+            et jamais de lignée pure aux ailes relevées.</p>
+        </details>
+        <p class="note-box">Un gène <strong>létal</strong> tue l'individu qui le porte en double exemplaire. Les survivants se répartissent en
+          <span data-tex="\frac{2}{3}"></span> hétérozygotes et <span data-tex="\frac{1}{3}"></span> homozygotes normaux.</p>
+
+        <h3>Polyallélisme : les groupes sanguins</h3>
+        <p>On parle de <strong>polyallélisme</strong> quand un gène existe sous plus de deux allèles ; c'est le cas de presque tous les gènes.
+          Un gène est dit <strong>polymorphe</strong> si plusieurs allèles dépassent 1 % dans la population (environ un tiers des gènes).</p>
+        <p>Le groupe sanguin ABO dépend d'un gène du <strong>chromosome 9</strong>, à trois allèles <span data-tex="A"></span>, <span data-tex="B"></span>
+          et <span data-tex="O"></span>. <span data-tex="A"></span> et <span data-tex="B"></span> sont <strong>codominants</strong> (un individu AB fabrique
+          les deux glycoprotéines) et <span data-tex="O"></span> est récessif :</p>
+        <p class="formula-box" data-tex="A = B > O" data-display></p>
+        <p>Chacun ne porte que deux allèles : il y a <strong>6 génotypes</strong> pour 4 groupes (pourcentages en Belgique, Croix-Rouge, juin 2025).</p>
+        <div class="table-wrap">
+          <table class="value-table">
+            <thead><tr><th>Génotypes</th><th>Groupe</th><th>Population</th></tr></thead>
+            <tbody>
+              <tr><td><span data-tex="AA"></span> ou <span data-tex="AO"></span></td><td>A</td><td>45 %</td></tr>
+              <tr><td><span data-tex="BB"></span> ou <span data-tex="BO"></span></td><td>B</td><td>8 %</td></tr>
+              <tr><td><span data-tex="AB"></span></td><td>AB</td><td>3 %</td></tr>
+              <tr><td><span data-tex="OO"></span></td><td>O</td><td>44 %</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Le <strong>rhésus</strong> est une autre molécule des globules rouges : présente (rhésus +) ou absente (rhésus −). Le rhésus + est dominant.</p>
+
+        <h3>Plusieurs gènes pour un caractère</h3>
+        <p>Certains caractères dépendent de <strong>plusieurs gènes</strong> : on observe alors toute une gamme d'états intermédiaires entre deux extrêmes,
+          selon le nombre d'allèles qui s'expriment. La couleur de la peau est un caractère <strong>polygénique</strong>.</p>
+
+        <div class="methods">
+          <article class="method">
+            <h3>Codominance</h3>
+            <p>Trois phénotypes pour trois génotypes : l'hétérozygote se reconnaît directement, la F2 donne 1 : 2 : 1.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="coCross" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="coCross">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Gène létal</h3>
+            <p>Un rapport 2 : 1 entre deux hétérozygotes trahit un homozygote qui meurt : les proportions se calculent parmi les survivants.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="lethal" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="lethal">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Groupes sanguins</h3>
+            <p>Écris tous les génotypes possibles des parents (A = AA ou AO…), puis fais l'échiquier : un enfant O demande un <span data-tex="O"></span> de chaque parent.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="bloodGroups" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="bloodGroups">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Probabilité d'un groupe</h3>
+            <p>Avec les génotypes connus, l'échiquier 2 × 2 donne directement la probabilité de chaque groupe.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="bloodProb" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="bloodProb">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+
+        <h3>Exercices du cours</h3>
+        <ol class="pdf-exercises" start="9">
+          <li><p>Une souris sans queue croisée avec une souris normale donne en F1 10 souris sans queue et 9 normales. Deux souris sans queue de la F1 donnent en F2 10 normales, 21 sans queue et 9 mortes. Analyse les résultats.</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>F1 1 : 1 : la souris sans queue est hétérozygote <span data-tex="Qq"></span>, la normale <span data-tex="qq"></span>.
+                F2 (<span data-tex="Qq \times Qq"></span>) : 21 sans queue pour 10 normales, soit 2 : 1, et 9 mortes sur 40, soit environ un quart :
+                ce sont les <span data-tex="QQ"></span>. <span data-tex="Q"></span> est dominant pour la queue et <strong>létal à l'état homozygote</strong>.</p></details></li>
+          <li><p>Chez la souris, la robe noire (<span data-tex="N"></span>) domine la blanche (<span data-tex="n"></span>). Comment connaître le génotype d'une souris noire ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>Par un <strong>croisement-test</strong> avec une souris blanche <span data-tex="nn"></span>. Si tous les petits sont noirs, elle est
+                <span data-tex="NN"></span> ; si environ la moitié sont blancs, elle est <span data-tex="Nn"></span>.</p></details></li>
+          <li><p>Chez les bovins, roux (<span data-tex="R"></span>) et blanc (<span data-tex="B"></span>) sont codominants : ensemble, ils donnent une robe « rouanne ». Croise un mâle rouan et une femelle rouanne.</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p><span data-tex="RB \times RB"></span> : <span data-tex="\frac{1}{4}\,RR"></span> roux, <span data-tex="\frac{1}{2}\,RB"></span> rouans,
+                <span data-tex="\frac{1}{4}\,BB"></span> blancs (1 : 2 : 1).</p></details></li>
+          <li><p>Un homme de groupe A et une femme de groupe B peuvent-ils avoir un enfant de groupe O ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p><strong>Oui</strong>, s'ils sont <span data-tex="AO"></span> et <span data-tex="BO"></span> : chacun peut donner <span data-tex="O"></span>,
+                l'enfant est <span data-tex="OO"></span> avec une probabilité de <span data-tex="\frac{1}{4}"></span>.</p></details></li>
+          <li><p>Un homme de groupe AB peut-il être le père d'un enfant de groupe O si la mère est de groupe O ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p><strong>Non</strong> : <span data-tex="AB \times OO"></span> ne donne que <span data-tex="AO"></span> (groupe A) ou <span data-tex="BO"></span>
+                (groupe B). Il n'a pas d'allèle <span data-tex="O"></span> à transmettre.</p></details></li>
+          <li><p>Marie attend un enfant. « Tout ce qu'on peut affirmer, c'est qu'il n'aura ni ton groupe ni le mien. » Quels sont les groupes des parents et de l'enfant ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>Un parent est <strong>AB</strong>, l'autre <strong>O</strong> (<span data-tex="OO"></span>). L'enfant est <span data-tex="AO"></span> ou
+                <span data-tex="BO"></span> : groupe <strong>A ou B</strong> (une chance sur deux chacun), jamais AB ni O.</p></details></li>
+        </ol>
+      </section>
+
+      <!-- 5 ─────────────────────────────────────────────── -->
+      <section id="dihybridisme" class="panel chapter">
+        <p class="kicker">Chapitre 5</p>
+        <h2>Dihybridisme et polyhybridisme</h2>
+
+        <h3>Deux caractères à la fois</h3>
+        <p>Mendel croise des lignées pures qui diffèrent par <strong>deux caractères</strong> : plants jaunes à gousses renflées × plants verts à gousses ridées
+          (jaune et renflé dominants). La F1 est 100 % jaune et renflée. En F2 (autofécondation), il compte :</p>
+        <div class="table-wrap">
+          <table class="value-table">
+            <thead><tr><th>Phénotype F2</th><th>Plants</th><th>Rapport</th></tr></thead>
+            <tbody>
+              <tr><td>jaunes, renflées</td><td>315</td><td>9</td></tr>
+              <tr><td>jaunes, ridées</td><td>108</td><td>3</td></tr>
+              <tr><td>vertes, renflées</td><td>101</td><td>3</td></tr>
+              <tr><td>vertes, ridées</td><td>32</td><td>1</td></tr>
+              <tr><th>Total</th><th>556</th><th>16</th></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Chaque caractère pris seul ségrège en 3 : 1 : 423 jaunes pour 133 verts, 416 renflées pour 140 ridées. Parmi les jaunes comme parmi les verts,
+          on retrouve 3 renflées pour 1 ridée : les deux caractères se transmettent <strong>indépendamment</strong>.</p>
+        <p class="formula-box"><strong>3e loi de Mendel, assortiment indépendant</strong> : quand on croise deux lignées pures qui diffèrent par plusieurs caractères,
+          les allèles des différents gènes se combinent au hasard dans les gamètes. Ces gènes sont dits <strong>libres</strong> (indépendants).</p>
+        <p class="formula-box" data-tex="\tfrac{3}{4} \times \tfrac{3}{4} = \tfrac{9}{16} \qquad \tfrac{3}{4} \times \tfrac{1}{4} = \tfrac{3}{16} \qquad \tfrac{1}{4} \times \tfrac{1}{4} = \tfrac{1}{16}" data-display></p>
+        <p class="note-box">La 3e loi ne vaut que si les gènes sont sur des <strong>chromosomes différents</strong> (Mendel ignorait leur existence). Beaucoup de gènes sont
+          sur le même chromosome : ils sont <strong>liés</strong> (chapitre Linkage).</p>
+        <p>Pour savoir si un individu aux deux caractères dominants est homozygote ou hétérozygote, on le croise avec un individu récessif pour les deux :
+          c'est le <strong>croisement-test</strong> (épreuve de pureté des gamètes). <span data-tex="AaBb \times aabb"></span> donne 1 : 1 : 1 : 1.</p>
+        <p class="lab-note">Allèles utilisés dans les exercices : chez la drosophile <span data-tex="L"></span> ailes longues (dominant), <span data-tex="l"></span> ailes courtes ;
+          <span data-tex="G"></span> corps gris (dominant), <span data-tex="g"></span> corps noir.</p>
+
+        <h3>Polyhybridisme</h3>
+        <p>Avec davantage de gènes indépendants, le modèle de Mendel prévoit le nombre de classes en F2 (croisement de deux hétérozygotes pour tous les gènes) :</p>
+        <div class="table-wrap">
+          <table class="value-table">
+            <thead><tr><th>Paires d'allèles</th><th>Classes phénotypiques</th><th>Ségrégation</th><th>Classes génotypiques</th></tr></thead>
+            <tbody>
+              <tr><td>1 (monohybridisme)</td><td>2</td><td>3 : 1</td><td>3</td></tr>
+              <tr><td>2 (dihybridisme)</td><td>4</td><td>9 : 3 : 3 : 1</td><td>9</td></tr>
+              <tr><td>3</td><td>8</td><td>27 : 9 : 9 : 9 : 3 : 3 : 3 : 1</td><td>27</td></tr>
+              <tr><td>4</td><td>16</td><td>/</td><td>81</td></tr>
+              <tr><td><span data-tex="n"></span></td><td data-tex="2^n"></td><td>/</td><td data-tex="3^n"></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Les probabilités de chaque caractère se <strong>multiplient</strong>. Exemple : probabilité qu'un couple <span data-tex="AaBbCc \times AaBbCc"></span>
+          ait un enfant <span data-tex="aabbcc"></span> :</p>
+        <p class="formula-box" data-tex="P(aa) \times P(bb) \times P(cc) = \tfrac{1}{4} \times \tfrac{1}{4} \times \tfrac{1}{4} = \tfrac{1}{64}" data-display></p>
+
+        <div class="methods">
+          <article class="method">
+            <h3>Gamètes d'un génotype</h3>
+            <p>Un gamète prend un allèle de chaque gène. Chaque gène hétérozygote double le nombre de gamètes : <span data-tex="2^k"></span> gamètes pour <span data-tex="k"></span> gènes hétérozygotes.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="gametes" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="gametes">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Probabilité à deux gènes</h3>
+            <p>Traite chaque gène seul (un petit échiquier 2 × 2), puis multiplie les probabilités : pas besoin du grand échiquier de 16 cases.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="diProb" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="diProb">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Plusieurs gènes</h3>
+            <p>Même méthode avec trois gènes ou plus : un facteur par gène.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="polyProb" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="polyProb">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Nombre de classes</h3>
+            <p>Pour <span data-tex="n"></span> gènes hétérozygotes chez les deux parents : <span data-tex="2^n"></span> phénotypes et <span data-tex="3^n"></span> génotypes.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="classes" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="classes">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Génotypes parentaux</h3>
+            <p>Lis le rapport de chaque caractère séparément (3 : 1, 1 : 1 ou un seul phénotype), puis rassemble les deux gènes.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="diParents" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="diParents">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+
+        <h3>Exercices du cours</h3>
+        <ol class="pdf-exercises">
+          <li><p>Quels gamètes donnent les génotypes <span data-tex="GGtt"></span>, <span data-tex="JJGG"></span>, <span data-tex="JjGg"></span>, <span data-tex="jjGg"></span>, <span data-tex="LLVv"></span> ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <ul class="plain-list">
+                <li><span data-tex="GGtt"></span> → <span data-tex="Gt"></span> seulement ; <span data-tex="JJGG"></span> → <span data-tex="JG"></span> seulement ;</li>
+                <li><span data-tex="JjGg"></span> → <span data-tex="JG,\ Jg,\ jG,\ jg"></span> (un quart chacun) ;</li>
+                <li><span data-tex="jjGg"></span> → <span data-tex="jG,\ jg"></span> ; <span data-tex="LLVv"></span> → <span data-tex="LV,\ Lv"></span>.</li>
+              </ul></details></li>
+          <li><p>Doigts courts et cheveux plantés en V dominent doigts longs et cheveux plantés droits. Quelle est la probabilité qu'un enfant de parents hétérozygotes pour les deux caractères ait le même phénotype qu'eux ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>Il faut les deux caractères dominants : <span data-tex="\frac{3}{4} \times \frac{3}{4} = \frac{9}{16}"></span>, soit environ 56 %.</p></details></li>
+          <li><p>Chez le lapin, poil noir <span data-tex="N"></span> domine brun <span data-tex="n"></span>, poil court <span data-tex="C"></span> domine long <span data-tex="c"></span>. Croise un lapin homozygote noir à poils longs avec une lapine brune homozygote à poils courts.</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p><span data-tex="NNcc \times nnCC"></span> : gamètes <span data-tex="Nc"></span> et <span data-tex="nC"></span>, toute la F1 est
+                <span data-tex="NnCc"></span>, noire à poils courts (1re loi). En croisant ces F1 entre eux, on obtiendrait 9 : 3 : 3 : 1.</p></details></li>
+          <li><p>Que donnerait le croisement d'un homme A rhésus + et d'une femme B rhésus +, sachant qu'ils ont un enfant O rhésus − ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>L'enfant est <span data-tex="OO\,rr"></span> : chaque parent lui a donné <span data-tex="O"></span> et <span data-tex="r"></span>. Le père est
+                <span data-tex="AO\,Rr"></span>, la mère <span data-tex="BO\,Rr"></span>.</p>
+              <p>Groupes : A, B, AB, O, un quart chacun. Rhésus : <span data-tex="\frac{3}{4}"></span> positif, <span data-tex="\frac{1}{4}"></span> négatif.
+                Par exemple, un enfant O rhésus − a une probabilité de <span data-tex="\frac{1}{4} \times \frac{1}{4} = \frac{1}{16}"></span>.</p></details></li>
+          <li><p>Des drosophiles donnent une F1 entièrement grise, dont la moitié a les ailes longues. Quels sont les génotypes parentaux ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>Couleur : aucune mouche noire, donc au moins un parent <span data-tex="GG"></span>. Ailes : 1 : 1, donc <span data-tex="Ll \times ll"></span>.
+                Par exemple <span data-tex="GGLl \times GGll"></span>, <span data-tex="GGLl \times ggll"></span> ou <span data-tex="Ggll \times GGLl"></span>…</p></details></li>
+          <li><p>La F1 contient les quatre phénotypes à parts égales. Quels sont les génotypes parentaux ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>Chaque caractère est en 1 : 1 : un hétérozygote croisé avec un homozygote récessif pour chaque gène.
+                <span data-tex="GgLl \times ggll"></span> ou <span data-tex="Ggll \times ggLl"></span>.</p></details></li>
+          <li><p>La F1 n'a que des ailes longues, avec 3 mouches grises pour 1 noire. Quels sont les génotypes parentaux ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>Couleur 3 : 1 : <span data-tex="Gg \times Gg"></span>. Ailes toutes longues : au moins un parent <span data-tex="LL"></span>.
+                Par exemple <span data-tex="GgLL \times GgLl"></span>, <span data-tex="GgLL \times GgLL"></span> ou <span data-tex="GgLL \times Ggll"></span>.</p></details></li>
+          <li><p>Chez la tomate, rouge domine jaune et géante domine naine. Un maraîcher croise deux races pures, rouge naine et jaune géante, puis les F1 entre eux. Quelle proportion de la F2 sera rouge et géante ? Donne les fréquences, génotypes et phénotypes de la F2 et conclus.</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>P : <span data-tex="RRgg \times rrGG"></span> → F1 toute <span data-tex="RrGg"></span>, rouge et géante. F2 (<span data-tex="RrGg \times RrGg"></span>) :</p>
+              <ul class="plain-list">
+                <li><span data-tex="\frac{9}{16}"></span> rouges géantes : <span data-tex="RRGG"></span> (1), <span data-tex="RRGg"></span> (2), <span data-tex="RrGG"></span> (2), <span data-tex="RrGg"></span> (4) ;</li>
+                <li><span data-tex="\frac{3}{16}"></span> rouges naines : <span data-tex="RRgg"></span> (1), <span data-tex="Rrgg"></span> (2) ;</li>
+                <li><span data-tex="\frac{3}{16}"></span> jaunes géantes : <span data-tex="rrGG"></span> (1), <span data-tex="rrGg"></span> (2) ;</li>
+                <li><span data-tex="\frac{1}{16}"></span> jaunes naines : <span data-tex="rrgg"></span>.</li>
+              </ul>
+              <p>On retrouve 9 : 3 : 3 : 1 : les gènes sont indépendants (3e loi). Le type désiré représente <span data-tex="\frac{9}{16}"></span> de la F2,
+                mais seule la plante <span data-tex="RRGG"></span> (<span data-tex="\frac{1}{16}"></span>) est une race pure : un croisement-test permet de la repérer.</p></details></li>
+        </ol>
+      </section>
+
+      <!-- 6 ─────────────────────────────────────────────── -->
+      <section id="linkage" class="panel chapter">
+        <p class="kicker">Chapitre 6</p>
+        <h2>Linkage : des gènes liés</h2>
+        <p>La 3e loi de Mendel suppose que les caractères se transmettent indépendamment. En 1910, <strong>Morgan</strong> obtient chez la drosophile des résultats qui la contredisent.</p>
+        <div class="cheat">
+          <article class="cheat-card">
+            <h3>Exemple 1 : gènes indépendants</h3>
+            <p>Corps brun, ailes longues × corps ébène, ailes vestigiales. F1 : brun, ailes longues. Croisement-test de la F1 : <strong>4 types</strong> à un quart chacun
+              (brun-longues, brun-vestigiales, ébène-longues, ébène-vestigiales).</p>
+          </article>
+          <article class="cheat-card">
+            <h3>Exemple 2 : gènes liés</h3>
+            <p>Yeux marron, ailes longues × yeux blancs, ailes vestigiales. F1 : yeux marron, ailes longues. Croisement-test : <strong>essentiellement 2 types</strong>,
+              la moitié yeux marron-ailes longues, la moitié yeux blancs-ailes vestigiales.</p>
+          </article>
+        </div>
+        <p>Dans l'exemple 2, « yeux marron » reste attaché à « ailes longues » : les deux gènes sont sur le <strong>même chromosome</strong>, ils sont
+          <strong>liés</strong> (linkage). Ainsi naît la <strong>théorie chromosomique</strong> de l'hérédité (1915).</p>
+        <p>Les gènes liés peuvent malgré tout être séparés par un <strong>crossing-over</strong> pendant la méiose : un échange de segments entre
+          chromosomes homologues. Plus deux gènes sont <strong>éloignés</strong> sur le chromosome, plus ce réarrangement est fréquent.</p>
+        <figure class="fig fig-small">
+          <svg viewBox="0 0 420 150" role="img" aria-label="Crossing-over : deux chromosomes homologues VR et vr échangent un segment et donnent les chromosomes recombinés Vr et vR">
+            <g class="fig-chr-a"><rect x="30" y="30" width="130" height="18" rx="9"/><rect x="260" y="30" width="70" height="18" rx="9"/></g>
+            <g class="fig-chr-b"><rect x="30" y="90" width="130" height="18" rx="9"/><rect x="260" y="90" width="70" height="18" rx="9"/></g>
+            <g class="fig-chr-b"><rect x="320" y="30" width="70" height="18" rx="9"/></g>
+            <g class="fig-chr-a"><rect x="320" y="90" width="70" height="18" rx="9"/></g>
+            <path d="M95 52 C95 70 95 70 95 86" class="fig-cross"/>
+            <path d="M175 69h60" class="fig-arrow"/>
+            <text x="50" y="24" class="fig-label">V</text><text x="130" y="24" class="fig-label">R</text>
+            <text x="50" y="126" class="fig-label">v</text><text x="130" y="126" class="fig-label">r</text>
+            <text x="280" y="24" class="fig-label">V</text><text x="360" y="24" class="fig-label">r</text>
+            <text x="280" y="126" class="fig-label">v</text><text x="360" y="126" class="fig-label">R</text>
+            <text x="95" y="146" class="fig-text" text-anchor="middle">avant</text>
+            <text x="325" y="146" class="fig-text" text-anchor="middle">recombinés</text>
+          </svg>
+        </figure>
+        <p>Chez la drosophile, <span data-tex="V"></span> (ailes normales) domine <span data-tex="v"></span> (vestigiales) et <span data-tex="R"></span> (corps gris)
+          domine <span data-tex="r"></span> (corps noir). On croise <span data-tex="VR/VR"></span> avec <span data-tex="vr/vr"></span> : toute la F1 est
+          <span data-tex="VR/vr"></span>. Les F1 croisées entre elles donnent :</p>
+        <div class="table-wrap">
+          <table class="value-table">
+            <thead><tr><th>Phénotype</th><th>Proportion</th><th>Type</th></tr></thead>
+            <tbody>
+              <tr><td>gris, ailes normales (VR)</td><td>42 %</td><td rowspan="2">parentaux : 84 %</td></tr>
+              <tr><td>noir, ailes vestigiales (vr)</td><td>42 %</td></tr>
+              <tr><td>gris, ailes vestigiales (Vr)</td><td>8 %</td><td rowspan="2">recombinés : 16 %</td></tr>
+              <tr><td>noir, ailes normales (vR)</td><td>8 %</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Des gènes indépendants donneraient 9 : 3 : 3 : 1. Ici, les phénotypes <strong>parentaux</strong> dominent largement : les gènes sont liés.
+          Les 16 % de <strong>recombinés</strong> viennent des crossing-over.</p>
+        <p class="formula-box" data-tex="\text{fréquence de recombinaison} = \frac{\text{recombinés}}{\text{total}} \approx 16\,\% \;\Longrightarrow\; \text{distance} \approx 16 \text{ centimorgans (cM)}" data-display></p>
+
+        <div class="methods">
+          <article class="method">
+            <h3>Fréquence de recombinaison</h3>
+            <p>Repère les deux classes parentales (les plus nombreuses), additionne les deux autres et divise par le total : en %, c'est la distance en cM.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="recomb" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="recomb">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Liés ou indépendants ?</h3>
+            <p>Croisement-test à quatre classes égales → gènes indépendants ; deux classes très majoritaires → gènes liés.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="linkedQcm" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="linkedQcm">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 7 ─────────────────────────────────────────────── -->
+      <section id="arbres" class="panel chapter">
+        <p class="kicker">Chapitre 7</p>
+        <h2>Arbres généalogiques</h2>
+        <p>Beaucoup de maladies ne « s'attrapent » pas : elles viennent d'un ou de plusieurs gènes anormaux, ou d'un accident dans la séparation des chromosomes
+          pendant la méiose. Les arbres généalogiques permettent de suivre n'importe quel caractère, et en particulier ces maladies.</p>
+
+        <h3>Transmission des caractères génétiques</h3>
+        <p>Un allèle altéré peut produire une protéine modifiée, ou aucune protéine. Ces allèles se transmettent de façon <strong>héréditaire</strong> et suivent
+          les lois de la génétique classique : une maladie peut être <strong>dominante</strong> ou <strong>récessive</strong>. Si l'allèle est sur un
+          <strong>autosome</strong> (paires 1 à 22), la maladie est <strong>autosomique</strong> ; s'il est sur un chromosome sexuel, c'est une
+          <strong>maladie liée au sexe</strong> (gonosomique).</p>
+
+        <h3>Lire un arbre</h3>
+        <figure class="fig">
+          <svg viewBox="0 0 520 96" role="img" aria-label="Légende : carré homme, cercle femme, symbole plein atteint, point au centre porteur sain">
+            <rect x="20" y="20" width="24" height="24" class="ped-key"/><text x="32" y="66" class="fig-text" text-anchor="middle">homme</text>
+            <circle cx="112" cy="32" r="12" class="ped-key"/><text x="112" y="66" class="fig-text" text-anchor="middle">femme</text>
+            <rect x="180" y="20" width="24" height="24" class="ped-key aff"/><circle cx="246" cy="32" r="12" class="ped-key aff"/><text x="213" y="66" class="fig-text" text-anchor="middle">atteints</text>
+            <circle cx="320" cy="32" r="12" class="ped-key"/><circle cx="320" cy="32" r="4" class="ped-key-dot"/><text x="320" y="66" class="fig-text" text-anchor="middle">porteuse saine</text>
+            <path d="M400 32h60M430 32v26" class="ped-key-line"/><text x="430" y="84" class="fig-text" text-anchor="middle">couple et enfants</text>
+          </svg>
+          <figcaption>Hommes en carrés, femmes en cercles, personnes atteintes en plein, porteurs avec un point. Chaque génération (I, II, III…) est sur une ligne, et chaque personne a un numéro : II-3 est la 3e personne de la génération II.</figcaption>
+        </figure>
+
+        <div class="cheat">
+          <article class="cheat-card">
+            <h3>Autosomique dominante</h3>
+            <p>L'allèle est sur un <strong>autosome</strong> ; <strong>un seul</strong> allèle anormal suffit. Exemples : chorée de Huntington, hypercholestérolémie familiale, brachydactylie.</p>
+            <p>Dans l'arbre : des hommes et des femmes atteints à <strong>chaque génération</strong>, qui transmettent la maladie à <strong>environ la moitié</strong> de leurs enfants.
+              Deux parents sains n'ont jamais d'enfant atteint.</p>
+          </article>
+          <article class="cheat-card">
+            <h3>Autosomique récessive</h3>
+            <p>Il faut <strong>deux allèles anormaux</strong>. Les parents d'un enfant atteint sont <strong>porteurs sains</strong> (hétérozygotes) ou atteints.
+              Exemples : albinisme, mucoviscidose, hémochromatose (accumulation de fer, « malédiction des Celtes »).</p>
+            <p>Dans l'arbre : des parents sains <strong>peuvent</strong> avoir un enfant atteint, fille ou garçon ; la maladie peut <strong>sauter des générations</strong> ;
+              les porteurs d'un seul allèle sont sains. Deux parents atteints n'ont que des enfants atteints.</p>
+          </article>
+        </div>
+
+        <h3>Maladies liées au sexe</h3>
+        <p>Chez l'être humain, la <strong>23e paire</strong> détermine le sexe : ce sont les chromosomes sexuels ou <strong>gonosomes</strong>, X et Y
+          (femme XX, homme XY). Dans les autres paires, les homologues ont la même taille et échangent des allèles situés aux mêmes <strong>loci</strong>.
+          X et Y sont très différents, mais partagent quelques régions <strong>pseudo-autosomales</strong> qui leur permettent de s'apparier pendant la méiose.
+          Ailleurs, beaucoup de gènes de X n'ont pas d'équivalent sur Y.</p>
+        <div class="cheat">
+          <article class="cheat-card">
+            <h3>Liée à X</h3>
+            <p>Chez la fille (XX), les règles sont celles d'un autosome : deux allèles pour une maladie récessive, un seul pour une dominante. Le garçon (XY) n'a qu'un X :
+              il exprime la maladie qu'elle soit <strong>récessive ou dominante</strong> (hors région pseudo-autosomale). Exemples : hémophilie, daltonisme, myopathie de Duchenne.</p>
+            <p>Une femme atteinte d'une maladie dominante (hétérozygote) transmet l'allèle à <strong>50 %</strong> de ses enfants, garçons ou filles.
+              Un homme atteint ne transmet <strong>jamais</strong> l'allèle à ses fils (il leur donne son Y), mais le transmet <strong>toujours</strong> à ses filles (il leur donne son X).
+              Récessive : surtout des garçons atteints, nés de mères porteuses saines.</p>
+          </article>
+          <article class="cheat-card">
+            <h3>Liée à Y</h3>
+            <p>Très rares, ces maladies touchent la différenciation sexuelle (infertilité masculine, dysgénésie gonadique…). Les filles ne sont jamais atteintes.
+              La maladie se transmet <strong>de père en fils</strong> et ne saute pas de génération.</p>
+          </article>
+        </div>
+        <p class="note-box">Les cellules d'une femme désactivent au hasard l'un de leurs deux X : le corps est une mosaïque de cellules (<strong>lyonisation</strong>).
+          Cela explique que certaines maladies s'expriment plus ou moins fort chez les femmes porteuses. Quelques gènes échappent à cette inactivation.</p>
+        <p class="formula-box">Méthode : deux parents sains avec un enfant atteint → <strong>récessif</strong>. Puis : une fille atteinte de père sain → <strong>autosomique</strong> ;
+          seulement des garçons atteints, par leur mère → probablement <strong>lié à X</strong>.</p>
+
+        <h3>Lecteur d'arbres</h3>
+        <p>Choisis un arbre et une hypothèse : l'outil vérifie si chaque famille peut avoir ces enfants, puis donne les génotypes possibles de chacun.</p>
+        <div class="ped-lab">
+          <div class="ped-controls">
+            <label class="row">Arbre <select id="ped-family"></select></label>
+            <div id="ped-modes" class="chips" role="group" aria-label="Hypothèse de transmission"></div>
+            <label class="check"><input type="checkbox" id="ped-all"> Afficher tous les génotypes</label>
+          </div>
+          <p id="ped-verdict" class="verdict" role="status"></p>
+          <div id="ped-figure" class="ped-figure"></div>
+          <p id="ped-person" class="lab-note" role="status"></p>
+        </div>
+
+        <div class="methods">
+          <article class="method">
+            <h3>Dominant ou récessif ?</h3>
+            <p>Cherche deux parents sains avec un enfant atteint (→ récessif) ou deux parents atteints avec un enfant sain (→ dominant).</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="pedigreeAllele" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="pedigreeAllele">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Mode de transmission</h3>
+            <p>Teste chaque hypothèse et élimine-la dès qu'une famille la contredit : une fille atteinte de père sain exclut le lié à X récessif.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="pedigreeMode" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="pedigreeMode">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Génotype d'un individu</h3>
+            <p>Pars du phénotype, puis regarde ses parents et ses enfants : un enfant atteint d'une maladie récessive prouve que ses deux parents portent l'allèle.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="pedigreeGeno" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="pedigreeGeno">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Lié à X : probabilité</h3>
+            <p>Écris les génotypes avec X et Y (<span data-tex="X^HX^h"></span>, <span data-tex="X^hY"></span>), puis fais l'échiquier : le père donne son X aux filles et son Y aux fils.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="xProb" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="xProb">S'entraîner</button>
+            </div>
+          </article>
+          <article class="method">
+            <h3>Lié à X : génotype</h3>
+            <p>Un homme n'a qu'un allèle : son phénotype donne son génotype. Pour une femme, cherche d'où viennent ses deux X.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="xGeno" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="xGeno">S'entraîner</button>
+            </div>
+          </article>
+        </div>
+
+        <h3>Exercices du cours</h3>
+        <ol class="pdf-exercises">
+          <li><p><strong>Couleur des yeux.</strong> L'arbre montre la transmission de la couleur des yeux (yeux bleus en plein). 1° Quel est l'allèle dominant ? Justifie.
+              2° Donne les deux allèles de chaque individu (yeux marron <span data-tex="M"></span>, yeux bleus <span data-tex="b"></span>).</p>
+            <div class="ped-figure" data-family="eyes"></div>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>1° I-1 et I-2 ont les yeux marron mais deux de leurs enfants (II-3 et II-5) ont les yeux bleus : ils portaient un allèle bleu masqué.
+                L'allèle <strong>marron est dominant</strong>, bleu est récessif.</p>
+              <p>2° Les yeux bleus sont <span data-tex="bb"></span> ; un parent ou un enfant aux yeux bleus impose un <span data-tex="b"></span> aux yeux marron.
+                Les génotypes certains ou possibles :</p>
+              <div class="ped-figure" data-family="eyes" data-mode="AR" data-letters="M b"></div></details></li>
+          <li><p><strong>Couleur des cheveux.</strong> 1° Quel est l'allèle récessif ? Justifie. 2° Donne les deux allèles de chaque individu (cheveux bruns <span data-tex="B"></span>, roux <span data-tex="r"></span>).</p>
+            <div class="ped-figure" data-family="hair"></div>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>1° III-5 est rousse alors que ses parents II-3 et II-4 ont les cheveux bruns : ils portaient un allèle roux masqué. L'allèle <strong>roux est récessif</strong>.</p>
+              <p>2° Génotypes :</p>
+              <div class="ped-figure" data-family="hair" data-mode="AR" data-letters="B r"></div></details></li>
+          <li><p><strong>L'albinisme</strong> (absence totale de mélanine dans la peau, les poils et les yeux ; grande sensibilité aux UV). 1° L'allèle est-il dominant ou récessif ? 2° Donne les deux allèles de chaque individu (albinisme <span data-tex="a"></span>, normal <span data-tex="N"></span>).</p>
+            <div class="ped-figure" data-family="albino"></div>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>1° II-4 est albinos alors que ses parents I-1 et I-2 ne le sont pas : l'allèle albinisme est <strong>récessif</strong>.</p>
+              <p>2° Génotypes :</p>
+              <div class="ped-figure" data-family="albino" data-mode="AR" data-letters="N a"></div></details></li>
+          <li><p><strong>L'otospongiose</strong> provoque une surdité par blocage de l'étrier (osselet de l'oreille moyenne). 1° Quel est son mode de transmission (dominant ou récessif) ? 2° II-7 et II-8 peuvent-ils avoir des enfants atteints ?</p>
+            <div class="ped-figure" data-family="otosclerosis"></div>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>1° La maladie apparaît à <strong>chaque génération</strong> et chaque personne atteinte a un parent atteint ; chaque couple « atteint × sain » a environ la moitié
+                d'enfants atteints. Aucun enfant atteint n'a deux parents sains : la maladie est <strong>dominante</strong> (autosomique, puisque des filles et des fils de
+                mère atteinte sont touchés). L'hypothèse récessive demanderait que tous les conjoints sains soient porteurs, ce qui est très improbable.</p>
+              <p>2° II-7 et II-8 sont sains, donc tous deux <span data-tex="oo"></span> : ils ne peuvent pas avoir d'enfant atteint (leurs trois enfants sont d'ailleurs sains).</p></details></li>
+          <li><p><strong>Le syndrome de Lesch-Nyhan</strong> est une paralysie héréditaire rare, avec une hypersécrétion d'acide urique, souvent mortelle avant la puberté.
+              1° L'allèle est-il dominant ou récessif ? 2° Quels arguments plaident pour une hérédité liée au sexe ? Quel chromosome ? 3° Comment une femme non atteinte peut-elle transmettre la maladie à ses fils ?
+              4° Comment expliquer qu'un seul des jumeaux soit malade ?</p>
+            <div class="ped-figure" data-family="leschNyhan"></div>
+            <p class="lab-note">Losange : enfant à naître. Les jumeaux IV-6 et IV-7 partent d'un même point ; la femme I-2 porte l'allèle (point).</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>1° I-1 et I-2 sont sains et ont des fils atteints : l'allèle est <strong>récessif</strong>.</p>
+              <p>2° Seuls des <strong>garçons</strong> sont atteints, et toujours par leur <strong>mère</strong>, saine (I-2, puis ses filles) : la maladie est liée au
+                <strong>chromosome X</strong>.</p>
+              <p>3° La mère est <strong>porteuse saine</strong> <span data-tex="X^AX^a"></span> : son X normal masque l'allèle malade. Chaque fils reçoit l'un de ses deux X :
+                une chance sur deux d'avoir <span data-tex="X^a"></span> et, sans second X, d'être <span data-tex="X^aY"></span> malade.</p>
+              <p>4° Ce sont de <strong>faux jumeaux</strong> : deux ovules différents, fécondés par deux spermatozoïdes ; l'un a reçu le X porteur de la mère, l'autre son X normal.</p></details></li>
+          <li><p><strong>Le daltonisme (1)</strong> est récessif et lié à X. A. Une femme à vision normale dont le père était daltonien épouse un homme dont le père est aussi daltonien. 1° Construis l'arbre. 2° Peut-elle avoir un fils daltonien ? 3° Une fille daltonienne ?
+              B. Une amie à vision normale, comme ses deux parents, est fiancée à un garçon daltonien. Risque-t-elle d'avoir des enfants daltoniens ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>A. 1° Deux familles en génération I (chacune avec un père daltonien), la femme et l'homme en II, leurs enfants en III.
+                2° La femme a reçu le X de son père : elle est <span data-tex="X^DX^d"></span>. Son mari voit normalement : <span data-tex="X^DY"></span> (le daltonisme
+                de son propre père ne compte pas, il n'en a reçu que le Y). Oui : chaque fils a une chance sur deux d'être <span data-tex="X^dY"></span>.
+                3° Non : les filles reçoivent le <span data-tex="X^D"></span> de leur père.</p>
+              <p>B. Elle est <span data-tex="X^DX^D"></span> ou, si sa mère est porteuse, <span data-tex="X^DX^d"></span>. Si elle n'est pas porteuse, aucun enfant ne sera daltonien,
+                mais toutes ses filles seront porteuses. Si elle l'est, chaque enfant (fils ou fille) a une chance sur deux d'être daltonien. On ne peut pas exclure le risque.</p></details></li>
+          <li><p><strong>L'hémophilie A</strong>, trouble de la coagulation dû à l'absence d'un facteur antihémophilique. 1° Allèle dominant ou récessif ? 2° Lié au sexe ou non ? 3° Donne les allèles d'Arthur et de Chloé. 4° Peut-on connaître ceux de Pauline ?</p>
+            <div class="ped-figure" data-family="haemophilia"></div>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>1° Christian et Marie France sont sains et ont deux fils hémophiles : l'allèle est <strong>récessif</strong>.</p>
+              <p>2° Seuls des garçons sont atteints, nés de mères saines : <strong>lié à X</strong>.</p>
+              <p>3° Arthur est atteint : <span data-tex="X^hY"></span>. Chloé est saine mais a un fils hémophile, Oscar, d'un père sain : elle est porteuse <span data-tex="X^HX^h"></span>.</p>
+              <p>4° Non : son père est sain (<span data-tex="X^HY"></span>) et sa mère est porteuse (elle a un fils atteint). Pauline est <span data-tex="X^HX^H"></span> ou
+                <span data-tex="X^HX^h"></span>, une chance sur deux chacune.</p>
+              <div class="ped-figure" data-family="haemophilia" data-mode="XR" data-letters="H h"></div></details></li>
+          <li><p><strong>Le daltonisme (2)</strong>, récessif et lié à X. La mère du voisin de Pierre voit les couleurs, son mari non. Leur fils Jean est daltonien, ainsi qu'une de ses deux sœurs, Françoise.
+              Françoise a deux garçons daltoniens et une fille qui voit les couleurs. Jean a un garçon et une fille qui voient les couleurs ; la fille de Jean a épousé un daltonien, et ils ont deux garçons et deux filles à vision normale.
+              1° Construis l'arbre. 2° Allèles de la mère de Jean ? 3° Du père des enfants de Françoise ? 4° De la femme de Jean ? 5° De la fille de Jean ? 6° La fille de Jean peut-elle avoir des enfants daltoniens avec son mari ?</p>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>1° I : le père (daltonien) et la mère. II : Jean, Françoise et leur sœur, avec leurs conjoints. III : les enfants de Françoise et de Jean. IV : les enfants de la fille de Jean.</p>
+              <p>2° Elle voit les couleurs mais a un fils daltonien (Jean reçoit son X de sa mère) : <span data-tex="X^DX^d"></span>.</p>
+              <p>3° Françoise est <span data-tex="X^dX^d"></span>, et sa fille voit les couleurs : le père lui a donné <span data-tex="X^D"></span>, il est <span data-tex="X^DY"></span>.</p>
+              <p>4° Leur fils voit les couleurs : il a reçu <span data-tex="X^D"></span> de sa mère. Elle est <span data-tex="X^DX^D"></span> ou <span data-tex="X^DX^d"></span>.</p>
+              <p>5° Elle a reçu le <span data-tex="X^d"></span> de Jean et voit les couleurs : <span data-tex="X^DX^d"></span>.</p>
+              <p>6° Oui : <span data-tex="X^DX^d \times X^dY"></span> donne une chance sur deux d'avoir un enfant daltonien, fils ou fille. Leurs quatre enfants à vision normale ont eu de la chance.</p></details></li>
+          <li><p><strong>Dihybridisme dans un arbre.</strong> Un homme non hémophile aux cheveux bruns épouse une femme hémophile aux cheveux bruns. Ils ont des enfants bruns et roux, quel que soit le sexe ; tous les garçons sont hémophiles, toutes les filles ont une coagulation normale.
+              (Croix : hémophile ; gris : cheveux roux.) 1° Pour la couleur des cheveux : quel allèle domine ? Chromosome normal ou sexuel ? 2° Mêmes questions pour la coagulation. 3° Les deux gènes sont-ils liés ?
+              4° Donne les allèles des deux parents de la génération I (brun <span data-tex="b"></span>, roux <span data-tex="r"></span>, hémophile <span data-tex="h"></span>, normal <span data-tex="n"></span>).
+              5° Quels parents donneraient uniquement des enfants bruns ? 6° Quel couple donnerait la moitié d'enfants roux, la moitié de garçons hémophiles et des filles toutes normales ?</p>
+            <div class="ped-figure" data-family="roux9"></div>
+            <details class="solution"><summary>Voir la correction</summary>
+              <p>1° Deux parents bruns ont des enfants roux : <strong>brun domine</strong>, roux est récessif. Des filles et des garçons sont roux, et une fille rousse (III-7) a un père brun (II-9) :
+                le gène est sur un <strong>autosome</strong>.</p>
+              <p>2° La mère hémophile a tous ses fils hémophiles et ses filles normales, le père étant normal : <strong>normal domine</strong>, hémophile est récessif,
+                et le gène est sur le <strong>chromosome X</strong> (le fils reçoit le X de sa mère, la fille reçoit en plus le X normal du père).</p>
+              <p>3° <strong>Non</strong> : l'un est sur un autosome, l'autre sur X ; ils se transmettent indépendamment.</p>
+              <p>4° Père <span data-tex="br\ X^nY"></span>, mère <span data-tex="br\ X^hX^h"></span> (tous deux hétérozygotes pour les cheveux puisqu'ils ont des enfants roux).</p>
+              <p>5° Au moins un parent <span data-tex="bb"></span> : <span data-tex="bb \times bb"></span>, <span data-tex="bb \times br"></span> ou <span data-tex="bb \times rr"></span>.</p>
+              <p>6° Cheveux : <span data-tex="br \times rr"></span> (1 : 1). Coagulation : la moitié des garçons hémophiles et aucune fille → mère porteuse
+                <span data-tex="X^nX^h"></span> et père normal <span data-tex="X^nY"></span>. Par exemple <span data-tex="br\ X^nY \times rr\ X^nX^h"></span> ou
+                <span data-tex="rr\ X^nY \times br\ X^nX^h"></span>.</p>
+              <div class="ped-figure" data-family="roux9" data-mode="AR" data-letters="b r"></div></details></li>
+        </ol>
+      </section>
+
+      <!-- 8 ─────────────────────────────────────────────── -->
+      <section id="chromosomes" class="panel chapter">
+        <p class="kicker">Chapitre 8</p>
+        <h2>Les maladies chromosomiques</h2>
+        <p>Ces maladies viennent d'une anomalie du <strong>nombre</strong> (aneuploïdie) ou de la <strong>structure</strong> des chromosomes. Elles sont le plus
+          souvent mortelles pour l'embryon ; quand elles ne le sont pas, elles entraînent des malformations ou d'autres troubles.</p>
+
+        <h3>Anomalies du nombre : la non-disjonction</h3>
+        <p>Pendant la méiose, il arrive que deux chromosomes d'une paire (ou deux chromatides) restent accolés et partent dans le même gamète :
+          c'est une <strong>non-disjonction</strong>. Un gamète reçoit un chromosome en trop, un autre en manque ; l'enfant aura 47 ou 45 chromosomes.</p>
+        <figure class="fig">
+          <svg viewBox="0 0 560 200" role="img" aria-label="Non-disjonction : la paire 21 ne se sépare pas, un gamète reçoit deux chromosomes 21 et l'autre aucun ; avec un gamète normal, on obtient une trisomie (3 chromosomes) ou une monosomie (1 chromosome)">
+            <g class="fig-cell"><circle cx="90" cy="70" r="40"/><circle cx="240" cy="40" r="26"/><circle cx="240" cy="130" r="26"/><circle cx="420" cy="40" r="30"/><circle cx="420" cy="140" r="30"/></g>
+            <g class="fig-chr-a"><rect x="76" y="55" width="8" height="30" rx="4"/><rect x="230" y="28" width="7" height="24" rx="3"/><rect x="404" y="27" width="7" height="24" rx="3"/></g>
+            <g class="fig-chr-b"><rect x="96" y="55" width="8" height="30" rx="4"/><rect x="243" y="28" width="7" height="24" rx="3"/><rect x="416" y="27" width="7" height="24" rx="3"/></g>
+            <g class="fig-chr-c"><rect x="428" y="27" width="7" height="24" rx="3"/><rect x="417" y="128" width="7" height="24" rx="3"/></g>
+            <g class="fig-arrow"><path d="M130 60 210 44M130 80 210 124M270 40h116M270 130h116"/></g>
+            <text x="90" y="135" class="fig-text" text-anchor="middle">paire 21 non séparée</text>
+            <text x="330" y="32" class="fig-text" text-anchor="middle">+ gamète normal</text>
+            <text x="330" y="122" class="fig-text" text-anchor="middle">+ gamète normal</text>
+            <text x="460" y="44" class="fig-text">trisomie</text>
+            <text x="460" y="144" class="fig-text">monosomie</text>
+            <text x="240" y="186" class="fig-text" text-anchor="middle">gamètes anormaux</text>
+          </svg>
+        </figure>
+        <div class="cheat">
+          <article class="cheat-card">
+            <h3>Syndrome de Down (trisomie 21)</h3>
+            <p>Un chromosome <strong>21</strong> en trop (47 chromosomes). Déficience intellectuelle de sévérité variable, visage rond, yeux bridés, autres particularités.
+              Il vient le plus souvent d'une non-disjonction lors de la formation des gamètes ; sa fréquence augmente avec l'<strong>âge de la mère</strong>.</p>
+          </article>
+          <article class="cheat-card">
+            <h3>Syndrome de Turner (45,X)</h3>
+            <p>Un seul chromosome X. Phénotype féminin ; retard de croissance, thorax large et plat, nombreux grains de beauté, cou élargi, mains et pieds gonflés ;
+              le plus souvent stérile. Environ 1 fille sur 2 500.</p>
+          </article>
+          <article class="cheat-card">
+            <h3>Syndrome de Klinefelter (47,XXY)</h3>
+            <p>Un X en plus chez un garçon (environ 1 sur 1 500). Souvent grand, troubles de l'appareil reproducteur, difficultés d'apprentissage, développement de la poitrine,
+              caractères masculins atténués (pilosité faible, musculature peu développée).</p>
+          </article>
+        </div>
+
+        <h3>Trisomie 21 et âge de la mère</h3>
+        <div class="lab">
+          <div class="lab-controls">
+            <div class="slider">
+              <label for="down-age">Âge de la mère</label>
+              <output id="down-age-out" for="down-age"></output>
+              <input type="range" id="down-age" min="18" max="48" step="1" value="30">
+            </div>
+            <dl class="values">
+              <div><dt>Probabilité estimée</dt><dd id="down-risk"></dd></div>
+              <div><dt>Soit</dt><dd id="down-per"></dd></div>
+            </dl>
+            <p id="down-note" class="lab-note"></p>
+          </div>
+          <svg class="down-chart" viewBox="0 0 460 220" role="img" aria-label="Risque de trisomie 21 en pour mille selon l'âge de la mère : presque nul avant 30 ans, il monte fortement après 35 ans">
+            <g id="down-chart"></g>
+          </svg>
+        </div>
+        <div class="table-wrap">
+          <table class="value-table">
+            <thead><tr><th>Âge de la mère</th><th>20 ans</th><th>30 ans</th><th>35 ans</th><th>40 ans</th><th>45 ans</th></tr></thead>
+            <tbody><tr><th>Probabilité estimée</th><td>1 sur 1 500 à 1 600</td><td>1 sur 900 à 1 000</td><td>1 sur 350 à 400</td><td>1 sur 100</td><td>1 sur 20 à 30</td></tr></tbody>
+          </table>
+        </div>
+        <p class="lab-note">Données 2025-2026 du cours ; la courbe passe par le milieu de chaque fourchette.</p>
+
+        <h3>Anomalies de structure</h3>
+        <p>Un chromosome peut se briser et ses morceaux se réorganiser :</p>
+        <figure class="fig">
+          <svg viewBox="0 0 560 170" role="img" aria-label="Anomalies de structure : délétion (un segment manque), duplication (un segment en double), inversion (un segment retourné), translocation (un segment passé sur un autre chromosome)">
+            <g class="fig-seg">
+              <rect x="20" y="20" width="22" height="100" rx="11" class="fig-chr-a-r"/>
+              <rect x="20" y="52" width="22" height="22" class="fig-hole"/>
+            </g>
+            <g>
+              <rect x="160" y="10" width="22" height="120" rx="11" class="fig-chr-a-r"/>
+              <rect x="160" y="50" width="22" height="20" class="fig-mark"/><rect x="160" y="70" width="22" height="20" class="fig-mark"/>
+            </g>
+            <g>
+              <rect x="300" y="20" width="22" height="100" rx="11" class="fig-chr-a-r"/>
+              <rect x="300" y="50" width="22" height="30" class="fig-mark-inv"/>
+              <path d="M311 56v18M305 68l6 6 6-6" class="fig-inv-arrow"/>
+            </g>
+            <g>
+              <rect x="440" y="20" width="22" height="100" rx="11" class="fig-chr-a-r"/>
+              <rect x="490" y="20" width="22" height="80" rx="11" class="fig-chr-b-r"/>
+              <rect x="440" y="90" width="22" height="30" rx="0" class="fig-chr-b-r"/>
+              <rect x="490" y="100" width="22" height="25" rx="0" class="fig-chr-a-r"/>
+            </g>
+            <text x="31" y="150" class="fig-text" text-anchor="middle">délétion</text>
+            <text x="171" y="150" class="fig-text" text-anchor="middle">duplication</text>
+            <text x="311" y="150" class="fig-text" text-anchor="middle">inversion</text>
+            <text x="476" y="150" class="fig-text" text-anchor="middle">translocation</text>
+          </svg>
+        </figure>
+        <ul class="plain-list">
+          <li><strong>Délétion</strong> : un fragment est perdu, des gènes manquent. Elle peut être <strong>terminale</strong> (extrémité du chromosome) ou
+            <strong>interstitielle</strong> (milieu d'un bras). Exemples : syndrome du cri du chat (délétion sur le chromosome 5), syndrome de Williams.</li>
+          <li><strong>Duplication</strong> : le fragment se fixe sur le chromosome homologue et y apparaît en double (en tandem, en miroir ou interstitielle).
+            Exemple : syndrome de Pallister-Killian.</li>
+          <li><strong>Inversion</strong> : le fragment se recolle sur son chromosome d'origine, mais à l'envers ; <strong>péricentrique</strong> s'il contient le centromère,
+            <strong>paracentrique</strong> sinon. Souvent sans effet visible, elle peut gêner la reproduction.</li>
+          <li><strong>Translocation</strong> : le fragment passe sur un chromosome <strong>non homologue</strong>. Exemple : leucémie myéloïde chronique
+            (chromosome de Philadelphie).</li>
+        </ul>
+      </section>
+
+      <!-- 9 ─────────────────────────────────────────────── -->
+      <section id="pense-bete" class="panel chapter">
+        <p class="kicker">Chapitre 9</p>
+        <div class="cheat-head">
+          <h2>Pense-bête</h2>
+          <button type="button" id="cheat-print" class="ghost">Imprimer</button>
+        </div>
+        <div class="cheat">
+          <article class="cheat-card">
+            <h3>Vocabulaire</h3>
+            <ul>
+              <li><strong>Gène</strong> : morceau d'ADN ; <strong>allèle</strong> : une version du gène ; <strong>locus</strong> : sa place sur le chromosome</li>
+              <li><strong>Homozygote</strong> : deux allèles identiques ; <strong>hétérozygote</strong> : deux allèles différents</li>
+              <li><strong>Génotype</strong> : les allèles ; <strong>phénotype</strong> [entre crochets] : ce qu'on voit</li>
+              <li><strong>Haploïde</strong> (n) : gamète ; <strong>diploïde</strong> (2n) : cellule du corps ; 23 paires chez l'humain</li>
+              <li><strong>Mitose</strong> : cellules identiques ; <strong>méiose</strong> : gamètes tous différents</li>
+            </ul>
+          </article>
+          <article class="cheat-card">
+            <h3>Les trois lois de Mendel</h3>
+            <ol>
+              <li>Uniformité de la F1 : deux lignées pures donnent une F1 identique</li>
+              <li>Pureté des gamètes : un seul allèle de chaque gène par gamète</li>
+              <li>Assortiment indépendant : les gènes de chromosomes différents se combinent au hasard</li>
+            </ol>
+          </article>
+          <article class="cheat-card">
+            <h3>Rapports à reconnaître</h3>
+            <ul>
+              <li>3 : 1 → <span data-tex="Aa \times Aa"></span> ; 1 : 1 → <span data-tex="Aa \times aa"></span> ; un seul phénotype → un parent <span data-tex="AA"></span></li>
+              <li>1 : 2 : 1 → codominance ; 2 : 1 → gène létal</li>
+              <li>9 : 3 : 3 : 1 → deux hétérozygotes, gènes indépendants ; 1 : 1 : 1 : 1 → croisement-test</li>
+              <li>Deux classes parentales majoritaires → gènes liés ; recombinés en % = distance en cM</li>
+              <li><span data-tex="n"></span> gènes : <span data-tex="2^n"></span> phénotypes, <span data-tex="3^n"></span> génotypes ; probabilités multipliées</li>
+            </ul>
+          </article>
+          <article class="cheat-card">
+            <h3>Groupes sanguins</h3>
+            <ul>
+              <li><span data-tex="A = B > O"></span> ; A = AA ou AO ; B = BB ou BO ; AB ; O = OO</li>
+              <li>Un enfant O a reçu un <span data-tex="O"></span> de chaque parent ; un parent AB n'a jamais d'enfant O</li>
+              <li>Rhésus + dominant</li>
+            </ul>
+          </article>
+          <article class="cheat-card wide">
+            <h3>Lire un arbre</h3>
+            <div class="table-wrap">
+              <table class="value-table cheat-table">
+                <thead><tr><th>Mode</th><th>Indices dans l'arbre</th></tr></thead>
+                <tbody>
+                  <tr><td>Autosomique dominant</td><td>Atteints à chaque génération ; tout atteint a un parent atteint ; deux parents atteints peuvent avoir un enfant sain</td></tr>
+                  <tr><td>Autosomique récessif</td><td>Deux parents sains peuvent avoir un enfant atteint ; saute des générations ; filles et garçons touchés</td></tr>
+                  <tr><td>Lié à X récessif</td><td>Surtout des garçons, par leur mère porteuse saine ; une fille atteinte a un père atteint</td></tr>
+                  <tr><td>Lié à X dominant</td><td>Un père atteint a toutes ses filles atteintes et aucun fils atteint</td></tr>
+                  <tr><td>Lié à Y</td><td>Uniquement des hommes, de père en fils, sans sauter de génération</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+          <article class="cheat-card">
+            <h3>Maladies chromosomiques</h3>
+            <ul>
+              <li>Non-disjonction pendant la méiose → 47 ou 45 chromosomes</li>
+              <li>Down : trisomie 21 ; Turner : 45,X ; Klinefelter : 47,XXY</li>
+              <li>Structure : délétion, duplication, inversion, translocation</li>
+            </ul>
+          </article>
+          <article class="cheat-card">
+            <h3>Pièges classiques</h3>
+            <ul>
+              <li>Chaque enfant est un nouveau tirage : les naissances précédentes ne changent rien</li>
+              <li>Gène létal : proportions parmi les survivants (2/3, 1/3)</li>
+              <li>Lié à X : le père donne son X aux filles, son Y aux fils</li>
+              <li>Un homme n'a qu'un allèle d'un gène de X : pas d'« homme porteur sain »</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- 10 ─────────────────────────────────────────────── -->
+      <section id="exercices" class="panel chapter">
+        <p class="kicker">Chapitre 10</p>
+        <h2>Exercices</h2>
+        <div class="trainer-bar">
+          <label class="row">Type
+            <select id="ex-choice"></select>
+          </label>
+          <button type="button" id="ex-new" class="primary">Nouvel exercice</button>
+          <p id="ex-score" class="score" role="status"></p>
+        </div>
+
+        <div class="ex-layout">
+          <div class="exercise" id="exercise">
+            <p class="prompt" id="ex-prompt"></p>
+            <p class="statement" id="ex-statement"></p>
+            <div id="ex-figure" class="ped-figure" hidden></div>
+
+            <form id="ex-form" class="answer" autocomplete="off">
+              <label for="ex-answer" class="field-label">Ta réponse</label>
+              <div class="answer-row">
+                <input id="ex-answer" class="text-input" type="text" spellcheck="false">
+                <button type="submit" class="primary">Vérifier</button>
+              </div>
+              <p id="ex-feedback" class="feedback" role="status"></p>
+            </form>
+
+            <div class="helpers">
+              <button type="button" id="ex-hint" class="ghost">Indice</button>
+              <button type="button" id="ex-step" class="ghost">Étape suivante</button>
+              <button type="button" id="ex-all" class="ghost link">Tout afficher</button>
+            </div>
+            <div class="ex-dock-anchor">
+              <div id="ex-dock" class="ex-dock" hidden aria-label="Commandes de l'exercice">
+                <div class="dock-row">
+                  <span id="dock-statement" class="dock-statement"></span>
+                  <form id="dock-form" class="dock-form" autocomplete="off">
+                    <input id="dock-answer" class="text-input" type="text" spellcheck="false" placeholder="Ta réponse" aria-label="Ta réponse">
+                    <button type="submit" class="primary">Vérifier</button>
+                  </form>
+                </div>
+                <div class="dock-row">
+                  <button type="button" id="dock-hint" class="ghost">Indice</button>
+                  <button type="button" id="dock-step" class="ghost">Étape suivante</button>
+                  <button type="button" id="dock-all" class="ghost link">Tout afficher</button>
+                  <p id="dock-feedback" class="feedback" aria-hidden="true"></p>
+                </div>
+              </div>
+            </div>
+            <ol id="ex-hints" class="hints"></ol>
+            <ol id="ex-steps" class="steps"></ol>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
