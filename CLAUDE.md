@@ -69,6 +69,16 @@ Ancien nom « Labo maths » : le dépôt `labo-maths/labo-maths.github.io` ne co
 - Niveaux : 1 Monohybridisme, 2 Cas particuliers, 3 Dihybridisme et polyhybridisme, 4 Linkage, 5 Lié au sexe et arbres.
 - Contenu tiré du PDF « Biologie 2 Génétique » (gardé en local, jamais versionné) ; figures redessinées en SVG avec les variables du thème.
 
+## diapos (éditeur de diapositives, bêta)
+
+- Outil transversal (pas de matière) : section `#outils` de l'accueil, pas de `data-subject`. Décidé avec l'utilisateur : profs et élèves, éditeur libre façon PowerPoint en HTML (pas de canvas, pour intégrer KaTeX, graphiques et outils du site), 16:9 seulement, sans build, sauvegarde navigateur + fichier `.json` (pas de comptes).
+- Avancement par étapes. Étape 1 (faite) : texte, formule, image, forme, thèmes, liste des diapos, présentation. À venir : graphiques de fonctions (Plotly), outils Labo IFC intégrés (iframe), export PDF (impression), export `.pptx` (PptxGenJS, formules/graphiques/outils en images).
+- Diapo de 1600 × 900 unités (`SLIDE_W`, `SLIDE_H`), mise à l'échelle par `transform: scale` ; poignées à taille constante via `--inv` (= 1/échelle).
+- Couleurs des blocs = **rôles** (`text`, `muted`, `accent`, `accent2`, `light`, `bg`, `none`) traduits par `palette(theme, accent)` en variables `--s-*` sur `.slide` : un changement de thème recolore tout. Les couleurs des thèmes de diapos (`THEMES`, `ACCENTS` dans `model.js`) sont du contenu, en dur volontairement, indépendantes du thème clair/sombre du site.
+- Tout changement passe par `change(fn, { key, redraw })` de `app.js` (étape d'annulation, sauvegarde, redessin) ; même `key` en moins d'une seconde = une seule étape (frappe, champs numériques).
+- Fichier ouvert : toujours passer par `cleanDeck` (types et valeurs connus seulement, images en `data:image/…` seulement) ; le texte est rendu par `renderMixed` (jamais de HTML interprété). Nouveau type de bloc ou propriété : l'ajouter à `DEFAULTS` et à `cleanElement`.
+- `tests/diapos.browser.html` à mettre à jour quand l'interface change.
+
 ## Vérification
 
 - `node --test` (Node ≥ 20) doit passer.

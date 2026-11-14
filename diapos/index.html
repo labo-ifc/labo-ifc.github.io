@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diapos · Labo IFC</title>
+  <meta name="description" content="Créer des diapositives de sciences dans le navigateur : textes, formules, images et formes, thèmes, mode présentation.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.css">
+  <link rel="stylesheet" href="../shared/theme.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="../shared/theme-boot.js"></script>
+  <script>window.goatcounter = { path: p => location.host + p };</script>
+  <script data-goatcounter="https://exokayn.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11/contrib/mhchem.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="crumbs"><a href="../">Labo IFC</a><span aria-hidden="true">/</span><h1>Diapos <span class="beta-tag">bêta</span></h1></nav>
+    <input id="deck-title" class="deck-title" type="text" aria-label="Titre de la présentation" maxlength="200">
+    <div class="file-actions">
+      <span id="save-status" class="save-status" role="status"></span>
+      <button id="new-deck" class="ghost" type="button">Nouvelle</button>
+      <button id="open-deck" class="ghost" type="button">Ouvrir…</button>
+      <button id="save-deck" class="ghost" type="button" title="Télécharger la présentation (fichier .json)">Enregistrer</button>
+      <button id="present" class="primary" type="button" title="Présenter (F5)">▶ Présenter</button>
+      <button id="theme-toggle" class="ghost" type="button" aria-label="Changer de thème">Thème</button>
+    </div>
+    <input id="open-file" type="file" accept=".json,application/json" hidden>
+    <input id="image-file" type="file" accept="image/*" hidden>
+  </header>
+
+  <div class="workspace">
+    <aside class="slides-pane" aria-label="Diapositives">
+      <ol id="thumbs" class="thumbs"></ol>
+      <details class="add-menu" id="add-menu">
+        <summary class="primary">+ Diapo</summary>
+        <div class="menu" id="layout-menu"></div>
+      </details>
+      <div class="slide-actions">
+        <button class="ghost" type="button" data-slide="up" title="Monter la diapo">↑</button>
+        <button class="ghost" type="button" data-slide="down" title="Descendre la diapo">↓</button>
+        <button class="ghost" type="button" data-slide="duplicate" title="Dupliquer la diapo">Dupliquer</button>
+        <button class="ghost" type="button" data-slide="delete" title="Supprimer la diapo">Supprimer</button>
+      </div>
+    </aside>
+
+    <main class="editor">
+      <div class="toolbar" role="toolbar" aria-label="Insérer">
+        <div class="chips">
+          <button type="button" data-insert="text" title="Texte (formules entre $…$)"><b>T</b> Texte</button>
+          <button type="button" data-insert="formula" title="Formule KaTeX"><i>ƒ</i>(x) Formule</button>
+          <button type="button" data-insert="image" title="Image (ou coller / glisser une image)">▣ Image</button>
+          <button type="button" data-insert="shape:rect">▭ Rectangle</button>
+          <button type="button" data-insert="shape:ellipse">◯ Ellipse</button>
+          <button type="button" data-insert="shape:line">╱ Ligne</button>
+          <button type="button" data-insert="shape:arrow">→ Flèche</button>
+        </div>
+        <div class="chips history">
+          <button id="undo" type="button" title="Annuler (Ctrl+Z)" aria-label="Annuler">↶</button>
+          <button id="redo" type="button" title="Rétablir (Ctrl+Maj+Z)" aria-label="Rétablir">↷</button>
+        </div>
+      </div>
+      <div id="stage-wrap" class="stage-wrap">
+        <div id="stage-frame" class="stage-frame"></div>
+      </div>
+      <p class="slide-counter" id="slide-counter"></p>
+    </main>
+
+    <aside id="inspector" class="inspector panel" aria-label="Propriétés"></aside>
+  </div>
+
+  <div id="presenter" class="presenter" hidden>
+    <div class="present-frame" id="present-frame"></div>
+    <p class="present-count" id="present-count"></p>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

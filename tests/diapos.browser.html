@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>diapos : vérification navigateur</title>
+<style>
+  body { font: 16px/1.4 monospace; margin: 12px; background: #fff; color: #000; }
+  .pass { color: #067d17; } .fail { color: #c00; font-weight: bold; }
+  iframe { width: 1280px; height: 800px; border: 1px solid #999; }
+  h1 { font-size: 20px; }
+</style>
+</head>
+<body>
+<h1 id="summary">running…</h1>
+<ol id="log"></ol>
+<iframe id="f"></iframe>
+<script>
+// In-browser check of diapos/ (via the local server: /tests/diapos.browser.html).
+// Clears the editor's saved deck first, so it starts from the default presentation.
+localStorage.removeItem("diapos:deck");
+const results = [];
+const check = (name, ok) => results.push([name, !!ok]);
+const f = document.getElementById("f");
+f.src = "../diapos/";
+// Runs synchronously in the iframe's load handler, so it completes before the parent's load (screenshot time).
+f.addEventListener("load", run);
+
+function run() {
+  const d = f.contentDocument, w = f.contentWindow;
+  const $ = (s) => d.querySelector(s);
+  const els = () => d.querySelectorAll("#stage-frame .slide > .el");
+  const click = (s) => $(s).click();
+  try {
+    check("default deck: one slide, two blocks", d.querySelectorAll("#thumbs li").length === 1 && els().length === 2);
+    check("stage is scaled to fit", $("#stage-frame").getBoundingClientRect().width > 300);
+
+    click('[data-insert="text"]');
+    check("insert text adds a selected block", els().length === 3 && $(".selection"));
+    check("inspector shows the text field", $("#prop-text"));
+
+    click('[data-insert="formula"]');
+    check("formula is drawn with KaTeX", $("#stage-frame .el-formula .katex"));
+    const tex = $("#prop-tex");
+    tex.value = "\\ce{2H2 + O2 -> 2H2O}";
+    tex.dispatchEvent(new Event("input"));
+    check("mhchem formula renders", $("#stage-frame .el-formula .katex") && !$("#stage-frame .el-formula .katex-error"));
+
+    click('[data-insert="shape:arrow"]');
+    check("arrow drawn as svg", $("#stage-frame .el-shape svg polygon"));
+    check("five blocks", els().length === 5);
+
+    d.dispatchEvent(new w.KeyboardEvent("keydown", { key: "z", ctrlKey: true, bubbles: true }));
+    check("Ctrl+Z removes the arrow", els().length === 4);
+    d.dispatchEvent(new w.KeyboardEvent("keydown", { key: "z", ctrlKey: true, shiftKey: true, bubbles: true }));
+    check("Ctrl+Shift+Z brings it back", els().length === 5);
+
+    $("#add-menu").open = true;
+    $("#layout-menu button:nth-child(2)").click();
+    check("new slide added and shown", d.querySelectorAll("#thumbs li").length === 2 && els().length === 2);
+    click('[data-slide="duplicate"]');
+    check("duplicate slide", d.querySelectorAll("#thumbs li").length === 3);
+    click('[data-slide="delete"]');
+    check("delete slide", d.querySelectorAll("#thumbs li").length === 2);
+
+    $("#thumbs li:first-child button").click();
+    check("back to slide 1", els().length === 5 && $("#slide-counter").textContent.startsWith("Diapo 1"));
+
+    $("#stage-frame").dispatchEvent(new w.PointerEvent("pointerdown", { bubbles: true, button: 0 }));
+    const cards = d.querySelectorAll(".theme-cards button");
+    check("theme cards in inspector when nothing is selected", cards.length === 4);
+    cards[3].click();
+    const bg = w.getComputedStyle($("#stage-frame .slide")).backgroundColor;
+    check("blackboard theme recolours the slide", bg === "rgb(36, 64, 47)");
+
+    click("#present");
+    check("presenter opens on the current slide", !$("#presenter").hidden && $("#present-count").textContent === "1 / 2");
+    d.dispatchEvent(new w.KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }));
+    check("arrow goes to the next slide", $("#present-count").textContent === "2 / 2");
+    d.dispatchEvent(new w.KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    check("Escape closes the presenter", $("#presenter").hidden);
+
+    w.dispatchEvent(new w.Event("pagehide"));
+    const saved = JSON.parse(localStorage.getItem("diapos:deck") || "null");
+    check("deck saved in localStorage", saved && saved.slides.length === 2 && saved.theme === "tableau");
+    report();
+  } catch (e) {
+    check("exception: " + e.message, false);
+    report();
+  }
+}
+
+function report() {
+  const log = document.getElementById("log");
+  for (const [name, ok] of results) {
+    const li = document.createElement("li");
+    li.className = ok ? "pass" : "fail";
+    li.textContent = (ok ? "✓ " : "✗ ") + name;
+    log.append(li);
+  }
+  const failed = results.filter((r) => !r[1]).length;
+  document.getElementById("summary").textContent = failed ? `${failed} échec(s) sur ${results.length}` : `OK : ${results.length} vérifications`;
+}
+</script>
+</body>
+</html>

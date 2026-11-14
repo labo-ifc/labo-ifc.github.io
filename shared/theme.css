@@ -178,3 +178,7 @@ button, input, select { font: inherit; color: inherit; }
 .tool-card h3 { margin: 0; font-size: 1rem; }
 .tool-card p { margin: 0; color: var(--muted); }
 .tool-card .tex { color: var(--fg); }
+.beta-tag {
+  font-size: 0.7em; font-weight: 600; color: var(--accent); background: var(--accent-soft);
+  border-radius: 999px; padding: 1px 8px; vertical-align: middle;
+}

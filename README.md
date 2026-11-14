@@ -30,6 +30,12 @@ Un dossier par matière (`maths/`, `chimie/`, `physique/`, `biologie/`), un sous
 |---|---|
 | Génétique : cellule, ADN, mitose et méiose, lois de Mendel, monohybridisme (échiquier de Punnett interactif, simulateur de F2), codominance, gènes létaux, groupes sanguins, dihybridisme et polyhybridisme, linkage, arbres généalogiques (lecteur d'arbres qui teste chaque mode de transmission), maladies chromosomiques (risque de trisomie 21 selon l'âge de la mère), exercices du cours corrigés, pense-bête imprimable, générateur d'exercices (probabilités, génotypes, gamètes, arbres dessinés, QCM) avec indices et résolution pas à pas | [`biologie/genetique/`](biologie/genetique/) |
 
+### Outils
+
+| Outil | Dossier |
+|---|---|
+| Diapos (bêta) : éditeur de diapositives 16:9 dans le navigateur ; textes avec formules `$…$` et puces, formules KaTeX (chimie avec `\ce{…}`), images (bouton, coller, glisser), formes (rectangle, ellipse, ligne, flèche) ; déplacer, redimensionner, tourner, aimantation ; quatre thèmes (clair, papier, sombre, tableau noir) et couleur d'accent ; liste des diapos réordonnable ; annuler/rétablir ; sauvegarde automatique dans le navigateur, enregistrer/ouvrir un fichier `.json` ; mode présentation plein écran | [`diapos/`](diapos/) |
+
 ## Services
 
 | Service | Rôle |
@@ -85,13 +91,17 @@ Pour `physique/thermodynamique/`, `tests/thermodynamique.test.js` vérifie chaqu
 Pour `biologie/genetique/`, `tests/genetique.test.js` vérifie chaque type d'exercice sur 300 tirages (réponse acceptée,
 indices sans la réponse), les croisements, les rapports et la lecture des arbres (génotypes possibles, modes compatibles).
 
+Pour `diapos/`, `tests/diapos.test.js` vérifie la géométrie (redimensionnement d'un bloc tourné, rotation, aimantation),
+les thèmes, la lecture d'un fichier (valeurs nettoyées, images en `data:` seulement) et l'historique.
+
 L'interface de `exp-log/` se vérifie dans le navigateur : avec le serveur local lancé,
-ouvrir http://localhost:8000/tests/exp-log.browser.html (toutes les lignes doivent être vertes).
+ouvrir http://localhost:8000/tests/exp-log.browser.html (toutes les lignes doivent être vertes) ; de même pour `diapos/` avec http://localhost:8000/tests/diapos.browser.html
+(efface la présentation enregistrée dans le navigateur pour `localhost`).
 
 ## Structure
 
 ```
-index.html          page d'accueil : les outils groupés par matière (une section par matière, ancre #maths, #chimie, #physique, #biologie)
+index.html          page d'accueil : les outils groupés par matière (une section par matière, ancre #maths, #chimie, #physique, #biologie), puis #outils
 shared/
   theme.css         couleurs (variables CSS), thèmes clair/sombre, composants communs (boutons, champs, curseurs)
   theme-boot.js     thème appliqué avant le premier affichage (script bloquant dans <head>)
@@ -109,6 +119,12 @@ shared/
   course.js         un chapitre par « page » (hash de l'URL), précédent/suivant, boutons « S'entraîner »
   trainer.js        carte d'exercice commune (indices, étapes, vérification, score, barre collante, QCM) ; chaque cours fournit son générateur et ses messages
   examples.js       exemples résolus des cartes de méthode, dans un panneau pleine largeur sous la rangée de la carte
+diapos/
+  index.html, style.css
+  model.js          présentation (sans DOM) : thèmes et couleurs, mises en page, redimensionnement avec rotation,
+                    aimantation, lecture sûre d'un fichier .json, historique d'annulation
+  render.js         dessin d'une diapo en HTML (éditeur, miniatures, présentation)
+  app.js            éditeur : scène, poignées, liste des diapos, panneau de propriétés, fichiers, présentation, raccourcis
 maths/
   sinusoides/
     index.html, style.css, app.js
