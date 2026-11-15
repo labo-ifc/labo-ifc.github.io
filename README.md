@@ -34,7 +34,7 @@ Un dossier par matière (`maths/`, `chimie/`, `physique/`, `biologie/`), un sous
 
 | Outil | Dossier |
 |---|---|
-| Diapos (bêta) : éditeur de diapositives 16:9 dans le navigateur ; textes avec formules `$…$` et puces, formules KaTeX (chimie avec `\ce{…}`), images (bouton, coller, glisser), formes (rectangle, ellipse, ligne, flèche) ; déplacer, redimensionner, tourner, aimantation ; quatre thèmes (clair, papier, sombre, tableau noir) et couleur d'accent ; liste des diapos réordonnable ; annuler/rétablir ; sauvegarde automatique dans le navigateur, enregistrer/ouvrir un fichier `.json` ; mode présentation plein écran | [`diapos/`](diapos/) |
+| Diapos (bêta) : éditeur de diapositives 16:9 dans le navigateur ; textes avec formules `$…$` et puces, formules KaTeX (chimie avec `\ce{…}`), graphiques de fonctions (jusqu'à 4 courbes, fenêtre réglable, repère orthonormé, équations affichées), images (bouton, coller, glisser), formes (rectangle, ellipse, ligne, flèche) ; déplacer, redimensionner, tourner, aimantation ; quatre thèmes (clair, papier, sombre, tableau noir) et couleur d'accent ; liste des diapos réordonnable ; annuler/rétablir ; sauvegarde automatique dans le navigateur, enregistrer/ouvrir un fichier `.json` ; mode présentation plein écran | [`diapos/`](diapos/) |
 
 ## Services
 

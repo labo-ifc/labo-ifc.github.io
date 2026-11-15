@@ -1,11 +1,12 @@
 // Diapos: slide editor (stage, slide list, inspector, files, presenter).
 import { initTheme } from "../shared/theme.js";
 import {
-  SLIDE_W, SLIDE_H, THEMES, ACCENTS, COLORS, SHAPES, LAYOUTS, palette,
+  SLIDE_W, SLIDE_H, THEMES, ACCENTS, COLORS, SHAPES, LAYOUTS, MAX_FUNCTIONS, palette,
   makeDeck, makeSlide, makeElement, cloneSlide, cloneElement, moveItem,
   resizeBox, rotationTo, snapPosition, cleanDeck, fileName, History,
 } from "./model.js";
-import { drawSlide, drawElement, drawContent, placeElement } from "./render.js";
+import { drawSlide, drawElement, drawContent, placeElement, compiledFunction } from "./render.js";
+import { orthonormal, FN_NAMES } from "./graph.js";
 
 const $ = (id) => document.getElementById(id);
 const STORE_KEY = "diapos:deck";
@@ -203,7 +204,7 @@ frame.addEventListener("pointerdown", (ev) => {
       next = { x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.w), h: Math.round(r.h) };
     }
     const preview = { ...el, ...next };
-    if (mode !== "move" && mode !== "rot" && el.type === "shape") drawContent(elNode, preview);
+    if (mode !== "move" && mode !== "rot" && (el.type === "shape" || el.type === "graph")) drawContent(elNode, preview);
     placeElement(elNode, preview);
     placeElement(selNode, preview);
   };
@@ -226,6 +227,7 @@ frame.addEventListener("dblclick", (ev) => {
   const el = slide().elements.find((e) => e.id === node.dataset.id);
   if (el?.type === "text") startTextEdit(el);
   else if (el?.type === "formula") $("prop-tex")?.focus();
+  else if (el?.type === "graph") inspector.querySelector(".fn-row input")?.focus();
 });
 
 // Text is edited in place in a textarea that takes the block's font.
@@ -499,6 +501,79 @@ function numberField(label, prop, el, { min, max, factor = 1 } = {}) {
   return h("label", {}, label, input);
 }
 
+const CURVE_COLORS = ["accent", "accent2", "text", "muted"];
+
+const PARTNER = { xmin: "xmax", xmax: "xmin", ymin: "ymax", ymax: "ymin" };
+/** Graph window bound: accepts a comma; applied only if it stays on the right side of its partner. */
+function decimalField(label, prop, el) {
+  const input = h("input", { type: "text", inputMode: "decimal", value: String(el[prop]).replace(".", ","), "data-prop": prop });
+  input.addEventListener("input", () => {
+    const v = Number(input.value.trim().replace(",", ".").replace(/[−–]/, "-"));
+    const other = el[PARTNER[prop]];
+    let msg = "";
+    if (input.value.trim() === "" || !Number.isFinite(v) || Math.abs(v) > 1e6) msg = "Nombre invalide.";
+    else if (prop.endsWith("min") ? v >= other : v <= other) msg = "Le minimum doit être plus petit que le maximum.";
+    input.classList.toggle("invalid", Boolean(msg));
+    $("window-error").textContent = msg;
+    if (!msg) setProp(prop, v, true);
+  });
+  return h("label", {}, label, input);
+}
+
+function graphPanel(el) {
+  const rows = el.fns.map((f, i) => {
+    const input = h("input", { type: "text", value: f.expr, spellcheck: false, "aria-label": `Fonction ${i + 1}` });
+    const error = h("p", { class: "fn-error", role: "status" });
+    const showError = () => {
+      const c = compiledFunction(f.expr);
+      error.textContent = c.error && f.expr.trim() ? c.error : "";
+      input.classList.toggle("invalid", Boolean(error.textContent));
+    };
+    showError();
+    input.addEventListener("input", () => {
+      change(() => { f.expr = input.value; }, { key: `fn${i}:${el.id}`, redraw: "element" });
+      showError();
+    });
+    const remove = h("button", {
+      type: "button", class: "ghost", title: "Retirer cette courbe", "aria-label": "Retirer cette courbe",
+      onclick: () => { change(() => { el.fns.splice(i, 1); }, { redraw: "element" }); renderInspector(); },
+    }, "✕");
+    return h("div", { class: "fn-row" },
+      h("div", { class: "row" }, input, remove),
+      swatches(f.color, (c) => change(() => { f.color = c; }, { redraw: "element" }), CURVE_COLORS),
+      error);
+  });
+  const add = el.fns.length < MAX_FUNCTIONS ? h("button", {
+    type: "button", class: "ghost",
+    onclick: () => {
+      const name = FN_NAMES[el.fns.length];
+      change(() => { el.fns.push({ expr: `${name}(x) = `, color: CURVE_COLORS[el.fns.length % CURVE_COLORS.length] }); }, { redraw: "element" });
+      renderInspector();
+      const inputs = inspector.querySelectorAll(".fn-row input");
+      inputs[inputs.length - 1]?.focus();
+    },
+  }, "+ Courbe") : null;
+  const check = (label, prop) => h("label", { class: "check" },
+    h("input", { type: "checkbox", checked: el[prop], onchange: (e) => setProp(prop, e.target.checked) }), label);
+  const fit = h("button", {
+    type: "button", class: "ghost", title: "Même unité sur les deux axes (garde l'intervalle des x)",
+    onclick: () => { change(() => Object.assign(el, orthonormal(el, el.w, el.h)), { redraw: "element" }); renderInspector(); },
+  }, "Repère orthonormé");
+  return [
+    section("Courbes", ...rows, add,
+      h("p", { class: "hint" }, "Ex. : ", h("code", {}, "f(x) = 2x^2 - 3"), ", ", h("code", {}, "sin(x)"), ", ",
+        h("code", {}, "ln(x)"), ", ", h("code", {}, "√x"), ", ", h("code", {}, "e^(-x)"), ".")),
+    section("Fenêtre", h("div", { class: "grid4" },
+      decimalField("x min", "xmin", el), decimalField("x max", "xmax", el),
+      decimalField("y min", "ymin", el), decimalField("y max", "ymax", el)),
+      h("p", { class: "fn-error", id: "window-error", role: "status" }),
+      h("div", { class: "buttons" }, fit)),
+    section("Affichage", check("Quadrillage", "grid"), check("Équations", "legend"),
+      h("div", { class: "grid4" }, numberField("Épaisseur", "lineWidth", el, { min: 1, max: 30 }))),
+    section("Axes", swatches(el.color, (c) => setProp("color", c), ["text", "muted", "accent", "light"])),
+  ];
+}
+
 function deckPanel() {
   const themes = h("div", { class: "theme-cards" }, ...Object.entries(THEMES).map(([key, t]) => {
     const p = palette(key, state.deck.accent);
@@ -567,6 +642,8 @@ function elementPanel(el) {
         numberField("Opacité %", "opacity", el, { min: 0, max: 100, factor: 100 }))));
     if (!line) parts.push(section("Remplissage", swatches(el.fill, (c) => setProp("fill", c))));
     parts.push(section(line ? "Couleur" : "Contour", swatches(el.stroke, (c) => setProp("stroke", c), line ? ["text", "muted", "accent", "accent2", "light", "bg"] : undefined)));
+  } else if (el.type === "graph") {
+    parts.push(...graphPanel(el));
   } else if (el.type === "image") {
     parts.push(section("Image", h("p", { class: "hint" }, "Les poignées de coin gardent les proportions (Maj pour déformer).")));
   }
