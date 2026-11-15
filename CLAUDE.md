@@ -11,7 +11,8 @@ Ancien nom « Labo maths » : le dépôt `labo-maths/labo-maths.github.io` ne co
 - Formules : `data-tex="…"` (+ `data-display`) dans le HTML, `renderTex` / `renderMixed` (`shared/tex.js`) en JS ; texte mêlé de maths avec `$…$`.
 - Logique (maths, chimie) dans des modules sans DOM (`exercises.js`, `calc.js`, `model.js`…), testée dans `tests/`.
 - Mise en page responsive : une colonne sous 900px ; respecter `prefers-reduced-motion` pour les animations.
-- Statistiques GoatCounter : les deux `<script>` (réglage `window.goatcounter` + `count.js` de `exokayn.goatcounter.com`) doivent figurer dans le `<head>` de toute nouvelle page ; chiffres privés, pas de compteur visible.
+- Statistiques GoatCounter : les deux `<script>` (réglage `window.goatcounter` + `https://gc.zgo.at/count.v4.js` avec `data-goatcounter` vers `exokayn.goatcounter.com`) doivent figurer dans le `<head>` de toute nouvelle page ; chiffres privés, pas de compteur visible.
+- Sécurité : tout script ou feuille de style externe porte `integrity="sha384-…"` et `crossorigin="anonymous"`, avec une version fixe (jamais `@latest` ni `count.js` sans version) ; copier la balise d'une page existante. Nouvelle bibliothèque : empreinte par `curl -sL <url> | openssl dgst -sha384 -binary | openssl base64 -A`. `tests/security.test.js` le vérifie. Sur GitHub : `main` protégée (pas de force-push ni de suppression), détection de secrets activée.
 - La rose en braille en commentaire au début de `index.html` est la signature de l'auteur : la conserver telle quelle.
 
 ## maths/exp-log
