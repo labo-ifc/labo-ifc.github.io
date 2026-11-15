@@ -79,9 +79,32 @@ function run() {
     d.dispatchEvent(new w.KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
     check("Escape closes the presenter", $("#presenter").hidden);
 
+    click('[data-insert="graph"]');
+    const curves = () => d.querySelectorAll("#stage-frame .el-graph path.curve");
+    check("graph drawn as svg with a curve", curves().length === 1);
+    check("graph legend rendered with KaTeX", $("#stage-frame .el-graph .graph-legend .katex"));
+    const fn = $(".fn-row input");
+    fn.value = "1/x";
+    fn.dispatchEvent(new Event("input"));
+    check("1/x drawn in two pieces", curves()[0]?.getAttribute("d").split("M").length === 3);
+    fn.value = "2x+";
+    fn.dispatchEvent(new Event("input"));
+    check("invalid expression: message, no curve", $(".fn-error").textContent && curves().length === 0);
+    [...d.querySelectorAll(".inspector button")].find((b) => b.textContent === "+ Courbe").click();
+    check("+ Courbe adds a second row", d.querySelectorAll(".fn-row").length === 2);
+    const xmin = $('[data-prop="xmin"]');
+    xmin.value = "10";
+    xmin.dispatchEvent(new Event("input"));
+    check("xmin ≥ xmax is refused", $("#window-error").textContent && xmin.classList.contains("invalid"));
+    xmin.value = "-2,5";
+    xmin.dispatchEvent(new Event("input"));
+    check("decimal comma accepted", !$("#window-error").textContent);
+
     w.dispatchEvent(new w.Event("pagehide"));
     const saved = JSON.parse(localStorage.getItem("diapos:deck") || "null");
     check("deck saved in localStorage", saved && saved.slides.length === 2 && saved.theme === "tableau");
+    const graph = saved?.slides.flatMap((s) => s.elements).find((e) => e.type === "graph");
+    check("graph saved with its window", graph && graph.xmin === -2.5 && graph.fns.length === 2);
     report();
   } catch (e) {
     check("exception: " + e.message, false);

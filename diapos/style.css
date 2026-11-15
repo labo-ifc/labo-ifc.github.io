@@ -73,6 +73,15 @@ body { height: 100vh; height: 100dvh; display: flex; flex-direction: column; ove
 .el-formula .katex-display { margin: 0; }
 .el-image img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .el-shape svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.el-graph svg { width: 100%; height: 100%; display: block; }
+.el-graph .grid line { stroke: var(--s-muted); stroke-opacity: 0.28; stroke-width: 1.5; }
+.el-graph .axes line { stroke-width: 3; }
+.el-graph .labels { fill: var(--s-muted); font-family: inherit; paint-order: stroke; stroke: var(--s-bg); stroke-width: 6; stroke-linejoin: round; }
+.el-graph .curve { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.el-graph .graph-legend {
+  position: absolute; top: 12px; left: 12px; padding: 6px 14px; font-size: 30px; line-height: 1.5;
+  background: color-mix(in srgb, var(--s-bg) 85%, transparent); border-radius: 8px; pointer-events: none;
+}
 
 /* Editing */
 .stage-frame .el { cursor: move; }
@@ -131,6 +140,14 @@ body { height: 100vh; height: 100dvh; display: flex; flex-direction: column; ove
 .inspector .hint { margin: 0; color: var(--muted); font-size: 0.85em; }
 .inspector .hint code { font-family: var(--mono); color: var(--fg); }
 .inspector .buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+.fn-row { display: flex; flex-direction: column; gap: 6px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.fn-row .row input { flex: 1; min-width: 0; font-family: var(--mono); }
+.fn-row .row .ghost { padding: 2px 8px; }
+.inspector input[type="text"] { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; }
+.inspector input.invalid { border-color: var(--error); }
+.fn-error { margin: 0; color: var(--error); font-size: 0.85em; }
+.fn-error:empty { display: none; }
+.inspector .check { display: flex; align-items: center; gap: 8px; }
 .inspector .danger:hover { border-color: var(--error); color: var(--error); }
 .inspector kbd {
   font-family: var(--mono); font-size: 0.85em; border: 1px solid var(--border); border-bottom-width: 2px;

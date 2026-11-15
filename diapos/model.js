@@ -55,19 +55,25 @@ export function uid() {
   return Date.now().toString(36) + counter.toString(36) + Math.random().toString(36).slice(2, 6);
 }
 
+export const MAX_FUNCTIONS = 4;
+
 // Defaults per element type.
 const DEFAULTS = {
   text: { w: 700, h: 120, text: "Texte", size: 44, bold: false, italic: false, align: "left", color: "text" },
   formula: { w: 600, h: 160, tex: "f(x) = ax^2 + bx + c", size: 56, color: "text" },
   image: { w: 600, h: 400, src: "" },
   shape: { w: 400, h: 260, shape: "rect", fill: "accent", stroke: "none", strokeWidth: 6, radius: 0, opacity: 1 },
+  graph: {
+    w: 800, h: 560, fns: [{ expr: "f(x) = x^2 - 2", color: "accent" }],
+    xmin: -5, xmax: 5, ymin: -4, ymax: 6, grid: true, legend: true, lineWidth: 5, color: "text",
+  },
 };
 export const ELEMENT_TYPES = Object.keys(DEFAULTS);
 export const SHAPES = { rect: "Rectangle", ellipse: "Ellipse", line: "Ligne", arrow: "Flèche" };
 
 /** New element of `type`, centred on the slide unless x/y are given. */
 export function makeElement(type, props = {}) {
-  const base = { ...DEFAULTS[type], ...props };
+  const base = { ...structuredClone(DEFAULTS[type]), ...props };
   if (type === "shape" && (base.shape === "line" || base.shape === "arrow") && !("h" in props)) {
     Object.assign(base, { h: 40, fill: "none", stroke: props.stroke ?? "accent" });
   }
@@ -82,6 +88,7 @@ export const LAYOUTS = {
   title: "Titre",
   titleText: "Titre et texte",
   titleFormula: "Titre et formule",
+  titleGraph: "Titre et graphique",
   blank: "Vide",
 };
 
@@ -100,6 +107,11 @@ export function makeSlide(layout = "titleText") {
     titleFormula: [
       title({ text: "Titre", x: 100, y: 70, w: 1400, h: 100 }),
       makeElement("formula", { tex: "\\Delta = b^2 - 4ac", x: 300, y: 340, w: 1000, h: 220, size: 80 }),
+    ],
+    titleGraph: [
+      title({ text: "Titre", x: 100, y: 70, w: 1400, h: 100 }),
+      makeElement("graph", { x: 100, y: 210, w: 900, h: 630 }),
+      makeElement("text", { text: "- Sommet : $(0 ; -2)$\n- Racines : $\\pm\\sqrt{2}$", x: 1060, y: 230, w: 440, h: 300, size: 40 }),
     ],
     blank: [],
   }[layout] ?? [];
@@ -226,6 +238,20 @@ function cleanElement(raw) {
       return { ...el, shape: pick(raw.shape, SHAPES, "rect"), fill: pick(raw.fill, COLORS, "accent"),
         stroke: pick(raw.stroke, COLORS, "none"), strokeWidth: num(raw.strokeWidth, d.strokeWidth, 0, 80),
         radius: num(raw.radius, 0, 0, 1000), opacity: num(raw.opacity, 1, 0, 1) };
+    case "graph": {
+      const fns = (Array.isArray(raw.fns) ? raw.fns : [])
+        .filter((f) => f && typeof f === "object").slice(0, MAX_FUNCTIONS)
+        .map((f) => ({ expr: str(f.expr, "", 500), color: pick(f.color, COLORS, "accent") }));
+      const range = (lo, hi, defLo, defHi) => {
+        let a = num(lo, defLo, -1e6, 1e6), b = num(hi, defHi, -1e6, 1e6);
+        if (!(b - a > 1e-9)) [a, b] = [defLo, defHi];
+        return [a, b];
+      };
+      const [xmin, xmax] = range(raw.xmin, raw.xmax, d.xmin, d.xmax);
+      const [ymin, ymax] = range(raw.ymin, raw.ymax, d.ymin, d.ymax);
+      return { ...el, fns, xmin, xmax, ymin, ymax, grid: bool(raw.grid, true), legend: bool(raw.legend, true),
+        lineWidth: num(raw.lineWidth, d.lineWidth, 1, 30), color: pick(raw.color, COLORS, "text") };
+    }
   }
   return null;
 }
