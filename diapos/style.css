@@ -113,6 +113,11 @@ body { height: 100vh; height: 100dvh; display: flex; flex-direction: column; ove
   content: ""; position: absolute; left: 50%; top: calc(-30px * var(--inv)); height: calc(30px * var(--inv));
   border-left: calc(2px * var(--inv)) solid var(--accent);
 }
+.selection.multi { outline-width: calc(1.5px * var(--inv)); }
+.selection.multi::before { display: none; }
+.group-box, .marquee { position: absolute; pointer-events: none; }
+.group-box { outline: calc(1.5px * var(--inv)) dashed var(--accent); outline-offset: calc(6px * var(--inv)); }
+.marquee { background: color-mix(in srgb, var(--accent) 12%, transparent); outline: calc(1.5px * var(--inv)) solid var(--accent); }
 .guide { position: absolute; background: var(--fit); pointer-events: none; }
 .guide-x { top: 0; bottom: 0; width: calc(2px * var(--inv)); }
 .guide-y { left: 0; right: 0; height: calc(2px * var(--inv)); }
@@ -140,6 +145,9 @@ body { height: 100vh; height: 100dvh; display: flex; flex-direction: column; ove
 .inspector .hint { margin: 0; color: var(--muted); font-size: 0.85em; }
 .inspector .hint code { font-family: var(--mono); color: var(--fg); }
 .inspector .buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+.align-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.align-grid .ghost { padding: 4px 6px; font-size: 0.85em; }
+.align-grid span { color: var(--accent); }
 .fn-row { display: flex; flex-direction: column; gap: 6px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 .fn-row .row input { flex: 1; min-width: 0; font-family: var(--mono); }
 .fn-row .row .ghost { padding: 2px 8px; }
