@@ -100,6 +100,64 @@ function run() {
     xmin.dispatchEvent(new Event("input"));
     check("decimal comma accepted", !$("#window-error").textContent);
 
+    // Multiple selection and alignment (slide with title, text and graph).
+    const key = (k, opts = {}) => d.dispatchEvent(new w.KeyboardEvent("keydown", { key: k, bubbles: true, ...opts }));
+    const ptr = (type, target, x, y, opts = {}) => target.dispatchEvent(new w.PointerEvent(type, { bubbles: true, button: 0, clientX: x, clientY: y, pointerId: 1, ...opts }));
+    $("#stage-frame").dispatchEvent(new w.PointerEvent("pointerdown", { bubbles: true, button: 0 }));
+    key("a", { ctrlKey: true });
+    check("Ctrl+A selects every block", d.querySelectorAll(".overlay .selection.multi").length === els().length && $(".group-box"));
+    check("multi panel lists the blocks", $(".inspector h2").textContent === `${els().length} blocs sélectionnés`);
+    check("no resize handles for several blocks", !$(".overlay .handle"));
+    $('[data-align="left"]').click();
+    const lefts = [...els()].map((n) => Math.round(n.getBoundingClientRect().left));
+    check("align left lines up the blocks", lefts.every((v) => Math.abs(v - lefts[0]) <= 1));
+    key("z", { ctrlKey: true });
+    check("align is one undo step", new Set([...els()].map((n) => Math.round(n.getBoundingClientRect().left))).size > 1);
+    // Spread the three blocks apart first (no overlap), then distribute.
+    const field = (label, value) => {
+      const input = [...d.querySelectorAll(".inspector .grid4 label")].find((l) => l.firstChild.textContent === label).querySelector("input");
+      input.value = value;
+      input.dispatchEvent(new Event("input"));
+    };
+    [[100, 40], [200, 300], [300, 700]].forEach(([x, y], i) => {
+      ptr("pointerdown", els()[i], 0, 0);
+      ptr("pointerup", $("#stage-frame"), 0, 0);
+      field("X", x); field("Y", y); field("Largeur", 600); field("Hauteur", 100); field("Rotation °", 0);
+    });
+    key("a", { ctrlKey: true });
+    $('[data-distribute="y"]').click();
+    const tops = [...els()].map((n) => n.getBoundingClientRect()).sort((a, b) => a.top - b.top);
+    check("distribute vertically: equal gaps", Math.abs((tops[1].top - tops[0].bottom) - (tops[2].top - tops[1].bottom)) < 1.5);
+
+    key("Escape");
+    const r = $("#stage-frame").getBoundingClientRect();
+    ptr("pointerdown", $("#stage-frame"), r.left + 2, r.top + 2);
+    ptr("pointermove", $("#stage-frame"), r.right - 2, r.bottom - 2);
+    ptr("pointerup", $("#stage-frame"), r.right - 2, r.bottom - 2);
+    check("marquee over the whole slide selects all", d.querySelectorAll(".overlay .selection.multi").length === els().length && !$(".marquee"));
+
+    const first = els()[0];
+    ptr("pointerdown", first, 0, 0, { shiftKey: true });
+    check("Shift+click removes a block from the selection", d.querySelectorAll(".overlay .selection.multi").length === els().length - 1);
+    ptr("pointerdown", first, 0, 0, { shiftKey: true });
+    check("Shift+click adds it back", d.querySelectorAll(".overlay .selection.multi").length === els().length);
+
+    const before = [...els()].map((n) => n.getBoundingClientRect().left);
+    const b = els()[1].getBoundingClientRect();
+    ptr("pointerdown", els()[1], b.left + 5, b.top + 5, { altKey: true });
+    ptr("pointermove", $("#stage-frame"), b.left + 45, b.top + 5, { altKey: true });
+    ptr("pointerup", $("#stage-frame"), b.left + 45, b.top + 5, { altKey: true });
+    const after = [...els()].map((n) => n.getBoundingClientRect().left);
+    check("dragging moves the whole selection", after.every((v, i) => Math.abs(v - before[i] - 40) < 1.5));
+
+    key("ArrowRight", { shiftKey: true });
+    const nudged = [...els()].map((n) => n.getBoundingClientRect().left);
+    check("arrows nudge every selected block", nudged.every((v, i) => v > after[i]));
+    key("Delete");
+    check("Delete removes the selected blocks", els().length === 0);
+    key("z", { ctrlKey: true });
+    check("undo brings them back", els().length === 3);
+
     w.dispatchEvent(new w.Event("pagehide"));
     const saved = JSON.parse(localStorage.getItem("diapos:deck") || "null");
     check("deck saved in localStorage", saved && saved.slides.length === 2 && saved.theme === "tableau");

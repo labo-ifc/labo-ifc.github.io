@@ -175,6 +175,77 @@ export function rotationTo(box, px, py, step = 0) {
   return ((deg % 360) + 360) % 360;
 }
 
+/** Axis-aligned box around `el` ({x, y, w, h, rot}), rotation included. */
+export function bounds(el) {
+  const rot = el.rot || 0;
+  if (!rot) return { x: el.x, y: el.y, w: el.w, h: el.h };
+  const c = Math.abs(Math.cos(rad(rot))), s = Math.abs(Math.sin(rad(rot)));
+  const w = el.w * c + el.h * s, h = el.w * s + el.h * c;
+  return { x: el.x + (el.w - w) / 2, y: el.y + (el.h - h) / 2, w, h };
+}
+
+/** Box around all `els` (null if none). */
+export function groupBounds(els) {
+  if (!els.length) return null;
+  const b = els.map(bounds);
+  const x = Math.min(...b.map((r) => r.x)), y = Math.min(...b.map((r) => r.y));
+  return { x, y, w: Math.max(...b.map((r) => r.x + r.w)) - x, h: Math.max(...b.map((r) => r.y + r.h)) - y };
+}
+
+/** Ids of `els` lying entirely inside rectangle `r` ({x, y, w, h}). */
+export function inRect(els, r) {
+  return els.filter((el) => {
+    const b = bounds(el);
+    return b.x >= r.x && b.y >= r.y && b.x + b.w <= r.x + r.w && b.y + b.h <= r.y + r.h;
+  }).map((el) => el.id);
+}
+
+export const ALIGNS = {
+  left: "Gauche", hcenter: "Centre", right: "Droite",
+  top: "Haut", vcenter: "Milieu", bottom: "Bas",
+};
+
+/**
+ * New positions {id: {x, y}} aligning `els` on `ref` ({x, y, w, h}: the selection's box, or the slide).
+ * Rotated blocks are aligned by their visible box.
+ */
+export function align(els, mode, ref) {
+  const out = {};
+  for (const el of els) {
+    const b = bounds(el);
+    let dx = 0, dy = 0;
+    if (mode === "left") dx = ref.x - b.x;
+    else if (mode === "hcenter") dx = ref.x + ref.w / 2 - (b.x + b.w / 2);
+    else if (mode === "right") dx = ref.x + ref.w - (b.x + b.w);
+    else if (mode === "top") dy = ref.y - b.y;
+    else if (mode === "vcenter") dy = ref.y + ref.h / 2 - (b.y + b.h / 2);
+    else if (mode === "bottom") dy = ref.y + ref.h - (b.y + b.h);
+    out[el.id] = { x: Math.round(el.x + dx), y: Math.round(el.y + dy) };
+  }
+  return out;
+}
+
+/**
+ * New positions {id: {x, y}} spacing `els` evenly along `axis` ("x" or "y"):
+ * the first and last stay put, the gaps between visible boxes become equal.
+ */
+export function distribute(els, axis) {
+  const pos = axis === "x" ? "x" : "y", size = axis === "x" ? "w" : "h";
+  const items = els.map((el) => ({ el, b: bounds(el) })).sort((a, b) => a.b[pos] - b.b[pos]);
+  const out = {};
+  for (const { el } of items) out[el.id] = { x: el.x, y: el.y };
+  if (items.length < 3) return out;
+  const first = items[0].b, last = items.at(-1).b;
+  const total = items.reduce((t, i) => t + i.b[size], 0);
+  const gap = (last[pos] + last[size] - first[pos] - total) / (items.length - 1);
+  let at = first[pos];
+  for (const { el, b } of items) {
+    out[el.id][pos] = Math.round(el[pos] + at - b[pos]);
+    at += b[size] + gap;
+  }
+  return out;
+}
+
 /**
  * Snaps position (x, y) of a w × h box to the edges and centre of the slide and of `others`
  * ({x, y, w, h} boxes). Returns the snapped position and the guide lines to draw.

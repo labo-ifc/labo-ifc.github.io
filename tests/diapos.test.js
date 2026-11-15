@@ -143,3 +143,43 @@ test("History undoes and redoes snapshots", () => {
   h.push("x");
   assert.equal(h.future.length, 0);
 });
+
+test("bounds and groupBounds include rotation", async () => {
+  const { bounds, groupBounds } = await import("../diapos/model.js");
+  assert.deepEqual(bounds({ x: 10, y: 20, w: 100, h: 40, rot: 0 }), { x: 10, y: 20, w: 100, h: 40 });
+  const b = bounds({ x: 0, y: 0, w: 100, h: 40, rot: 90 });
+  close(b.x, 30); close(b.y, -30); close(b.w, 40); close(b.h, 100);
+  assert.deepEqual(groupBounds([{ x: 0, y: 0, w: 10, h: 10 }, { x: 50, y: 30, w: 20, h: 5 }]), { x: 0, y: 0, w: 70, h: 35 });
+  assert.equal(groupBounds([]), null);
+});
+
+test("inRect keeps only blocks fully inside the rectangle", async () => {
+  const { inRect } = await import("../diapos/model.js");
+  const els = [{ id: "a", x: 10, y: 10, w: 50, h: 50 }, { id: "b", x: 90, y: 10, w: 50, h: 50 }, { id: "c", x: 0, y: 0, w: 100, h: 20, rot: 90 }];
+  assert.deepEqual(inRect(els, { x: 0, y: 0, w: 100, h: 100 }), ["a"]);
+  assert.deepEqual(inRect(els, { x: 0, y: -50, w: 200, h: 200 }), ["a", "b", "c"]);
+});
+
+test("align moves blocks onto the reference box", async () => {
+  const { align, groupBounds } = await import("../diapos/model.js");
+  const els = [{ id: "a", x: 10, y: 0, w: 50, h: 20 }, { id: "b", x: 100, y: 50, w: 100, h: 40 }];
+  const ref = groupBounds(els);
+  assert.deepEqual(align(els, "left", ref), { a: { x: 10, y: 0 }, b: { x: 10, y: 50 } });
+  assert.deepEqual(align(els, "right", ref), { a: { x: 150, y: 0 }, b: { x: 100, y: 50 } });
+  assert.deepEqual(align(els, "hcenter", ref), { a: { x: 80, y: 0 }, b: { x: 55, y: 50 } });
+  assert.deepEqual(align(els, "bottom", ref), { a: { x: 10, y: 70 }, b: { x: 100, y: 50 } });
+  assert.deepEqual(align(els, "vcenter", { x: 0, y: 0, w: 1600, h: 900 }).a, { x: 10, y: 440 });
+  // A rotated block is aligned by its visible box.
+  const r = align([{ id: "r", x: 0, y: 0, w: 100, h: 40, rot: 90 }], "left", { x: 0, y: 0, w: 10, h: 10 });
+  assert.deepEqual(r.r, { x: -30, y: 0 });
+});
+
+test("distribute makes equal gaps, first and last stay", async () => {
+  const { distribute } = await import("../diapos/model.js");
+  const els = [{ id: "c", x: 300, y: 0, w: 100, h: 10 }, { id: "a", x: 0, y: 0, w: 100, h: 10 }, { id: "b", x: 120, y: 0, w: 40, h: 10 }];
+  const out = distribute(els, "x");
+  assert.deepEqual(out, { a: { x: 0, y: 0 }, b: { x: 180, y: 0 }, c: { x: 300, y: 0 } });
+  assert.deepEqual(distribute(els.slice(0, 2), "x").c, { x: 300, y: 0 }, "fewer than 3: unchanged");
+  const v = distribute([{ id: "a", x: 0, y: 0, w: 10, h: 10 }, { id: "b", x: 0, y: 15, w: 10, h: 10 }, { id: "c", x: 0, y: 90, w: 10, h: 10 }], "y");
+  assert.equal(v.b.y, 45);
+});

@@ -4,6 +4,7 @@ import {
   SLIDE_W, SLIDE_H, THEMES, ACCENTS, COLORS, SHAPES, LAYOUTS, MAX_FUNCTIONS, palette,
   makeDeck, makeSlide, makeElement, cloneSlide, cloneElement, moveItem,
   resizeBox, rotationTo, snapPosition, cleanDeck, fileName, History,
+  bounds, groupBounds, inRect, align, distribute, ALIGNS,
 } from "./model.js";
 import { drawSlide, drawElement, drawContent, placeElement, compiledFunction } from "./render.js";
 import { orthonormal, FN_NAMES } from "./graph.js";
@@ -11,7 +12,8 @@ import { orthonormal, FN_NAMES } from "./graph.js";
 const $ = (id) => document.getElementById(id);
 const STORE_KEY = "diapos:deck";
 
-const state = { deck: null, index: 0, selected: null, editing: null, clipboard: null };
+// `selection`: ids of the selected blocks of the current slide (handles only when there is one).
+const state = { deck: null, index: 0, selection: [], editing: null, clipboard: null };
 const history = new History();
 
 // ── Persistence ──
@@ -49,7 +51,8 @@ addEventListener("pagehide", saveNow);
 // ── Changes and undo ──
 
 const slide = () => state.deck.slides[state.index];
-const selectedEl = () => slide()?.elements.find((e) => e.id === state.selected) ?? null;
+const selectedEls = () => slide()?.elements.filter((e) => state.selection.includes(e.id)) ?? [];
+const selectedEl = () => (state.selection.length === 1 ? selectedEls()[0] ?? null : null);
 
 let lastKey = null, lastTime = 0;
 /**
@@ -72,7 +75,7 @@ function restore(snapshot) {
   if (!snapshot) return;
   state.deck = JSON.parse(snapshot);
   state.index = Math.min(state.index, state.deck.slides.length - 1);
-  if (!selectedEl()) state.selected = null;
+  state.selection = selectedEls().map((e) => e.id);
   lastKey = null;
   scheduleSave();
   renderAll();
@@ -115,35 +118,50 @@ function renderStage() {
   $("slide-counter").textContent = `Diapo ${state.index + 1} sur ${state.deck.slides.length}`;
 }
 
-function drawSelection() {
-  selNode?.remove();
+/** Selection frame: handles for one block; outlines and a dashed group box for several. `preview` overrides positions. */
+function drawSelection(preview = {}) {
+  overlay.querySelectorAll(".selection, .group-box").forEach((n) => n.remove());
   selNode = null;
-  const el = selectedEl();
-  if (!el) return;
-  selNode = document.createElement("div");
-  selNode.className = "selection";
-  for (const h of ["nw", "n", "ne", "e", "se", "s", "sw", "w", "rot"]) {
-    const d = document.createElement("div");
-    d.className = "handle";
-    d.dataset.h = h;
-    selNode.append(d);
+  const els = selectedEls().map((el) => ({ ...el, ...preview[el.id] }));
+  if (!els.length) return;
+  if (els.length === 1) {
+    selNode = document.createElement("div");
+    selNode.className = "selection";
+    for (const h of ["nw", "n", "ne", "e", "se", "s", "sw", "w", "rot"]) {
+      const d = document.createElement("div");
+      d.className = "handle";
+      d.dataset.h = h;
+      selNode.append(d);
+    }
+    placeElement(selNode, els[0]);
+    overlay.append(selNode);
+    return;
   }
-  placeElement(selNode, el);
-  overlay.append(selNode);
+  for (const el of els) {
+    const n = document.createElement("div");
+    n.className = "selection multi";
+    placeElement(n, el);
+    overlay.append(n);
+  }
+  const box = document.createElement("div");
+  box.className = "group-box";
+  placeElement(box, { ...groupBounds(els), rot: 0 });
+  overlay.append(box);
 }
 
-/** Redraws the selected element in place (after an inspector change). */
+/** Redraws the selected elements in place (after an inspector change or a move). */
 function redrawSelected() {
-  const el = selectedEl();
-  if (!el) return;
-  const node = slideNode.querySelector(`[data-id="${el.id}"]`);
-  if (node) { drawContent(node, el); placeElement(node, el); }
-  if (selNode) placeElement(selNode, el);
+  for (const el of selectedEls()) {
+    const node = slideNode.querySelector(`[data-id="${el.id}"]`);
+    if (node) { drawContent(node, el); placeElement(node, el); }
+  }
+  drawSelection();
 }
 
-function select(id) {
+/** Selects `ids` (an array, one id, or null for none). */
+function select(ids) {
   if (state.editing) stopTextEdit();
-  state.selected = id;
+  state.selection = ids === null ? [] : Array.isArray(ids) ? ids : [ids];
   drawSelection();
   renderInspector();
 }
@@ -175,51 +193,96 @@ frame.addEventListener("pointerdown", (ev) => {
   if (ev.button !== 0 || ev.target.closest(".text-editor")) return;
   const handle = ev.target.closest(".handle");
   const node = ev.target.closest(".el");
-  if (!handle && !node) { select(null); return; }
-  if (node && node.dataset.id !== state.selected) select(node.dataset.id);
-  const el = selectedEl();
-  if (!el) return;
+  const additive = ev.shiftKey || ev.ctrlKey || ev.metaKey;
+  if (!handle && !node) return marquee(ev, additive);
+  if (node && additive) {
+    // Shift/Ctrl+click adds or removes a block.
+    const id = node.dataset.id;
+    select(state.selection.includes(id) ? state.selection.filter((i) => i !== id) : [...state.selection, id]);
+    return;
+  }
+  if (node && !state.selection.includes(node.dataset.id)) select(node.dataset.id);
+  const els = selectedEls();
+  if (!els.length) return;
   ev.preventDefault();
-  const start = toSlide(ev), box = { x: el.x, y: el.y, w: el.w, h: el.h, rot: el.rot };
-  const others = slide().elements.filter((o) => o.id !== el.id);
+  try { frame.setPointerCapture(ev.pointerId); } catch {}
+  const start = toSlide(ev);
   const mode = handle ? handle.dataset.h : "move";
-  const elNode = slideNode.querySelector(`[data-id="${el.id}"]`);
+  const el = els[0], box = { x: el.x, y: el.y, w: el.w, h: el.h, rot: el.rot };
+  const group = groupBounds(els);
+  const others = slide().elements.filter((o) => !state.selection.includes(o.id)).map(bounds);
+  const nodes = new Map(els.map((e) => [e.id, slideNode.querySelector(`[data-id="${e.id}"]`)]));
   let moved = false, next = null;
-  frame.setPointerCapture(ev.pointerId);
 
   const onMove = (e) => {
     const [px, py] = toSlide(e);
     const dx = px - start[0], dy = py - start[1];
     if (!moved && Math.hypot(dx, dy) * scale < 3) return;
     moved = true;
+    next = {};
     if (mode === "move") {
-      const s = e.altKey ? { x: box.x + dx, y: box.y + dy, guides: null } : snapPosition(box.x + dx, box.y + dy, box.w, box.h, others);
-      next = { x: Math.round(s.x), y: Math.round(s.y) };
+      // The whole selection moves together and snaps by its outer box.
+      const s = e.altKey ? { x: group.x + dx, y: group.y + dy, guides: null } : snapPosition(group.x + dx, group.y + dy, group.w, group.h, others);
+      const ox = Math.round(s.x - group.x), oy = Math.round(s.y - group.y);
+      for (const o of els) next[o.id] = { x: o.x + ox, y: o.y + oy };
       showGuides(s.guides);
     } else if (mode === "rot") {
-      next = { rot: Math.round(rotationTo(box, px, py, e.shiftKey ? 15 : 0)) };
+      next[el.id] = { rot: Math.round(rotationTo(box, px, py, e.shiftKey ? 15 : 0)) };
     } else {
       const keepRatio = el.type === "image" ? !e.shiftKey : e.shiftKey;
       const r = resizeBox(box, mode, dx, dy, { keepRatio });
-      next = { x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.w), h: Math.round(r.h) };
+      next[el.id] = { x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.w), h: Math.round(r.h) };
     }
-    const preview = { ...el, ...next };
-    if (mode !== "move" && mode !== "rot" && (el.type === "shape" || el.type === "graph")) drawContent(elNode, preview);
-    placeElement(elNode, preview);
-    placeElement(selNode, preview);
+    for (const o of els) {
+      const preview = { ...o, ...next[o.id] };
+      if (mode !== "move" && mode !== "rot" && (o.type === "shape" || o.type === "graph")) drawContent(nodes.get(o.id), preview);
+      placeElement(nodes.get(o.id), preview);
+    }
+    drawSelection(next);
   };
   const onUp = () => {
     frame.removeEventListener("pointermove", onMove);
     frame.removeEventListener("pointerup", onUp);
     frame.removeEventListener("pointercancel", onUp);
     showGuides(null);
-    if (moved && next) change(() => Object.assign(el, next), { redraw: "element" });
+    if (moved && next) change(() => { for (const o of els) Object.assign(o, next[o.id]); }, { redraw: "element" });
     if (moved) renderInspector();
+    // A plain click (no drag) on a block of a group selects that block alone.
+    else if (node && !handle && els.length > 1) select(node.dataset.id);
   };
   frame.addEventListener("pointermove", onMove);
   frame.addEventListener("pointerup", onUp);
   frame.addEventListener("pointercancel", onUp);
 });
+
+/** Drag on an empty area: selects the blocks entirely inside the rectangle (added to the selection with Shift/Ctrl). */
+function marquee(ev, additive) {
+  const start = toSlide(ev), before = additive ? state.selection : [];
+  if (!additive) select(null);
+  try { frame.setPointerCapture(ev.pointerId); } catch {}
+  const rectNode = document.createElement("div");
+  rectNode.className = "marquee";
+  let rect = null;
+  const onMove = (e) => {
+    const [px, py] = toSlide(e);
+    rect = { x: Math.min(px, start[0]), y: Math.min(py, start[1]), w: Math.abs(px - start[0]), h: Math.abs(py - start[1]) };
+    if (rect.w * scale < 3 && rect.h * scale < 3) return;
+    if (!rectNode.isConnected) overlay.append(rectNode);
+    placeElement(rectNode, { ...rect, rot: 0 });
+    state.selection = [...new Set([...before, ...inRect(slide().elements, rect)])];
+    drawSelection();
+  };
+  const onUp = () => {
+    frame.removeEventListener("pointermove", onMove);
+    frame.removeEventListener("pointerup", onUp);
+    frame.removeEventListener("pointercancel", onUp);
+    rectNode.remove();
+    if (rect) select(state.selection);
+  };
+  frame.addEventListener("pointermove", onMove);
+  frame.addEventListener("pointerup", onUp);
+  frame.addEventListener("pointercancel", onUp);
+}
 
 frame.addEventListener("dblclick", (ev) => {
   const node = ev.target.closest(".el");
@@ -232,7 +295,7 @@ frame.addEventListener("dblclick", (ev) => {
 
 // Text is edited in place in a textarea that takes the block's font.
 function startTextEdit(el) {
-  if (state.selected !== el.id) select(el.id);
+  if (selectedEl()?.id !== el.id) select(el.id);
   const node = slideNode.querySelector(`[data-id="${el.id}"]`);
   const area = document.createElement("textarea");
   area.className = "text-editor";
@@ -263,12 +326,16 @@ function stopTextEdit() {
 
 // ── Inserting ──
 
-function insert(el) {
+/** Adds one block or several (pasted, duplicated) and selects them. */
+function insert(added) {
+  const els = Array.isArray(added) ? added : [added];
   change(() => {
     // Offset copies so a new block never hides exactly under an existing one.
-    while (slide().elements.some((o) => o.x === el.x && o.y === el.y)) { el.x += 30; el.y += 30; }
-    slide().elements.push(el);
-    state.selected = el.id;
+    while (els.some((el) => slide().elements.some((o) => o.x === el.x && o.y === el.y))) {
+      for (const el of els) { el.x += 30; el.y += 30; }
+    }
+    slide().elements.push(...els);
+    state.selection = els.map((el) => el.id);
   });
 }
 
@@ -341,25 +408,25 @@ document.addEventListener("paste", (ev) => {
   if (isTyping(ev.target)) return;
   const file = [...(ev.clipboardData?.files ?? [])].find((f) => f.type.startsWith("image/"));
   if (file) { ev.preventDefault(); insertImage(file); }
-  else if (state.clipboard) { ev.preventDefault(); insert(cloneElement(state.clipboard, 30)); }
+  else if (state.clipboard) { ev.preventDefault(); insert(state.clipboard.map((el) => cloneElement(el, 30))); }
 });
 document.addEventListener("copy", (ev) => {
-  if (isTyping(ev.target) || !selectedEl()) return;
-  state.clipboard = structuredClone(selectedEl());
+  if (isTyping(ev.target) || !state.selection.length) return;
+  state.clipboard = structuredClone(selectedEls());
   ev.preventDefault();
 });
 document.addEventListener("cut", (ev) => {
-  if (isTyping(ev.target) || !selectedEl()) return;
-  state.clipboard = structuredClone(selectedEl());
+  if (isTyping(ev.target) || !state.selection.length) return;
+  state.clipboard = structuredClone(selectedEls());
   ev.preventDefault();
   deleteSelected();
 });
 
 function deleteSelected() {
-  if (!selectedEl()) return;
+  if (!state.selection.length) return;
   change(() => {
-    slide().elements = slide().elements.filter((e) => e.id !== state.selected);
-    state.selected = null;
+    slide().elements = slide().elements.filter((e) => !state.selection.includes(e.id));
+    state.selection = [];
   });
 }
 
@@ -407,7 +474,7 @@ function renderThumbs() {
 function goTo(i) {
   if (i < 0 || i >= state.deck.slides.length) return;
   state.index = i;
-  state.selected = null;
+  state.selection = [];
   renderAll();
 }
 
@@ -425,7 +492,7 @@ for (const [layout, label] of Object.entries(LAYOUTS)) {
     change(() => {
       state.deck.slides.splice(state.index + 1, 0, makeSlide(layout));
       state.index += 1;
-      state.selected = null;
+      state.selection = [];
     });
   });
   $("layout-menu").append(b);
@@ -439,13 +506,13 @@ document.querySelector(".slide-actions").addEventListener("click", (ev) => {
   const i = state.index;
   if (action === "up") moveSlide(i, i - 1);
   else if (action === "down") moveSlide(i, i + 1);
-  else if (action === "duplicate") change(() => { state.deck.slides.splice(i + 1, 0, cloneSlide(slide())); state.index = i + 1; state.selected = null; });
+  else if (action === "duplicate") change(() => { state.deck.slides.splice(i + 1, 0, cloneSlide(slide())); state.index = i + 1; state.selection = []; });
   else if (action === "delete") {
     change(() => {
       state.deck.slides.splice(i, 1);
       if (!state.deck.slides.length) state.deck.slides.push(makeSlide("blank"));
       state.index = Math.min(i, state.deck.slides.length - 1);
-      state.selected = null;
+      state.selection = [];
     });
   }
 });
@@ -600,6 +667,7 @@ function deckPanel() {
     section("Couleur d'accent", accents),
     section("Raccourcis", h("ul", { class: "shortcuts" },
       h("li", {}, h("kbd", {}, "Double-clic"), " modifier un texte"),
+      h("li", {}, h("kbd", {}, "Maj+clic"), " ou cadre : sélectionner plusieurs blocs, ", h("kbd", {}, "Ctrl+A"), " tout"),
       h("li", {}, h("kbd", {}, "Maj"), " garder les proportions, rotation par 15°"),
       h("li", {}, h("kbd", {}, "Alt"), " déplacer sans aimanter"),
       h("li", {}, h("kbd", {}, "Ctrl+C"), " / ", h("kbd", {}, "Ctrl+V"), " copier, coller (aussi des images)"),
@@ -651,26 +719,73 @@ function elementPanel(el) {
     numberField("X", "x", el), numberField("Y", "y", el),
     numberField("Largeur", "w", el, { min: 20 }), numberField("Hauteur", "h", el, { min: 20 }),
     numberField("Rotation °", "rot", el, { min: 0, max: 359 }))));
-  const order = (dir) => change(() => {
-    const list = slide().elements, i = list.indexOf(el);
-    moveItem(list, i, dir === "front" ? list.length - 1 : dir === "back" ? 0 : i + (dir === "up" ? 1 : -1));
-  });
-  parts.push(section("Bloc", h("div", { class: "buttons" },
-    h("button", { type: "button", class: "ghost", onclick: () => order("front") }, "Premier plan"),
-    h("button", { type: "button", class: "ghost", onclick: () => order("back") }, "Arrière-plan"),
-    h("button", { type: "button", class: "ghost", onclick: duplicateSelected }, "Dupliquer"),
-    h("button", { type: "button", class: "ghost danger", onclick: deleteSelected }, "Supprimer"))));
+  parts.push(alignPanel([el]), blockPanel());
   return parts;
 }
 
+/** Brings the selected blocks to the front or back, keeping their order. */
+function order(dir) {
+  change(() => {
+    const list = slide().elements;
+    const picked = list.filter((e) => state.selection.includes(e.id)), rest = list.filter((e) => !state.selection.includes(e.id));
+    slide().elements = dir === "front" ? [...rest, ...picked] : [...picked, ...rest];
+  });
+}
+
+function blockPanel() {
+  return section(state.selection.length > 1 ? "Blocs" : "Bloc", h("div", { class: "buttons" },
+    h("button", { type: "button", class: "ghost", onclick: () => order("front") }, "Premier plan"),
+    h("button", { type: "button", class: "ghost", onclick: () => order("back") }, "Arrière-plan"),
+    h("button", { type: "button", class: "ghost", onclick: duplicateSelected }, "Dupliquer"),
+    h("button", { type: "button", class: "ghost danger", onclick: deleteSelected }, "Supprimer")));
+}
+
+const ALIGN_ICONS = { left: "⇤", hcenter: "↔", right: "⇥", top: "⤒", vcenter: "↕", bottom: "⤓" };
+const SLIDE_BOX = { x: 0, y: 0, w: SLIDE_W, h: SLIDE_H };
+
+/** Align (on the selection's box, or on the slide for one block) and distribute (3 blocks or more). */
+function alignPanel(els) {
+  const onSlide = els.length === 1;
+  const apply = (fn) => {
+    const pos = fn();
+    change(() => { for (const el of selectedEls()) Object.assign(el, pos[el.id]); }, { redraw: "element" });
+    renderInspector();
+  };
+  const buttons = h("div", { class: "align-grid" }, ...Object.entries(ALIGNS).map(([mode, label]) =>
+    h("button", {
+      type: "button", class: "ghost", "data-align": mode,
+      title: `Aligner : ${label.toLowerCase()}${onSlide ? " de la diapo" : ""}`, "aria-label": `Aligner : ${label.toLowerCase()}`,
+      onclick: () => apply(() => align(selectedEls(), mode, onSlide ? SLIDE_BOX : groupBounds(selectedEls()))),
+    }, h("span", { "aria-hidden": "true" }, ALIGN_ICONS[mode]), " ", label)));
+  const parts = [buttons];
+  if (els.length >= 3) {
+    parts.push(h("div", { class: "buttons" },
+      h("button", { type: "button", class: "ghost", "data-distribute": "x", onclick: () => apply(() => distribute(selectedEls(), "x")) }, "Répartir horizontalement"),
+      h("button", { type: "button", class: "ghost", "data-distribute": "y", onclick: () => apply(() => distribute(selectedEls(), "y")) }, "Répartir verticalement")));
+  }
+  parts.push(h("p", { class: "hint" }, onSlide
+    ? "Par rapport à la diapo. Sélectionne plusieurs blocs (Maj+clic ou cadre) pour les aligner entre eux."
+    : els.length < 3 ? "Par rapport au cadre de la sélection. Répartir : 3 blocs ou plus." : "Par rapport au cadre de la sélection."));
+  return section(onSlide ? "Aligner sur la diapo" : "Aligner", ...parts);
+}
+
+function multiPanel(els) {
+  return [
+    section(`${els.length} blocs sélectionnés`, h("p", { class: "hint" },
+      "Glisser pour les déplacer ensemble, flèches pour les décaler. Maj+clic retire un bloc de la sélection.")),
+    alignPanel(els),
+    blockPanel(),
+  ];
+}
+
 function renderInspector() {
-  const el = selectedEl();
-  inspector.replaceChildren(...(el ? elementPanel(el) : deckPanel()));
+  const els = selectedEls();
+  inspector.replaceChildren(...(els.length > 1 ? multiPanel(els) : els.length ? elementPanel(els[0]) : deckPanel()));
 }
 
 function duplicateSelected() {
-  const el = selectedEl();
-  if (el) insert(cloneElement(el, 30));
+  const els = selectedEls();
+  if (els.length) insert(els.map((el) => cloneElement(el, 30)));
 }
 
 // ── Files ──
@@ -678,7 +793,7 @@ function duplicateSelected() {
 function setDeck(deck) {
   state.deck = deck;
   state.index = 0;
-  state.selected = null;
+  state.selection = [];
   history.past = []; history.future = [];
   scheduleSave();
   renderAll();
@@ -786,20 +901,21 @@ document.addEventListener("keydown", (ev) => {
   if (ev.key === "F5") { ev.preventDefault(); present(); return; }
   if (isTyping(ev.target)) return;
   const mod = ev.ctrlKey || ev.metaKey;
-  const el = selectedEl();
-  if (mod && ev.key.toLowerCase() === "z") { ev.preventDefault(); ev.shiftKey ? redo() : undo(); }
+  const el = selectedEl(), els = selectedEls();
+  if (mod && ev.key.toLowerCase() === "a") { ev.preventDefault(); select(slide().elements.map((e) => e.id)); }
+  else if (mod && ev.key.toLowerCase() === "z") { ev.preventDefault(); ev.shiftKey ? redo() : undo(); }
   else if (mod && ev.key.toLowerCase() === "y") { ev.preventDefault(); redo(); }
   else if (mod && ev.key.toLowerCase() === "d") { ev.preventDefault(); duplicateSelected(); }
-  else if ((ev.key === "Delete" || ev.key === "Backspace") && el) { ev.preventDefault(); deleteSelected(); }
+  else if ((ev.key === "Delete" || ev.key === "Backspace") && els.length) { ev.preventDefault(); deleteSelected(); }
   else if (ev.key === "Escape") select(null);
   else if (ev.key === "Enter" && el?.type === "text") { ev.preventDefault(); startTextEdit(el); }
-  else if (el && ev.key.startsWith("Arrow")) {
+  else if (els.length && ev.key.startsWith("Arrow")) {
     ev.preventDefault();
     const d = ev.shiftKey ? 10 : 1;
     const [dx, dy] = { ArrowLeft: [-d, 0], ArrowRight: [d, 0], ArrowUp: [0, -d], ArrowDown: [0, d] }[ev.key];
-    change(() => { el.x += dx; el.y += dy; }, { key: `nudge:${el.id}`, redraw: "element" });
-  } else if (ev.key === "PageDown" || (!el && ev.key === "ArrowDown")) { ev.preventDefault(); goTo(state.index + 1); }
-  else if (ev.key === "PageUp" || (!el && ev.key === "ArrowUp")) { ev.preventDefault(); goTo(state.index - 1); }
+    change(() => { for (const o of els) { o.x += dx; o.y += dy; } }, { key: `nudge:${state.selection.join()}`, redraw: "element" });
+  } else if (ev.key === "PageDown" || (!els.length && ev.key === "ArrowDown")) { ev.preventDefault(); goTo(state.index + 1); }
+  else if (ev.key === "PageUp" || (!els.length && ev.key === "ArrowUp")) { ev.preventDefault(); goTo(state.index - 1); }
 });
 
 $("undo").addEventListener("click", undo);
