@@ -2,7 +2,7 @@
 // on hydrocarbon answers (coefficients, numbers with a unit), and the picker
 // that builds an exercise from chosen values instead of random ones.
 
-import { TYPES, LEVELS, generate, checkAnswer, chosenExercise, CHOSEN_RANGE } from "./exercises.js";
+import { TYPES, LEVELS, generate, checkAnswer, chosenExercise } from "./exercises.js";
 import { initTrainer as initSharedTrainer } from "../../shared/trainer.js";
 
 export { appendStep } from "../../shared/trainer.js";
@@ -41,8 +41,6 @@ function wrong(ex, r) {
 /** Picker: kind of exercise, hydrocarbon, number of carbons, combustion. */
 function initPicker(trainer) {
   const what = $("pick-what"), family = $("pick-family"), n = $("pick-n"), kind = $("pick-kind");
-  for (let c = CHOSEN_RANGE.min; c <= CHOSEN_RANGE.max; c++) n.append(new Option(String(c), String(c)));
-  n.value = "4";
   // ΔH: alkanes only, complete or CO. Alkenes start at 2 carbons.
   const option = (select, value) => select.querySelector(`option[value="${value}"]`);
   function sync() {
