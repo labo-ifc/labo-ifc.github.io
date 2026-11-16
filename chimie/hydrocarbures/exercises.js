@@ -2,14 +2,16 @@
 //
 // An exercise is { type, prompt, statement (TeX) | text ($…$ mixed), answers,
 // labels?, tol | rel, digits, hints (exactly 3), steps [{ tex, note }] }.
-// Answers are lists of numbers separated by ";".
+// Answers are lists of numbers separated by ";", or for `kind: "coefsN"` (general
+// equations) expressions in n, compared with `coefsN` for several values of n.
 
 import {
-  MASS, ce, molarMass, alkane, alkene, alkaneName, alkeneName, combustion, COMBUSTIONS,
+  MASS, ce, molarMass, alkane, alkene, alkaneName, alkeneName, combustion, COMBUSTIONS, generalCombustion, linValue,
   combustionEnthalpy, BONDS, chainCe, chainFormula, sigmaPi, chainHydrogens, ADDITIONS, addition, MONOMERS,
 } from "./chem.js";
 import { numTex } from "../../shared/tex.js";
 import { readNumber } from "../../shared/answer.js";
+import { parse, evaluate } from "../../shared/calc.js";
 
 const randInt = (rng, a, b) => a + Math.floor(rng() * (b - a + 1));
 const pick = (rng, list) => list[Math.floor(rng() * list.length)];
@@ -99,21 +101,100 @@ const PRODUCT_HINT = {
   c: "chaque atome C du combustible finit en suie $\\ce{C}$",
 };
 
+function combustionExercise(type, kind, fuel) {
+  const { eq, steps } = balanceSteps(fuel, kind);
+  const p = ce(eq.product);
+  return {
+    type,
+    prompt: "Pondère l'équation : donne les 4 coefficients dans l'ordre, les plus petits entiers possibles",
+    statement: `\\ce{${ce(fuel)} + O2 -> ${p} + H2O}`,
+    labels: [ce(fuel), "O2", p, "H2O"], answers: eq.coefs, kind: "coefs",
+    hints: [
+      `Commence par le carbone : ${PRODUCT_HINT[kind]}.`,
+      "Puis l'hydrogène : chaque molécule d'eau $\\ce{H2O}$ emporte 2 atomes H.",
+      "Termine par l'oxygène : compte les O à droite et divise par 2 pour $\\ce{O2}$ ; si tu obtiens une demi-molécule, multiplie tout par 2.",
+    ],
+    steps,
+  };
+}
+
 function combustionGen(type, kind, family) {
   return (rng) => {
     const c = family === "alkene" ? randInt(rng, 2, 8) : randInt(rng, 1, 10);
-    const fuel = family === "alkene" ? alkene(c) : alkane(c);
-    const { eq, steps } = balanceSteps(fuel, kind);
-    const p = ce(eq.product);
+    return combustionExercise(type, kind, family === "alkene" ? alkene(c) : alkane(c));
+  };
+}
+
+// ---------- équations générales (en fonction de n) ----------
+
+/** Linear coefficient { a, b, d } as typed text: "(2n+1)/2", "n+1", "3n/2", "1". */
+function linText({ a, b, d }) {
+  const an = a === 0 ? "" : a === 1 ? "n" : `${a}n`;
+  const num = an && b ? `${an}+${b}` : an || `${b}`;
+  if (d === 1) return num;
+  return an && b ? `(${num})/${d}` : `${num}/${d}`;
+}
+
+/** The same coefficient in TeX: "n + 1", "\\frac{2n + 1}{2}". */
+function linMath({ a, b, d }) {
+  const an = a === 0 ? "" : a === 1 ? "n" : `${a}n`;
+  const num = an && b ? `${an} + ${b}` : an || `${b}`;
+  return d === 1 ? num : `\\frac{${num}}{${d}}`;
+}
+
+/** As a factor before a formula: "" for 1, parentheses around a sum. */
+function linTex(k) {
+  if (k.a === 0 && k.b === 1 && k.d === 1) return "";
+  const m = linMath(k);
+  return k.d === 1 && k.a && k.b ? `(${m})\\,` : `${m}\\,`;
+}
+
+const scaleLin = ({ a, b, d }, k) => (d % k === 0 ? { a, b, d: d / k } : { a: a * k, b: b * k, d });
+
+const FAMILY_TEX = { alkane: "\\mathrm{C}_n\\mathrm{H}_{2n+2}", alkene: "\\mathrm{C}_n\\mathrm{H}_{2n}" };
+const PRODUCT_CE = { complete: "CO2", co: "CO", c: "C" };
+
+function generalGen(type, kind, family) {
+  return () => {
+    const eq = generalCombustion(family, kind);
+    const [, o2, prod, water] = eq.coefs;
+    const f = FAMILY_TEX[family], p = PRODUCT_CE[kind];
+    const line = (o, c, w, a = "") => `${a}${f} + ${o}\\ce{O2} \\longrightarrow ${c}\\ce{${p}} + ${w}\\ce{H2O}`;
+    const q = "{?}\\,";
+    const hTex = family === "alkene" ? "2n" : "2n + 2";
+    const oPerC = COMBUSTIONS[kind].oxygenPerC;
+    const waterO = water.b ? `(${linMath(water)})` : linMath(water);
+    const oRight = `${oPerC === 1 ? "n" : `${oPerC}n`} + ${waterO} = ${linMath({ a: oPerC + 1, b: eq.hB / 2, d: 1 })}`;
+    const steps = [
+      { tex: line(q, linTex(prod), q), note: `Carbone : $n$ atomes C dans le combustible, donc $n$ $\\ce{${p}}$ à droite.` },
+      { tex: line(q, linTex(prod), linTex(water)), note: `Hydrogène : $${hTex}$ atomes H, donc $\\frac{${hTex}}{2} = ${linMath(water)}$ molécules d'eau.` },
+      {
+        tex: line(linTex(o2), linTex(prod), linTex(water)),
+        note: oPerC
+          ? `Oxygène : à droite, $${oRight}$ atomes O, donc $${linMath(o2)}$ $\\ce{O2}$.`
+          : `Oxygène : il n'est que dans l'eau, $${linMath(water)}$ atomes O, donc $${linMath(o2)}$ $\\ce{O2}$.`,
+      },
+    ];
+    if (o2.d === 2) {
+      const [a2, o, c, w] = eq.coefs.map((k) => scaleLin(k, 2));
+      steps.push({ tex: line(linTex(o), linTex(c), linTex(w), linTex(a2)), note: "Sans demi-molécule : on peut aussi tout multiplier par 2 (les deux formes sont acceptées)." });
+    }
+    const n3 = 3, fuel3 = family === "alkene" ? alkene(n3) : alkane(n3);
+    const v = eq.coefs.map((k) => linValue(k, n3));
+    steps.push({
+      tex: `n = ${n3} : \\ce{${coef(v[0])}${ce(fuel3)} + ${coef(v[1])}O2 -> ${coef(v[2])}${p} + ${coef(v[3])}H2O}`,
+      note: `Vérification avec le ${family === "alkene" ? alkeneName(n3) : alkaneName(n3)} : autant d'atomes de chaque sorte des deux côtés.`,
+    });
     return {
       type,
-      prompt: "Pondère l'équation : donne les 4 coefficients dans l'ordre, les plus petits entiers possibles",
-      statement: `\\ce{${ce(fuel)} + O2 -> ${p} + H2O}`,
-      labels: [ce(fuel), "O2", p, "H2O"], answers: eq.coefs, kind: "coefs",
+      prompt: "Pondère l'équation générale : donne les 4 coefficients en fonction de n, dans l'ordre",
+      statement: `${f} + \\ce{O2} \\longrightarrow \\ce{${p}} + \\ce{H2O}`,
+      labels: ["combustible", "O₂", p === "CO2" ? "CO₂" : p, "H₂O"],
+      answers: eq.coefs.map(linText), coefsN: eq.coefs, kind: "coefsN",
       hints: [
-        `Commence par le carbone : ${PRODUCT_HINT[kind]}.`,
-        "Puis l'hydrogène : chaque molécule d'eau $\\ce{H2O}$ emporte 2 atomes H.",
-        "Termine par l'oxygène : compte les O à droite et divise par 2 pour $\\ce{O2}$ ; si tu obtiens une demi-molécule, multiplie tout par 2.",
+        `Commence par le carbone : ${PRODUCT_HINT[kind]}. Il y en a $n$.`,
+        `Puis l'hydrogène : le combustible a $${hTex}$ atomes H, et chaque $\\ce{H2O}$ en emporte 2.`,
+        "Termine par l'oxygène : compte les O à droite en fonction de $n$, puis divise par 2 pour $\\ce{O2}$ ; une fraction est permise.",
       ],
       steps,
     };
@@ -125,42 +206,43 @@ function combustionGen(type, kind, family) {
 const bondSum = (list) => list.map((b) => `${b.count} \\cdot ${BONDS[b.bond].E}`).join(" + ");
 
 function enthalpyGen(type, kind) {
-  return (rng) => {
-    const c = kind === "complete" ? randInt(rng, 1, 5) : randInt(rng, 1, 4);
-    const r = combustionEnthalpy(c, kind);
-    const [a] = r.eq.coefs;
-    const name = alkaneName(c);
-    const used = ["CC", "CH", "OO", kind === "complete" ? "CO2" : "CO", "HO"].filter((b) => c > 1 || b !== "CC");
-    const data = used.map((b) => `$${BONDS[b].tex}$ : ${BONDS[b].E}`).join(" ; ");
-    const product = kind === "complete" ? "CO2" : "CO";
-    const steps = [
-      { tex: `\\ce{${coef(a)}${ce(alkane(c))} + ${coef(r.eq.coefs[1])}O2 -> ${coef(r.eq.coefs[2])}${product} + ${coef(r.eq.coefs[3])}H2O}`, note: "On pondère l'équation de combustion." },
-      {
-        tex: `E_\\text{rupture} = ${bondSum(r.ruptures)} = ${r.rupture}\\ \\text{kJ}`,
-        note: `Liaisons rompues : ${c > 1 ? `$${c - 1}$ C–C et ` : ""}$${2 * c + 2}$ C–H par molécule de ${name} (×${a}), une O=O par $\\ce{O2}$.`,
-      },
-      {
-        tex: `E_\\text{formation} = ${bondSum(r.formations)} = ${r.formation}\\ \\text{kJ}`,
-        note: kind === "complete"
-          ? "Liaisons formées : 2 C=O par $\\ce{CO2}$, 2 H–O par $\\ce{H2O}$."
-          : "Liaisons formées : une C≡O par $\\ce{CO}$, 2 H–O par $\\ce{H2O}$.",
-      },
-      { tex: `\\Delta H = ${r.rupture} - ${r.formation} = ${r.dH}\\ \\text{kJ}`, note: "$\\Delta H = E_\\text{rupture} - E_\\text{formation}$ pour l'équation pondérée." },
-    ];
-    if (a > 1) steps.push({ tex: `\\Delta H = \\frac{${r.dH}}{${a}} = ${n(r.dHPerMol, 1)}\\ \\text{kJ/mol}`, note: `L'équation brûle ${a} moles de ${name} : on divise par ${a}.` });
-    steps.push({ tex: `\\Delta H = ${n(r.dHPerMol, 1)}\\ \\text{kJ/mol} < 0`, note: "Négatif : la réaction libère de l'énergie (exothermique)." });
-    return {
-      type,
-      prompt: "Calcule ΔH en kJ par mole d'alcane",
-      text: `À l'aide des énergies de liaison, calcule $\\Delta H$ de la combustion ${COMBUSTIONS[kind].label} du ${name}. Énergies de liaison (kJ/mol) : ${data}.`,
-      answers: [r.dHPerMol], tol: 1, digits: 1, unit: "kJ/mol",
-      hints: [
-        "Commence par pondérer l'équation de combustion.",
-        `Dessine les molécules : un alcane $\\ce{C_nH_{2n+2}}$ a $n - 1$ liaisons C–C et $2n + 2$ liaisons C–H ; ${kind === "complete" ? "$\\ce{CO2}$ a 2 liaisons C=O" : "$\\ce{CO}$ a une liaison C≡O"}, $\\ce{H2O}$ a 2 liaisons H–O.`,
-        "$\\Delta H = E_\\text{rupture} - E_\\text{formation}$, puis divise par le coefficient de l'alcane pour avoir l'énergie par mole.",
-      ],
-      steps,
-    };
+  return (rng) => enthalpyExercise(type, kind, kind === "complete" ? randInt(rng, 1, 5) : randInt(rng, 1, 4));
+}
+
+function enthalpyExercise(type, kind, c) {
+  const r = combustionEnthalpy(c, kind);
+  const [a] = r.eq.coefs;
+  const name = alkaneName(c);
+  const used = ["CC", "CH", "OO", kind === "complete" ? "CO2" : "CO", "HO"].filter((b) => c > 1 || b !== "CC");
+  const data = used.map((b) => `$${BONDS[b].tex}$ : ${BONDS[b].E}`).join(" ; ");
+  const product = kind === "complete" ? "CO2" : "CO";
+  const steps = [
+    { tex: `\\ce{${coef(a)}${ce(alkane(c))} + ${coef(r.eq.coefs[1])}O2 -> ${coef(r.eq.coefs[2])}${product} + ${coef(r.eq.coefs[3])}H2O}`, note: "On pondère l'équation de combustion." },
+    {
+      tex: `E_\\text{rupture} = ${bondSum(r.ruptures)} = ${r.rupture}\\ \\text{kJ}`,
+      note: `Liaisons rompues : ${c > 1 ? `$${c - 1}$ C–C et ` : ""}$${2 * c + 2}$ C–H par molécule de ${name} (×${a}), une O=O par $\\ce{O2}$.`,
+    },
+    {
+      tex: `E_\\text{formation} = ${bondSum(r.formations)} = ${r.formation}\\ \\text{kJ}`,
+      note: kind === "complete"
+        ? "Liaisons formées : 2 C=O par $\\ce{CO2}$, 2 H–O par $\\ce{H2O}$."
+        : "Liaisons formées : une C≡O par $\\ce{CO}$, 2 H–O par $\\ce{H2O}$.",
+    },
+    { tex: `\\Delta H = ${r.rupture} - ${r.formation} = ${r.dH}\\ \\text{kJ}`, note: "$\\Delta H = E_\\text{rupture} - E_\\text{formation}$ pour l'équation pondérée." },
+  ];
+  if (a > 1) steps.push({ tex: `\\Delta H = \\frac{${r.dH}}{${a}} = ${n(r.dHPerMol, 1)}\\ \\text{kJ/mol}`, note: `L'équation brûle ${a} moles de ${name} : on divise par ${a}.` });
+  steps.push({ tex: `\\Delta H = ${n(r.dHPerMol, 1)}\\ \\text{kJ/mol} < 0`, note: "Négatif : la réaction libère de l'énergie (exothermique)." });
+  return {
+    type,
+    prompt: "Calcule ΔH en kJ par mole d'alcane",
+    text: `À l'aide des énergies de liaison, calcule $\\Delta H$ de la combustion ${COMBUSTIONS[kind].label} du ${name}. Énergies de liaison (kJ/mol) : ${data}.`,
+    answers: [r.dHPerMol], tol: 1, digits: 1, unit: "kJ/mol",
+    hints: [
+      "Commence par pondérer l'équation de combustion.",
+      `Dessine les molécules : un alcane $\\ce{C_nH_{2n+2}}$ a $n - 1$ liaisons C–C et $2n + 2$ liaisons C–H ; ${kind === "complete" ? "$\\ce{CO2}$ a 2 liaisons C=O" : "$\\ce{CO}$ a une liaison C≡O"}, $\\ce{H2O}$ a 2 liaisons H–O.`,
+      "$\\Delta H = E_\\text{rupture} - E_\\text{formation}$, puis divise par le coefficient de l'alcane pour avoir l'énergie par mole.",
+    ],
+    steps,
   };
 }
 
@@ -375,6 +457,12 @@ export const TYPES = {
   degree: { label: "Degré de polymérisation", level: 5, gen: degreeGen },
   polymerCO2: { label: "CO₂ de la combustion d'un plastique", level: 5, gen: polymerCO2Gen },
   styrene: { label: "Synthèse du styrène", level: 5, gen: styreneGen },
+  genComplete: { label: "Équation générale : alcane, complète", level: 6, gen: generalGen("genComplete", "complete", "alkane") },
+  genCO: { label: "Équation générale : alcane, CO", level: 6, gen: generalGen("genCO", "co", "alkane") },
+  genC: { label: "Équation générale : alcane, suie", level: 6, gen: generalGen("genC", "c", "alkane") },
+  genAlkene: { label: "Équation générale : alcène, complète", level: 6, gen: generalGen("genAlkene", "complete", "alkene") },
+  genAlkeneCO: { label: "Équation générale : alcène, CO", level: 6, gen: generalGen("genAlkeneCO", "co", "alkene") },
+  genAlkeneC: { label: "Équation générale : alcène, suie", level: 6, gen: generalGen("genAlkeneC", "c", "alkene") },
 };
 
 export const LEVELS = [
@@ -383,7 +471,28 @@ export const LEVELS = [
   { id: 3, label: "Énergie" },
   { id: 4, label: "Alcènes" },
   { id: 5, label: "Polymères" },
+  { id: 6, label: "Formules générales" },
 ];
+
+/** Range of n for an exercise built from chosen values (alkenes start at 2 carbons). */
+export const CHOSEN_RANGE = { min: 1, max: 10 };
+
+/**
+ * Exercise built from chosen values instead of random ones.
+ * what: "balance" (any family and kind) or "enthalpy" (alkanes, complete or CO).
+ */
+export function chosenExercise({ what, family, c, kind }) {
+  c = Math.round(Number(c));
+  const min = family === "alkene" && what === "balance" ? 2 : CHOSEN_RANGE.min;
+  if (!(c >= min && c <= CHOSEN_RANGE.max) || !COMBUSTIONS[kind]) return null;
+  if (what === "enthalpy") {
+    if (kind === "c") return null;
+    return enthalpyExercise(kind === "complete" ? "enthalpy" : "enthalpyCO", kind, c);
+  }
+  const fuel = family === "alkene" ? alkene(c) : alkane(c);
+  const type = family === "alkene" ? "combAlkene" : { complete: "combComplete", co: "combCO", c: "combC" }[kind];
+  return combustionExercise(type, kind, fuel);
+}
 
 export function generate(choice = "all", rng = Math.random) {
   let ids = Object.keys(TYPES);
@@ -406,7 +515,40 @@ export function parseAnswer(text) {
 
 const close = (ex, v, a) => Math.abs(v - a) <= Math.max(ex.tol ?? 1e-9, ex.rel ? Math.abs(a) * ex.rel : 0);
 
+// Values of n where an answer in n is compared with the expected coefficients.
+const N_POINTS = [1, 2, 3, 4, 5, 7];
+
+/** "1 ; (2n+1)/2 ; n ; n+1" → functions of n, or null when unreadable. */
+export function parseExpressions(text) {
+  const parts = text.replace(/[−–]/g, "-").split(";").map((p) => p.trim()).filter(Boolean);
+  if (!parts.length) return null;
+  try {
+    // The calculator knows the variable x: n is written as x.
+    const trees = parts.map((p) => parse(p.replace(/(?<![a-zé])n(?![a-z])/gi, "x")));
+    return trees.map((t) => (n) => evaluate(t, undefined, n));
+  } catch {
+    return null;
+  }
+}
+
+/** Answer in n: accepted with 1 or 2 in front of the hydrocarbon. */
+function checkGeneral(ex, text) {
+  const values = parseExpressions(text);
+  if (!values) return { ok: false, values: null };
+  if (values.length !== ex.coefsN.length) return { ok: false, values };
+  let ratio;
+  try {
+    const ratios = N_POINTS.flatMap((n) => values.map((f, i) => f(n) / linValue(ex.coefsN[i], n)));
+    ratio = ratios.every((r) => Math.abs(r - ratios[0]) < 1e-9) ? ratios[0] : null;
+  } catch {
+    return { ok: false, values };
+  }
+  const ok = ratio !== null && [1, 2].some((k) => Math.abs(ratio - k) < 1e-9);
+  return { ok, values, proportional: !ok && ratio > 0 };
+}
+
 export function checkAnswer(ex, text) {
+  if (ex.kind === "coefsN") return checkGeneral(ex, text);
   const values = parseAnswer(text);
   if (!values) return { ok: false, values: null };
   const ok = values.length === ex.answers.length && values.every((v, i) => close(ex, v, ex.answers[i]));

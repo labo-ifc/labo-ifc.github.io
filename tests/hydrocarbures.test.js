@@ -1,8 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { TYPES, LEVELS, generate, parseAnswer, checkAnswer, seeded } from "../chimie/hydrocarbures/exercises.js";
+import { TYPES, LEVELS, generate, parseAnswer, checkAnswer, seeded, chosenExercise, parseExpressions } from "../chimie/hydrocarbures/exercises.js";
 import {
-  alkane, alkene, molarMass, combustion, combustionAtoms, combustionEnthalpy, sigmaPi, chainHydrogens,
+  alkane, alkene, molarMass, combustion, generalCombustion, linValue, combustionAtoms, combustionEnthalpy, sigmaPi, chainHydrogens,
   addition, chainCe, ALKANE_BP, fractionOf, FRACTIONS, MONOMERS, cracking,
 } from "../chimie/hydrocarbures/chem.js";
 
@@ -26,6 +26,7 @@ function assertWellFormed(ex, label) {
 }
 
 for (const [id, { gen, level }] of Object.entries(TYPES)) {
+  if (level === 6) continue; // general equations: answers in n, tested below
   test(`${id}: ${RUNS} generated exercises are well formed and accept their answer`, () => {
     assert.ok(LEVELS.some((l) => l.id === level));
     for (let seed = 1; seed <= RUNS; seed++) {
@@ -51,6 +52,72 @@ for (const [id, { gen, level }] of Object.entries(TYPES)) {
     }
   });
 }
+
+test("general equations: well formed, answers in n accepted (×1 or ×2 only)", () => {
+  for (const [id, { gen, level }] of Object.entries(TYPES)) {
+    if (level !== 6) continue;
+    const ex = gen(seeded(1));
+    assert.equal(ex.type, id);
+    assert.equal(ex.kind, "coefsN");
+    assert.equal(ex.hints.length, 3);
+    assertWellFormed(ex, id);
+    const typed = ex.answers.join(" ; ");
+    for (const h of ex.hints) assert.ok(!h.includes(typed), `${id}: ${h}`);
+    assert.ok(checkAnswer(ex, typed).ok, `${id}: ${typed}`);
+    const doubled = ex.answers.map((a) => `2(${a})`).join(";");
+    assert.ok(checkAnswer(ex, doubled).ok, `${id}: ${doubled}`);
+    const tripled = checkAnswer(ex, ex.answers.map((a) => `3(${a})`).join(";"));
+    assert.ok(!tripled.ok && tripled.proportional, `${id}: ×3`);
+    assert.ok(!checkAnswer(ex, ex.answers.map((a) => `(${a})+1`).join(";")).ok, `${id}: wrong accepted`);
+    assert.ok(!checkAnswer(ex, ex.answers.slice(0, 3).join(";")).ok);
+  }
+  const co = TYPES.genCO.gen(seeded(1));
+  assert.deepEqual(co.answers, ["1", "(2n+1)/2", "n", "n+1"]); // the blackboard equation
+  for (const typed of ["1 ; n+1/2 ; n ; 1+n", "1;(2*n+1)/2;n;n+1", "1 ; n + 0,5 ; n ; n+1", "2 ; 2n+1 ; 2n ; 2n+2"]) {
+    assert.ok(checkAnswer(co, typed).ok, typed);
+  }
+  assert.equal(parseExpressions("1 ; n ; abc"), null);
+  assert.equal(checkAnswer(co, "1 ; n/0 ; n ; n").ok, false);
+});
+
+test("general equations conserve atoms for every n", () => {
+  for (const family of ["alkane", "alkene"]) {
+    for (const kind of ["complete", "co", "c"]) {
+      const eq = generalCombustion(family, kind);
+      for (let n = 1; n <= 20; n++) {
+        const [a, o, p, w] = eq.coefs.map((k) => linValue(k, n));
+        const fuel = family === "alkene" ? alkene(n) : alkane(n);
+        const oxygenPerC = { complete: 2, co: 1, c: 0 }[kind];
+        assert.equal(a * fuel.C, p, `${family} ${kind} n=${n}: C`);
+        assert.equal(a * fuel.H, 2 * w, `${family} ${kind} n=${n}: H`);
+        assert.equal(2 * o, p * oxygenPerC + w, `${family} ${kind} n=${n}: O`);
+      }
+    }
+  }
+});
+
+test("exercises built from chosen values", () => {
+  assert.deepEqual(chosenExercise({ what: "balance", family: "alkane", c: 5, kind: "co" }).answers, [2, 11, 10, 12]);
+  assert.deepEqual(chosenExercise({ what: "balance", family: "alkene", c: "3", kind: "complete" }).answers, [2, 9, 6, 6]);
+  assert.equal(chosenExercise({ what: "enthalpy", family: "alkane", c: 3, kind: "complete" }).answers[0], -2044);
+  assert.equal(chosenExercise({ what: "balance", family: "alkene", c: 1, kind: "complete" }), null);
+  assert.equal(chosenExercise({ what: "enthalpy", family: "alkane", c: 3, kind: "c" }), null);
+  assert.equal(chosenExercise({ what: "balance", family: "alkane", c: 11, kind: "co" }), null);
+  for (const what of ["balance", "enthalpy"]) {
+    for (const family of what === "balance" ? ["alkane", "alkene"] : ["alkane"]) {
+      for (const kind of what === "balance" ? ["complete", "co", "c"] : ["complete", "co"]) {
+        for (let c = family === "alkene" ? 2 : 1; c <= 10; c++) {
+          const ex = chosenExercise({ what, family, c, kind });
+          const label = `${what} ${family} ${kind} C${c}`;
+          assert.equal(ex.hints.length, 3, label);
+          assertWellFormed(ex, label);
+          const typed = ex.answers.map((a) => String(Math.round(a * 100) / 100).replace(".", ",")).join(" ; ");
+          assert.ok(checkAnswer(ex, typed).ok, `${label}: ${typed}`);
+        }
+      }
+    }
+  }
+});
 
 test("balanced combustions conserve atoms, with the smallest integers", () => {
   for (const kind of ["complete", "co", "c"]) {

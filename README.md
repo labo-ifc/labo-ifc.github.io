@@ -16,7 +16,7 @@ Un dossier par matière (`maths/`, `chimie/`, `physique/`, `biologie/`), un sous
 
 | Outil | Dossier |
 |---|---|
-| Hydrocarbures : pétrole, colonne de distillation interactive, carburants (indice d'octane, craquage), combustions complètes et incomplètes (équilibrage), énergie par les énergies de liaison et pouvoir calorifique, alcènes (liaisons σ et π, additions), polymères et plastiques, pense-bête imprimable, générateur d'exercices avec indices, résolution pas à pas et calculatrice | [`chimie/hydrocarbures/`](chimie/hydrocarbures/) |
+| Hydrocarbures : pétrole, colonne de distillation interactive, carburants (indice d'octane, craquage), combustions complètes et incomplètes (équilibrage, aussi en équation générale en fonction de n), énergie par les énergies de liaison et pouvoir calorifique, alcènes (liaisons σ et π, additions), polymères et plastiques, pense-bête imprimable, générateur d'exercices avec indices, résolution pas à pas et calculatrice, exercice construit à partir d'un hydrocarbure choisi (n atomes de carbone) | [`chimie/hydrocarbures/`](chimie/hydrocarbures/) |
 
 ### Physique
 

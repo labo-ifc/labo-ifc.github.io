@@ -116,8 +116,9 @@ export function initTrainer({ TYPES, LEVELS, generate, checkAnswer, roundingNote
     }
   }
 
-  function newExercise({ focus = true } = {}) {
-    state.ex = generate($("ex-choice").value);
+  /** Shows `ex`, or a new random exercise of the chosen type. */
+  function newExercise({ focus = true, ex: given } = {}) {
+    state.ex = given ?? generate($("ex-choice").value);
     Object.assign(state, { hints: 0, steps: 0, solved: false, counted: false });
     const { ex } = state;
     $("ex-prompt").textContent = `${ex.prompt}${roundingNote(ex)} :`;
@@ -244,6 +245,10 @@ export function initTrainer({ TYPES, LEVELS, generate, checkAnswer, roundingNote
       $("ex-choice").value = choice;
       newExercise({ focus: false });
       answerFocus().focus({ preventScroll: true });
+    },
+    /** Show a given exercise (built from chosen values) instead of a random one. */
+    show(ex) {
+      newExercise({ ex });
     },
   };
 }

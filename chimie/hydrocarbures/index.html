@@ -302,6 +302,15 @@
               <button type="button" class="ghost" data-train="level:2">S'entraîner</button>
             </div>
           </article>
+          <article class="method">
+            <h3>Équation générale</h3>
+            <p>Même méthode avec <span data-tex="n"></span> atomes de carbone : les coefficients s'écrivent en fonction de <span data-tex="n"></span>,
+              par exemple <span data-tex="\frac{2n+1}{2}\,\ce{O2}"></span> pour un alcane qui donne du <span data-tex="\ce{CO}"></span>.</p>
+            <div class="method-actions">
+              <button type="button" class="ghost" data-example="genCO" aria-expanded="false">Voir un exemple</button>
+              <button type="button" class="ghost" data-train="level:6">S'entraîner</button>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -676,6 +685,26 @@
           <button type="button" id="ex-new" class="primary">Nouvel exercice</button>
           <button type="button" id="calc-toggle" class="ghost" aria-controls="calc" aria-pressed="true">Calculatrice</button>
           <p id="ex-score" class="score" role="status"></p>
+        </div>
+        <div class="trainer-bar pick-bar" aria-label="Choisir l'exercice">
+          <span class="pick-label">Ou choisis :</span>
+          <select id="pick-what" aria-label="Exercice">
+            <option value="balance">Pondérer une combustion</option>
+            <option value="enthalpy">ΔH d'une combustion</option>
+          </select>
+          <select id="pick-family" aria-label="Combustible">
+            <option value="alkane">Alcane</option>
+            <option value="alkene">Alcène</option>
+          </select>
+          <label class="row">n =
+            <select id="pick-n" aria-label="Nombre d'atomes de carbone"></select>
+          </label>
+          <select id="pick-kind" aria-label="Combustion">
+            <option value="complete">Complète (CO₂)</option>
+            <option value="co">Incomplète (CO)</option>
+            <option value="c">Incomplète (suie)</option>
+          </select>
+          <button type="button" id="pick-go" class="ghost">Créer l'exercice</button>
         </div>
 
         <div class="ex-layout">

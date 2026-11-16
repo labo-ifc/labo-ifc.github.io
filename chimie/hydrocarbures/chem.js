@@ -87,6 +87,23 @@ export function combustion(fuel, kind = "complete") {
   return { fuel, product, o2PerFuel, factor: k, coefs: [k, o2PerFuel * k, n * k, water * k] };
 }
 
+/**
+ * General balanced combustion of an alkane (CnH2n+2) or alkene (CnH2n), with
+ * coefficients linear in n: { a, b, d } stands for (a·n + b) / d, in lowest terms.
+ * Fuel coefficient 1, so O2 may be a half: CnH2n+2 + (2n+1)/2 O2 → n CO + (n+1) H2O.
+ */
+export function generalCombustion(family, kind = "complete") {
+  const { oxygenPerC } = COMBUSTIONS[kind];
+  const hB = family === "alkene" ? 0 : 2; // H = 2n + hB
+  const water = { a: 1, b: hB / 2, d: 1 };
+  let o2 = { a: oxygenPerC + 1, b: hB / 2, d: 2 };
+  if (o2.a % 2 === 0 && o2.b % 2 === 0) o2 = { a: o2.a / 2, b: o2.b / 2, d: 1 };
+  return { family, kind, hB, coefs: [{ a: 0, b: 1, d: 1 }, o2, { a: 1, b: 0, d: 1 }, water] };
+}
+
+/** Value of a linear coefficient { a, b, d } for a given n. */
+export const linValue = ({ a, b, d }, n) => (a * n + b) / d;
+
 /** Left and right atom totals of a balanced combustion, to check it. */
 export function combustionAtoms({ fuel, product, coefs: [a, o, p, w] }) {
   return {

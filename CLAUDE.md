@@ -45,7 +45,9 @@ Ancien nom « Labo maths » : le dépôt `labo-maths/labo-maths.github.io` ne co
 - Formules chimiques avec mhchem : `\ce{…}` (script `contrib/mhchem.min.js` après `katex.min.js`). Formules générales (`C_nH_{2n+2}` dans une équation) en TeX simple (`\mathrm{C}_n…`) : mhchem lit `n+1` comme une charge. Motif de polymère : `\left[\text{–}\ce{CH2-CH2}\text{–}\right]_n` (un `-` final dans `\ce` devient une charge).
 - Chimie dans `chem.js` (sans DOM), exercices dans `exercises.js` : réponses = nombres séparés par « ; » (`labels` pour l'ordre, `kind: "coefs"` pour les coefficients, refus des coefficients non simplifiés), tolérance `tol` absolue ou `rel` relative ; **exactement 3 indices** sans la réponse. `tests/hydrocarbures.test.js` vérifie tout nouveau type automatiquement.
 - Données du cours : énergies de liaison et masses molaires du PDF (gardé en local, jamais versionné). Le tableau du chapitre 2 suit le cours (essences C5–C7) ; le labo de la colonne utilise les paliers de température (C5–C10).
-- Niveaux : 1 Raffinage, 2 Combustions, 3 Énergie, 4 Alcènes, 5 Polymères.
+- Niveaux : 1 Raffinage, 2 Combustions, 3 Énergie, 4 Alcènes, 5 Polymères, 6 Formules générales.
+- Formules générales (niveau 6) : équation pondérée en fonction de n (`generalCombustion` dans `chem.js`, coefficients `{ a, b, d }` = (a·n + b)/d), alcane ou alcène × complète, CO, suie. `kind: "coefsN"` : réponse = 4 expressions en n séparées par « ; », lues par `shared/calc.js` (n remplacé par x) et comparées pour plusieurs n ; acceptées avec 1 ou 2 devant l'hydrocarbure (forme du tableau avec demi-coefficient, ou tout ×2), autre multiple signalé comme non simplifié.
+- Exercice choisi : barre « Ou choisis » (`.pick-bar`) sous la barre du générateur : pondération (alcane/alcène, n de 1 à 10, alcène dès 2, complète/CO/suie) ou ΔH (alcanes, complète/CO), construit par `chosenExercise` et affiché par `trainer.show(ex)` de `shared/trainer.js` ; « Nouvel exercice » reste aléatoire.
 
 ## physique/thermodynamique
 

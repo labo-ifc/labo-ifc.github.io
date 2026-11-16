@@ -56,3 +56,7 @@
 
 @media print { .octane-scale, .column { display: none; } }
 .text-table { min-width: 40em; }
+
+/* Exercise built from chosen values */
+.pick-bar { margin-top: 10px; gap: 8px 12px; }
+.pick-label { color: var(--muted); }
