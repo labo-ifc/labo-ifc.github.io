@@ -7,3 +7,6 @@ node_modules/
 
 # Claude Code instructions specific to this machine
 CLAUDE.local.md
+
+# Photos of course exercises, kept locally
+*.jpg

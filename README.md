@@ -16,7 +16,7 @@ Un dossier par matière (`maths/`, `chimie/`, `physique/`, `biologie/`), un sous
 
 | Outil | Dossier |
 |---|---|
-| Hydrocarbures : pétrole, colonne de distillation interactive, carburants (indice d'octane, craquage), combustions complètes et incomplètes (équilibrage, aussi en équation générale en fonction de n), énergie par les énergies de liaison et pouvoir calorifique, alcènes (liaisons σ et π, additions), polymères et plastiques, pense-bête imprimable, générateur d'exercices avec indices, résolution pas à pas et calculatrice, exercice construit à partir d'un hydrocarbure choisi (n atomes de carbone) | [`chimie/hydrocarbures/`](chimie/hydrocarbures/) |
+| Hydrocarbures : pétrole, colonne de distillation interactive, carburants (indice d'octane, craquage), combustions complètes et incomplètes (équilibrage, aussi en équation générale en fonction de n), énergie par les énergies de liaison et pouvoir calorifique, alcènes (liaisons σ et π, additions), polymères et plastiques, pense-bête imprimable, générateur d'exercices avec indices, résolution pas à pas et calculatrice, exercice construit à partir d'un hydrocarbure choisi (n atomes de carbone), calcul d'énergie pas à pas (alcane au curseur, combustion complète ou CO, saisie vérifiée à chaque étape, formules développées, tableau « ta solution / bonne réponse ») | [`chimie/hydrocarbures/`](chimie/hydrocarbures/) |
 
 ### Physique
 
@@ -85,7 +85,8 @@ Pour les exercices de `exp-log/`, `tests/exp-log.steps.test.js` vérifie numéri
 2000 corrigés par type (chaque égalité aux solutions, Δ, Horner, ensemble final, aucune racine oubliée)
 ainsi que les trois indices, qui ne doivent jamais donner la réponse.
 Pour `chimie/hydrocarbures/`, `tests/hydrocarbures.test.js` vérifie chaque type d'exercice (réponse acceptée,
-indices, formules bien formées), la conservation des atomes des combustions et les enthalpies recalculées.
+indices, formules bien formées), la conservation des atomes des combustions et les enthalpies recalculées ;
+`tests/energie.test.js` vérifie les 6 étapes du calcul d'énergie (alcanes C1 à C10, complète et CO) et les messages d'erreur.
 Pour `physique/thermodynamique/`, `tests/thermodynamique.test.js` vérifie chaque type d'exercice sur 300 tirages
 (réponse acceptée, avec ou sans unité, QCM, indices sans la réponse) et les formules de `physics.js`.
 Pour `biologie/genetique/`, `tests/genetique.test.js` vérifie chaque type d'exercice sur 300 tirages (réponse acceptée,
@@ -146,6 +147,8 @@ chimie/
                       additions, polymères) et exemples résolus
     exercises.js      générateur d'exercices (sans DOM), lecture et correction des réponses (nombres séparés par « ; »)
     trainer.js        messages propres au cours pour la carte d'exercice commune
+    energy-steps.js   chapitre 11 (sans DOM) : les 6 étapes du calcul d'énergie d'une combustion d'alcane et leur correction
+    energy.js         chapitre 11 : générateur (curseur, complète/CO), étapes à vérifier, formules développées SVG, bilan
 physique/
   thermodynamique/
     index.html, style.css, app.js

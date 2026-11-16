@@ -60,3 +60,37 @@
 /* Exercise built from chosen values */
 .pick-bar { margin-top: 10px; gap: 8px 12px; }
 .pick-label { color: var(--muted); }
+
+/* Chapter 11: step-by-step energy calculation */
+.energy-statement { font-size: 1.1rem; line-height: 1.6; margin: 0 0 12px; }
+.energy-bonds { min-width: 0; }
+.energy-bonds td:first-child { text-align: left; }
+#en-kind button[aria-pressed="true"] { font-weight: 600; }
+.energy-steps { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.energy-step { background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); padding: 14px 16px; }
+.energy-step.done { border-left-color: var(--bounds); }
+.energy-step h3 { margin: 2px 0 4px; padding-top: 0; border-top: 0; }
+.energy-task { margin: 0 0 10px; color: var(--muted); }
+.energy-fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px 14px; }
+.energy-field { display: flex; flex-direction: column; gap: 4px; }
+.energy-field .text-input { width: 100%; box-sizing: border-box; background: var(--panel); }
+.energy-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.energy-form .feedback { margin-bottom: 0; min-height: 0; }
+.energy-form .feedback:empty { display: none; }
+.energy-answer { margin-top: 8px; padding: 8px 12px; border-radius: 8px; background: var(--accent-soft); overflow-x: auto; }
+.energy-answer-label { color: var(--muted); }
+.energy-figure { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: flex-end; margin-top: 12px; }
+.molecule { margin: 0; max-width: 100%; overflow-x: auto; }
+.molecule svg { display: block; max-width: none; }
+.molecule figcaption { color: var(--muted); font-size: 0.85em; text-align: center; }
+.molecule .bond { stroke: var(--fg); stroke-width: 1.6; }
+.molecule .bond.cc, .molecule .bond.multi { stroke: var(--accent); stroke-width: 2; }
+.molecule .atom { fill: var(--fg); font: 600 16px system-ui, sans-serif; text-anchor: middle; dominant-baseline: central; }
+.molecule .atom-C { fill: var(--accent); }
+.energy-summary { margin-top: 24px; }
+.energy-summary .text-table { min-width: 44em; }
+.energy-summary td.mono { font-family: var(--mono); white-space: normal; }
+.energy-summary td.ok { color: var(--bounds); font-weight: 600; }
+.energy-summary td.warn { color: var(--warn); }
+.energy-summary td.bad { color: var(--error); }
+.energy-summary .score { margin: 10px 0 0; }

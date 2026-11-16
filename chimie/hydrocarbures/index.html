@@ -33,6 +33,7 @@
         <li><a href="#plastiques" title="Les plastiques">Plastiques</a></li>
         <li><a href="#pense-bete" title="Pense-bête">Pense-bête</a></li>
         <li><a href="#exercices" title="Exercices">Exercices</a></li>
+        <li><a href="#calcul-energie" title="Calcul d'énergie pas à pas">Calcul d'énergie</a></li>
       </ol>
     </nav>
 
@@ -758,6 +759,53 @@
             <ol id="ex-steps" class="steps"></ol>
           </div>
           <aside id="calc" aria-label="Calculatrice"></aside>
+        </div>
+      </section>
+
+      <!-- 11 ─────────────────────────────────────────────── -->
+      <section id="calcul-energie" class="panel chapter">
+        <p class="kicker">Chapitre 11</p>
+        <h2>Calcul d'énergie pas à pas</h2>
+        <p>Choisis un alcane et une combustion, puis résous l'exercice en suivant les six étapes de la méthode.
+          Chaque étape se vérifie avant de passer à la suivante ; à la fin, ta solution est comparée à la bonne réponse.</p>
+
+        <div class="lab energy-lab">
+          <div class="lab-controls">
+            <div class="slider">
+              <label for="en-n">Alcane</label>
+              <output id="en-n-out" for="en-n"></output>
+              <input type="range" id="en-n" min="1" max="10" step="1" value="3">
+            </div>
+            <div class="chips" id="en-kind" role="group" aria-label="Combustion">
+              <button type="button" data-kind="complete">Complète (CO₂)</button>
+              <button type="button" data-kind="co">Incomplète (CO)</button>
+            </div>
+            <button type="button" id="en-random" class="ghost">Au hasard</button>
+          </div>
+          <div>
+            <p class="energy-statement" id="en-statement"></p>
+            <div class="table-wrap">
+              <table class="value-table energy-bonds">
+                <thead><tr><th>Liaison</th><th>Énergie (kJ/mol)</th></tr></thead>
+                <tbody id="en-bonds"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <ol id="en-steps" class="energy-steps"></ol>
+
+        <div id="en-summary" class="energy-summary" hidden>
+          <h3>Ta solution et la bonne réponse</h3>
+          <div class="table-wrap">
+            <table class="value-table text-table">
+              <thead><tr><th>Étape</th><th>Ta réponse (1<sup>er</sup> essai)</th><th>Bonne réponse</th><th>Résultat</th></tr></thead>
+              <tbody id="en-summary-rows"></tbody>
+            </table>
+          </div>
+          <p id="en-score" class="score"></p>
+          <p id="en-conclusion" class="note-box"></p>
+          <button type="button" id="en-restart" class="primary">Recommencer cet exercice</button>
         </div>
       </section>
     </main>

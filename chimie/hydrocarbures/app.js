@@ -6,11 +6,13 @@ import { initLessons } from "./lessons.js";
 import { initTrainer } from "./trainer.js";
 import { initCalculator } from "../../shared/calculator.js";
 import { initCourse } from "../../shared/course.js";
+import { initEnergy } from "./energy.js";
 
 renderStaticTex();
 const lessons = initLessons();
 const trainer = initTrainer();
 initExerciseCalculator();
+initEnergy();
 initTheme(document.getElementById("theme-toggle"), lessons.render);
 
 initCourse({ trainer });
