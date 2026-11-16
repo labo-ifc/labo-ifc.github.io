@@ -5,6 +5,9 @@ Site : https://labo-ifc.github.io (l'ancien site https://labo-maths.github.io re
 
 Un dossier par matière (`maths/`, `chimie/`, `physique/`, `biologie/`), un sous-dossier par outil.
 
+`project.json` résume le site (matières, outils, liens) pour la carte « Labo IFC » du portfolio (https://kennywouters.github.io/projets.html), qui le lit en direct.
+Il est généré depuis la page d'accueil : après tout ajout ou changement d'outil dans `index.html`, lancer `node scripts/project-summary.js`.
+
 ### Mathématiques
 
 | Outil | Dossier |
@@ -91,6 +94,8 @@ Pour `physique/thermodynamique/`, `tests/thermodynamique.test.js` vérifie chaqu
 (réponse acceptée, avec ou sans unité, QCM, indices sans la réponse) et les formules de `physics.js`.
 Pour `biologie/genetique/`, `tests/genetique.test.js` vérifie chaque type d'exercice sur 300 tirages (réponse acceptée,
 indices sans la réponse), les croisements, les rapports et la lecture des arbres (génotypes possibles, modes compatibles).
+
+`tests/project-summary.test.js` échoue si `project.json` ne correspond plus à `index.html`.
 
 Pour `diapos/`, `tests/diapos.test.js` vérifie la géométrie (redimensionnement d'un bloc tourné, rotation, aimantation),
 les thèmes, la lecture d'un fichier (valeurs nettoyées, images en `data:` seulement) et l'historique.

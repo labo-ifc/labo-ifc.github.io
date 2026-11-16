@@ -12,6 +12,7 @@ Ancien nom « Labo maths » : le dépôt `labo-maths/labo-maths.github.io` ne co
 - Logique (maths, chimie) dans des modules sans DOM (`exercises.js`, `calc.js`, `model.js`…), testée dans `tests/`.
 - Mise en page responsive : une colonne sous 900px ; respecter `prefers-reduced-motion` pour les animations.
 - Statistiques GoatCounter : les deux `<script>` (réglage `window.goatcounter` + `count.js` de `exokayn.goatcounter.com`) doivent figurer dans le `<head>` de toute nouvelle page ; chiffres privés, pas de compteur visible.
+- Page d'accueil : une `<section class="subject">` par matière, une carte `a.panel.tool-card` (`<h3>`, `<p>`, `span.beta-tag` éventuel) par outil ; `scripts/project-summary.js` lit cette structure pour générer `project.json` (lu par la carte du portfolio `kennywouters.github.io`). Après tout changement de l'accueil, relancer `node scripts/project-summary.js` et commiter `project.json` avec (sinon `tests/project-summary.test.js` échoue) ; garder cette structure ou adapter le script.
 - La rose en braille en commentaire au début de `index.html` est la signature de l'auteur : la conserver telle quelle.
 
 ## maths/exp-log

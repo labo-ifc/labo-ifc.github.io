@@ -1,0 +1,73 @@
+{
+  "name": "Labo IFC",
+  "url": "https://labo-ifc.github.io/",
+  "intro": "Des outils interactifs pour comprendre les mathématiques, la chimie, la physique et la biologie en les manipulant : on fait varier les paramètres et on voit tout de suite l'effet.",
+  "subjects": [
+    {
+      "id": "maths",
+      "title": "Mathématiques",
+      "tools": [
+        {
+          "title": "Fonctions sinusoïdales",
+          "beta": false,
+          "url": "https://labo-ifc.github.io/maths/sinusoides/",
+          "summary": "y = A·sin(ωx − φ) + D : curseurs, saisie libre et ajustement automatique d'une sinusoïde."
+        },
+        {
+          "title": "Exponentielles et logarithmes",
+          "beta": false,
+          "url": "https://labo-ifc.github.io/maths/exp-log/",
+          "summary": "Fonctions réciproques, aˣ, logarithmes, équations exponentielles et logarithmiques, un pense-bête et un générateur d'exercices corrigés pas à pas."
+        }
+      ]
+    },
+    {
+      "id": "chimie",
+      "title": "Chimie",
+      "tools": [
+        {
+          "title": "Hydrocarbures",
+          "beta": false,
+          "url": "https://labo-ifc.github.io/chimie/hydrocarbures/",
+          "summary": "Le pétrole et son raffinage, les carburants, les combustions et leur énergie, les alcènes, les polymères et les plastiques, avec un générateur d'exercices corrigés pas à pas."
+        }
+      ]
+    },
+    {
+      "id": "physique",
+      "title": "Physique",
+      "tools": [
+        {
+          "title": "Énergie et thermodynamique",
+          "beta": false,
+          "url": "https://labo-ifc.github.io/physique/thermodynamique/",
+          "summary": "Les formes d'énergie, l'énergie cinétique et potentielle, la chaleur, le travail, le premier et le deuxième principe, avec un générateur d'exercices corrigés pas à pas."
+        }
+      ]
+    },
+    {
+      "id": "biologie",
+      "title": "Biologie",
+      "tools": [
+        {
+          "title": "Génétique",
+          "beta": false,
+          "url": "https://labo-ifc.github.io/biologie/genetique/",
+          "summary": "La cellule et l'ADN, les lois de Mendel, codominance, gènes létaux, groupes sanguins, dihybridisme, arbres généalogiques et maladies chromosomiques, avec un générateur d'exercices corrigés pas à pas."
+        }
+      ]
+    },
+    {
+      "id": "outils",
+      "title": "Outils",
+      "tools": [
+        {
+          "title": "Diapos",
+          "beta": true,
+          "url": "https://labo-ifc.github.io/diapos/",
+          "summary": "Créer des diapositives dans le navigateur : textes, formules, images et formes, plusieurs thèmes et un mode présentation plein écran."
+        }
+      ]
+    }
+  ]
+}
